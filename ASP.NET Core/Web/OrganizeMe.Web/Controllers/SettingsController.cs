@@ -1,14 +1,13 @@
-﻿namespace AspNetCoreTemplate.Web.Controllers
+﻿namespace OrganizeMe.Web.Controllers
 {
     using System;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Common.Repositories;
-    using AspNetCoreTemplate.Data.Models;
-    using AspNetCoreTemplate.Services.Data;
-    using AspNetCoreTemplate.Web.ViewModels.Settings;
-
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Data.Common.Repositories;
+    using OrganizeMe.Data.Models;
+    using OrganizeMe.Services.Data;
+    using OrganizeMe.Web.ViewModels.Settings;
 
     public class SettingsController : BaseController
     {

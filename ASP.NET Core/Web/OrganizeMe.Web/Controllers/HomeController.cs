@@ -1,10 +1,9 @@
-﻿namespace AspNetCoreTemplate.Web.Controllers
+﻿namespace OrganizeMe.Web.Controllers
 {
     using System.Diagnostics;
 
-    using AspNetCoreTemplate.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Web.ViewModels;
 
     public class HomeController : BaseController
     {
