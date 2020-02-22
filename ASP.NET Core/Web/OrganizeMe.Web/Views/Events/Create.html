@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="http://fontawesome.io/assets/font-awesome/css/
+  font-awesome.css"/>
+    <script src="../../wwwroot/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+    
+    <title>Create</title>
+
+</head>
+
+<body>
+    <div class="form-group container">
+        <label for="Title">Title</label>
+        <input type="text" class="form-control col-md-5" placeholder="Enter title">
+        <div id="calendar">
+            <dropdown>
+                <input id="toggle1" type="checkbox" checked>
+                <label for="toggle1" class="animate">Date<i class="fa fa-bars float-right"></i></label>
+                <input type="datetime" class="input-group" name="StartDate" value="" />
+                <ul class="animate">
+
+                    <!-- calendar  -->
+                    <h1 class="center"></h1>
+                    <div class="calendar">
+                        <div class="group">
+                            <p class="left pointer minusmonth">&laquo;</p>
+                            <p class="left monthname center pointer"></p>
+                            <p class="right pointer addmonth">&raquo;</p>
+                        </div>
+                        <ul class="group">
+                            <li>Mo</li>
+                            <li>Tu</li>
+                            <li>We</li>
+                            <li>Th</li>
+                            <li>Fr</li>
+                            <li>Sa</li>
+                            <li>Su</li>
+                        </ul>
+                    </div>
+                </ul>
+            </dropdown>
+            <div class="form-group">
+                <label>Location:</label>
+                <input type="text" class="form-control" id="search_input" placeholder="Type address..." />
+                <input type="hidden" id="loc_lat" />
+                <input type="hidden" id="loc_long" />
+            </div>
+            <div>
+                <input id="pac-input" class="form-control" type="text" placeholder="Search Place....">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/events.create.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyADv8DrmXn9bIN3LyaqlCVmL610B3bYc8Q&callback=initMap"></script>
+    <!-- <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkVZYQFe4YYva_g5ulymGDt9EBoVjjZJ8&libraries=places&callback=initAutocomplete"></script> -->
+</body>
+
+</html>
