@@ -1,13 +1,12 @@
-﻿namespace AspNetCoreTemplate.Data.Repositories
+﻿namespace OrganizeMe.Data.Repositories
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Common.Models;
-    using AspNetCoreTemplate.Data.Common.Repositories;
-
     using Microsoft.EntityFrameworkCore;
+    using OrganizeMe.Data.Common.Models;
+    using OrganizeMe.Data.Common.Repositories;
 
     public class EfDeletableEntityRepository<TEntity> : EfRepository<TEntity>, IDeletableEntityRepository<TEntity>
         where TEntity : class, IDeletableEntity

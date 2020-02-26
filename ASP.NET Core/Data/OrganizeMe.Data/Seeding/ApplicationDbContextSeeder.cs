@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Data.Seeding
+﻿namespace OrganizeMe.Data.Seeding
 {
     using System;
     using System.Collections.Generic;

@@ -1,10 +1,9 @@
-﻿namespace AspNetCoreTemplate.Data
+﻿namespace OrganizeMe.Data
 {
     using System.Linq;
 
-    using AspNetCoreTemplate.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+    using OrganizeMe.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Data
+﻿namespace OrganizeMe.Data
 {
     using System;
     using System.Collections.Generic;

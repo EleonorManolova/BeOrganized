@@ -1,9 +1,8 @@
-﻿namespace AspNetCoreTemplate.Web.ViewModels.Settings
+﻿namespace OrganizeMe.Web.ViewModels.Settings
 {
-    using AspNetCoreTemplate.Data.Models;
-    using AspNetCoreTemplate.Services.Mapping;
-
     using AutoMapper;
+    using OrganizeMe.Data.Models;
+    using OrganizeMe.Services.Mapping;
 
     public class SettingViewModel : IMapFrom<Setting>, IHaveCustomMappings
     {

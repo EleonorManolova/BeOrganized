@@ -5,21 +5,19 @@
     using System.IO;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data;
-    using AspNetCoreTemplate.Data.Common;
-    using AspNetCoreTemplate.Data.Common.Repositories;
-    using AspNetCoreTemplate.Data.Models;
-    using AspNetCoreTemplate.Data.Repositories;
-    using AspNetCoreTemplate.Data.Seeding;
-    using AspNetCoreTemplate.Services.Data;
-    using AspNetCoreTemplate.Services.Messaging;
-
     using CommandLine;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using OrganizeMe.Data;
+    using OrganizeMe.Data.Common;
+    using OrganizeMe.Data.Common.Repositories;
+    using OrganizeMe.Data.Models;
+    using OrganizeMe.Data.Repositories;
+    using OrganizeMe.Data.Seeding;
+    using OrganizeMe.Services.Data;
+    using OrganizeMe.Services.Messaging;
 
     public static class Program
     {

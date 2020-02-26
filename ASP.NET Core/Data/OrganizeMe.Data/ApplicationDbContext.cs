@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Data
+﻿namespace OrganizeMe.Data
 {
     using System;
     using System.Linq;
@@ -6,11 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Common.Models;
-    using AspNetCoreTemplate.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using OrganizeMe.Data.Common.Models;
+    using OrganizeMe.Data.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -23,6 +22,10 @@
             : base(options)
         {
         }
+
+        public DbSet<Calendar> Calendars { get; set; }
+
+        public DbSet<Event> Events { get; set; }
 
         public DbSet<Setting> Settings { get; set; }
 
@@ -96,6 +99,11 @@
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Calendar>()
+                .HasOne(c => c.User)
+                .WithOne(u => u.Calendar)
+                .HasForeignKey<Calendar>(c => c.UserId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

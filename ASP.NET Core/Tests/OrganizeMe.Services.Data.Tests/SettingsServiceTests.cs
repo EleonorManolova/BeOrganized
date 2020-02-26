@@ -1,18 +1,15 @@
-﻿namespace AspNetCoreTemplate.Services.Data.Tests
+﻿namespace OrganizeMe.Services.Data.Tests
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data;
-    using AspNetCoreTemplate.Data.Common.Repositories;
-    using AspNetCoreTemplate.Data.Models;
-    using AspNetCoreTemplate.Data.Repositories;
-
     using Microsoft.EntityFrameworkCore;
-
     using Moq;
-
+    using OrganizeMe.Data;
+    using OrganizeMe.Data.Common.Repositories;
+    using OrganizeMe.Data.Models;
+    using OrganizeMe.Data.Repositories;
     using Xunit;
 
     public class SettingsServiceTests

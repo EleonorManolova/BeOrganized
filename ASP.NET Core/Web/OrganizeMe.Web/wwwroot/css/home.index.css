@@ -1,0 +1,53 @@
+#main {
+    margin: 0;
+    padding: 0;
+}
+
+.page-header {
+    background-image: url(../img/indexHome.jpg);
+    padding: 0;
+    margin: 0;
+    background-position: 50%;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 999px;
+    overflow: hidden;
+    width: 100%;
+    z-index: 1;
+    box-sizing: border-box;
+    display: block;
+}
+
+.section-dark {
+    background-color: #2a3131;
+    position: relative;
+}
+
+.section-header {
+    display: block;
+    box-sizing: border-box;
+}
+
+/*  Intro Section
+--------------------------------------------------------------*/
+#intro {
+    margin: 4rem 0 0 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    background: #f5f8fd url("/img/indexHome.jpg") center top no-repeat;
+    background-size: cover;
+}
+
+    #intro .intro-info {
+        width: 80%;
+        color: #868563d9;
+        margin-bottom: 40px;
+        font-size: 48px;
+        font-weight: 700;
+    }
+
+        #intro .intro-info span {
+            color: #4d4f35e6;
+        }

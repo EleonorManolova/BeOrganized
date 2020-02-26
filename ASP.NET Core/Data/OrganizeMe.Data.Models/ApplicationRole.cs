@@ -1,11 +1,10 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace AspNetCoreTemplate.Data.Models
+namespace OrganizeMe.Data.Models
 {
     using System;
 
-    using AspNetCoreTemplate.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using OrganizeMe.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

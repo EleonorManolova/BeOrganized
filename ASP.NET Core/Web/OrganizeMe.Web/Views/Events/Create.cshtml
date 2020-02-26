@@ -1,68 +1,71 @@
-﻿@using System.IO
+﻿@using OrganizeMe.Web.ViewModels.Events
+@model CreateViewModel
 
-<!DOCTYPE html>
-<html lang="en">
+@{
+    ViewData["Title"] = "Event Create";
+
+}
+
+<h1>@ViewData["Title"]</h1>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="~/css/Events.Create.css">
-    <title>Create</title>
-
+    <environment names="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" href="~/css/Events.Create.css" asp-append-version="true">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    </environment>
 </head>
 
 <body>
-    <form action="/Events/Create" method="post">
-        <div class="form-group container">
-            <label for="Title">Title</label>
-            <input type="text" class="form-control col-md-5" placeholder="Enter title">
-            <div id="calendar">
-                <input id="startDate" type="text" name="startDate" value="@System.DateTime.Now.ToShortDateString()">
-                <i class="fa fa-bars btn float-right" onclick="showCalendar()"></i>
-                <ul class="animate">
+    <form class=" container" asp-area="" asp-controller="Events" asp-action="Create" method="post">
 
-                    <!-- calendar  -->
-                    <div id="calendarStartDate" class="calendar left">
-                        <div class="group">
-                            <p class="left pointer minusmonth">&laquo;</p>
-                            <p class="left monthname center pointer"></p>
-                            <p class="right pointer addmonth">&raquo;</p>
-                        </div>
-                        <ul class="group">
-                            <li>Mo</li>
-                            <li>Tu</li>
-                            <li>We</li>
-                            <li>Th</li>
-                            <li>Fr</li>
-                            <li>Sa</li>
-                            <li>Su</li>
-                        </ul>
-                    </div>
-
-                </ul>
-            </div>
-            <div class="form-group">
-                <label>Location:</label>
-                <input type="text" class="form-control col-md-5" id="search_input" placeholder="Type address..." />
-                <input type="hidden" id="loc_lat" />
-                <input type="hidden" id="loc_long" />
-            </div>
-            <div>
-                <input id="pac-input" class="form-control col-md-5" type="text" placeholder="Search Place....">
-                <div id="map"></div>
-            </div>
-
-            <script src="https://maps.googleapis.com/maps/api/js?key=callback=initMap"></script>
-            <!-- <script async defer
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkVZYQFe4YYva_g5ulymGDt9EBoVjjZJ8&libraries=places&callback=initAutocomplete"></script> -->
-        <button type="submit" class="btn btn-dark">Save</button>
+        <div class="form-group">
+            <label asp-for="Input.Title">Title:</label>
+            <input asp-for="Input.Title" class="form-control col-md-5" placeholder="Enter title">
+            <span asp-validation-for="Input.Title" class="text-danger"></span>
         </div>
+        <div id="calendar" class="form-group">
+            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block " type="text" name="startDate" value="@System.DateTime.Now.ToShortDateString()">
+            <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
+            <span asp-validation-for="Input.StartDate" class="text-danger"></span>
+            <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" type="time" name="startTime" value="@System.DateTime.Now.ToShortTimeString()" />
+            <div class="delimeter d-inline-block"> to </div>
+            <input id="endDate" asp-for="Input.EndDate" class="inputDate input-group-text form-control d-inline-block" type="text" name="endDate" value="@System.DateTime.Now.ToShortDateString()">
+            <i class="fa fa-bars btn border-right border-bottom  d-inline-block" onclick="showCalendarRight()"></i>
+            <input class="inputTime form-control d-inline-block" type="time" name="endTime" value="@System.DateTime.Now.ToShortTimeString()" />
+            <ul>
+                <!-- calendar  -->
+                <div id="calendarStartDate" class="calendar">
+                    <div class="group">
+                        <p class="left pointer minusmonth">&laquo;</p>
+                        <p class="left monthname center pointer"></p>
+                        <p class="right pointer addmonth">&raquo;</p>
+                    </div>
+                    <ul class="group">
+                        <li>Mo</li>
+                        <li>Tu</li>
+                        <li>We</li>
+                        <li>Th</li>
+                        <li>Fr</li>
+                        <li>Sa</li>
+                        <li>Su</li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Address">Address:</label>
+            <input class="form-control" id="autocomplete4" type="text" asp-for="Input.Address" value="" placeholder="Add location" />
+            <span asp-validation-for="Input.Address" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Description">Description:</label>
+            <textarea asp-for="Input.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
+            <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-dark">Save</button>
     </form>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places"></script>
     <script src="~/js/events.create.js">JS</script>
 </body>
-
-</html>

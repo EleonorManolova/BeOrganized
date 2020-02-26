@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Services.Messaging
+﻿namespace OrganizeMe.Services.Messaging
 {
     public class EmailAttachment
     {

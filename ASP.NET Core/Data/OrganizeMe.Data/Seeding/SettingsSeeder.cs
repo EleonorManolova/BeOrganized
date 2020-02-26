@@ -1,10 +1,10 @@
-﻿namespace AspNetCoreTemplate.Data.Seeding
+﻿namespace OrganizeMe.Data.Seeding
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Models;
+    using OrganizeMe.Data.Models;
 
     internal class SettingsSeeder : ISeeder
     {

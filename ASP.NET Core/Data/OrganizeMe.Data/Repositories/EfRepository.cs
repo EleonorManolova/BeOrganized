@@ -1,12 +1,11 @@
-﻿namespace AspNetCoreTemplate.Data.Repositories
+﻿namespace OrganizeMe.Data.Repositories
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Common.Repositories;
-
     using Microsoft.EntityFrameworkCore;
+    using OrganizeMe.Data.Common.Repositories;
 
     public class EfRepository<TEntity> : IRepository<TEntity>
         where TEntity : class

@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Services.Messaging
+﻿namespace OrganizeMe.Services.Messaging
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

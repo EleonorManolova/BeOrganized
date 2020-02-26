@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Services.Mapping
+﻿namespace OrganizeMe.Services.Mapping
 {
     // ReSharper disable once UnusedTypeParameter
     public interface IMapTo<T>

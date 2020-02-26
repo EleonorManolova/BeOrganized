@@ -1,8 +1,8 @@
-﻿namespace AspNetCoreTemplate.Common
+﻿namespace OrganizeMe.Common
 {
     public static class GlobalConstants
     {
-        public const string SystemName = "AspNetCoreTemplate";
+        public const string SystemName = "OrganizeMe";
 
         public const string AdministratorRoleName = "Administrator";
     }

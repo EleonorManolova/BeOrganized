@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Web.ViewModels
+﻿namespace OrganizeMe.Web.ViewModels
 {
     public class ErrorViewModel
     {

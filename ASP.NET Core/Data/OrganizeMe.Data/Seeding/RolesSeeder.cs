@@ -1,14 +1,13 @@
-﻿namespace AspNetCoreTemplate.Data.Seeding
+﻿namespace OrganizeMe.Data.Seeding
 {
     using System;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Common;
-    using AspNetCoreTemplate.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using OrganizeMe.Common;
+    using OrganizeMe.Data.Models;
 
     internal class RolesSeeder : ISeeder
     {

@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Data.Migrations
+﻿namespace OrganizeMe.Data.Migrations
 {
     using System;
 

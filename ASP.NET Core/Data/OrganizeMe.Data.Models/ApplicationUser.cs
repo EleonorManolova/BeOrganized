@@ -1,12 +1,11 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
-namespace AspNetCoreTemplate.Data.Models
+namespace OrganizeMe.Data.Models
 {
     using System;
     using System.Collections.Generic;
 
-    using AspNetCoreTemplate.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using OrganizeMe.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -17,6 +16,10 @@ namespace AspNetCoreTemplate.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
         }
+
+        public string CalendarId { get; set; }
+
+        public Calendar Calendar { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

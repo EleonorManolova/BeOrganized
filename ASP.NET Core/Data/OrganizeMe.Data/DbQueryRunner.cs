@@ -1,11 +1,10 @@
-﻿namespace AspNetCoreTemplate.Data
+﻿namespace OrganizeMe.Data
 {
     using System;
     using System.Threading.Tasks;
 
-    using AspNetCoreTemplate.Data.Common;
-
     using Microsoft.EntityFrameworkCore;
+    using OrganizeMe.Data.Common;
 
     public class DbQueryRunner : IDbQueryRunner
     {

@@ -1,6 +1,6 @@
-﻿namespace AspNetCoreTemplate.Data.Models
+﻿namespace OrganizeMe.Data.Models
 {
-    using AspNetCoreTemplate.Data.Common.Models;
+    using OrganizeMe.Data.Common.Models;
 
     public class Setting : BaseDeletableModel<int>
     {

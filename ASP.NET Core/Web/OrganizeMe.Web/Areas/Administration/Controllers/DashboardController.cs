@@ -1,9 +1,8 @@
-﻿namespace AspNetCoreTemplate.Web.Areas.Administration.Controllers
+﻿namespace OrganizeMe.Web.Areas.Administration.Controllers
 {
-    using AspNetCoreTemplate.Services.Data;
-    using AspNetCoreTemplate.Web.ViewModels.Administration.Dashboard;
-
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Services.Data;
+    using OrganizeMe.Web.ViewModels.Administration.Dashboard;
 
     public class DashboardController : AdministrationController
     {

@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Web.Tests
+﻿namespace OrganizeMe.Web.Tests
 {
     using System;
     using System.Diagnostics;

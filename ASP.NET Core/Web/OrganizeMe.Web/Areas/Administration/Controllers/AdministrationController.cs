@@ -1,10 +1,9 @@
-﻿namespace AspNetCoreTemplate.Web.Areas.Administration.Controllers
+﻿namespace OrganizeMe.Web.Areas.Administration.Controllers
 {
-    using AspNetCoreTemplate.Common;
-    using AspNetCoreTemplate.Web.Controllers;
-
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Common;
+    using OrganizeMe.Web.Controllers;
 
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     [Area("Administration")]

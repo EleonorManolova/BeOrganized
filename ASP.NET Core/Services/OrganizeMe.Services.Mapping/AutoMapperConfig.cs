@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreTemplate.Services.Mapping
+﻿namespace OrganizeMe.Services.Mapping
 {
     using System;
     using System.Collections.Generic;
