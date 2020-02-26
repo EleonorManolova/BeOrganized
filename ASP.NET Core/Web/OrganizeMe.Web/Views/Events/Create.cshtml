@@ -9,7 +9,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <head>
-    <environment names="Development">
+    <environment names="Staging,Production,Development">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" href="~/css/Events.Create.css" asp-append-version="true">
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
@@ -65,7 +65,8 @@
         </div>
         <button type="submit" class="btn btn-dark">Save</button>
     </form>
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places"></script>
-    <script src="~/js/events.create.js">JS</script>
+    <environment names="Staging,Production,Development">
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places"></script>
+        <script src="~/js/events.create.js" asp-append-version="true">JS</script>
+    </environment>
 </body>

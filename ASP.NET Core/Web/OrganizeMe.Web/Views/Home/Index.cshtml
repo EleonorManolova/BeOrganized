@@ -1,13 +1,13 @@
 ﻿@using OrganizeMe.Common
 @using System.Threading;
 @{
-this.ViewData["Title"] = "Home Page";
+    this.ViewData["Title"] = "Home Page";
 }
-    <head>
-        <environment names="Development">
-          <link href="~/css/home.index.css" rel="stylesheet" asp-append-version="true">
-        </environment>
-    </head>
+<head>
+    <environment names="Staging,Production,Development">
+        <link href="~/css/home.index.css" rel="stylesheet" asp-append-version="true">
+    </environment>
+</head>
 
 <!--==========================
    Intro Section
@@ -15,7 +15,6 @@ this.ViewData["Title"] = "Home Page";
 <section id="intro" class="clearfix removeContainer">
     <div class="page-header section-dark d-flex h-100">
         <div class=" row justify-content-center align-self-center">
-            <!-- <div class="display-4 col-md-6 intro-info order-md-first order-last"> -->
             <h2 class="float-left text-left display-4 intro-info">This will help <span>organize</span> your life,<br />track your habbits and never forger an event. </h2>
             @*<div>
                     <a href="" class="btn-get-started scrollto">Login</a>
@@ -95,4 +94,4 @@ this.ViewData["Title"] = "Home Page";
         </div>
 
     </div>
-</section><!-- #services -->
+</section>
