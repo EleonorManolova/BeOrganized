@@ -15,20 +15,30 @@
 
     public class Input
     {
-        [Required]
+        [Required(ErrorMessage = "The Title is required.")]
         public string Title { get; set; }
 
         [Required]
-        public string StartDate { get; set; }
+        [Display(Name = "Start Date")]
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public string StartTime { get; set; }
+        [Display(Name = "Start Time")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        public DateTime StartTime { get; set; }
 
         [Required]
-        public string EndDate { get; set; }
+        [Display(Name = "End Date")]
+        [DataType(DataType.Date)]
+        public DateTime EndDate { get; set; }
 
         [Required]
-        public string EndTime { get; set; }
+        [Display(Name = "End Time")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        public DateTime EndTime { get; set; }
 
         public string Address { get; set; }
 

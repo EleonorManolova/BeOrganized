@@ -73,10 +73,12 @@ function showCalendarRight() {
             $(this).addClass('red');
             let calendarStart = document.getElementById("calendarStartDate");
             let startDateOutput = new Date(`${months[themonth]} ${$(this).text()}, ${(theyear).toString()} 00:00:00`);
-            if (calendarStart.classList.contains('leftPosition')) {
+            if (calendarStart.style.display === "inline-block") {
                 $('#startDate').val(startDateOutput.toLocaleDateString("en-GB"));
             }
-            $('#endDate').val(startDateOutput.toLocaleDateString("en-GB"));
+            else {
+                $('#endDate').val(startDateOutput.toLocaleDateString("en-GB"));
+            }
         }
         );
     }
@@ -89,6 +91,6 @@ function showCalendarRight() {
         var place = ac.getPlace;
         console.log(place.formatted_address);
         console.log(place.url);
-     //   console.log(place.geometry.location);
+        //   console.log(place.geometry.location);
     })
 })(jQuery);

@@ -17,22 +17,25 @@
 </head>
 
 <body>
-    <form class=" container" asp-area="" asp-controller="Events" asp-action="Create" method="post">
-
+    <form asp-area="" asp-controller="Events" asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Input.Title">Title:</label>
+            <label asp-for="Input.Title"></label>
             <input asp-for="Input.Title" class="form-control col-md-5" placeholder="Enter title">
             <span asp-validation-for="Input.Title" class="text-danger"></span>
         </div>
         <div id="calendar" class="form-group">
-            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block " type="text" name="startDate" value="@System.DateTime.Now.ToShortDateString()">
+            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block ">
             <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
-            <span asp-validation-for="Input.StartDate" class="text-danger"></span>
-            <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" type="time" name="startTime" value="@System.DateTime.Now.ToShortTimeString()" />
+            <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" />
             <div class="delimeter d-inline-block"> to </div>
-            <input id="endDate" asp-for="Input.EndDate" class="inputDate input-group-text form-control d-inline-block" type="text" name="endDate" value="@System.DateTime.Now.ToShortDateString()">
-            <i class="fa fa-bars btn border-right border-bottom  d-inline-block" onclick="showCalendarRight()"></i>
-            <input class="inputTime form-control d-inline-block" type="time" name="endTime" value="@System.DateTime.Now.ToShortTimeString()" />
+            <input id="endDate" asp-for="Input.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
+            <i class="fa fa-bars btn border-right border-bottom d-inline-block" onclick="showCalendarRight()"></i>
+            <input asp-for="Input.EndTime" class="inputTime form-control d-inline-block" /><br />
+            <span asp-validation-for="Input.StartDate" class="text-danger"></span>
+            <span asp-validation-for="Input.StartTime" class="text-danger"></span>
+            <span asp-validation-for="Input.EndDate" class="text-danger"></span>
+            <span asp-validation-for="Input.EndTime" class="text-danger"></span>
             <ul>
                 <!-- calendar  -->
                 <div id="calendarStartDate" class="calendar">
@@ -53,17 +56,20 @@
                 </div>
             </ul>
         </div>
+
         <div class="form-group">
-            <label asp-for="Input.Address">Address:</label>
+            <label asp-for="Input.Address"></label>
             <input class="form-control" id="autocomplete4" type="text" asp-for="Input.Address" value="" placeholder="Add location" />
             <span asp-validation-for="Input.Address" class="text-danger"></span>
         </div>
+
         <div class="form-group">
-            <label asp-for="Input.Description">Description:</label>
+            <label asp-for="Input.Description"></label>
             <textarea asp-for="Input.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
             <span asp-validation-for="Input.Description" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-dark">Save</button>
+
+        <button type="submit" class="btn btn-dark">Create</button>
     </form>
     <environment names="Staging,Production,Development">
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places"></script>
