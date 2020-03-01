@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <form asp-area="" asp-controller="Events" asp-action="Create" method="post">
+    <form class="mb-3" asp-area="" asp-controller="Events" asp-action="Create" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
             <label asp-for="Input.Title"></label>
@@ -58,9 +58,10 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="Input.Address"></label>
-            <input class="form-control" id="autocomplete4" type="text" asp-for="Input.Address" value="" placeholder="Add location" />
-            <span asp-validation-for="Input.Address" class="text-danger"></span>
+            <label asp-for="Input.Location"></label>
+            <input class="form-control mb-2" id="autocomplete4" type="text" asp-for="Input.Location" value="" placeholder="Add location" />
+            <span asp-validation-for="Input.Location" class="text-danger"></span>
+            <div id="map"></div>
         </div>
 
         <div class="form-group">
@@ -69,10 +70,12 @@
             <span asp-validation-for="Input.Description" class="text-danger"></span>
         </div>
 
-        <button type="submit" class="btn btn-dark">Create</button>
+        <button type="submit" class="btn btn-dark btn-lg">Create</button>
+        <a href="/Calendar" class="btn btn-secondary btn-lg">Cancel</a>
+
     </form>
     <environment names="Staging,Production,Development">
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="~/js/events.create.js" asp-append-version="true">JS</script>
     </environment>
 </body>
