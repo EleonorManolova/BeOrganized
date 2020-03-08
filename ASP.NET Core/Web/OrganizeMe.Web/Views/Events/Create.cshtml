@@ -7,12 +7,11 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+<hr />
 
 <head>
     <environment names="Staging,Production,Development">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
         <link rel="stylesheet" href="~/css/Events.Create.css" asp-append-version="true">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     </environment>
 </head>
 
@@ -59,7 +58,7 @@
 
         <div class="form-group">
             <label asp-for="Input.Location"></label>
-            <input class="form-control mb-2" id="autocomplete4" type="text" asp-for="Input.Location" value="" placeholder="Add location" />
+            <input asp-for="Input.Location" class="form-control mb-2" id="autocomplete4" value="" placeholder="Add location" />
             <span asp-validation-for="Input.Location" class="text-danger"></span>
             <div id="map"></div>
         </div>
