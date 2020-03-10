@@ -9,9 +9,8 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Cookie
 -------------------------------------------------- */
 
-#cookieConsent {
-    margin-top: 5rem;
-    margin-bottom: 0;
+.alert {
+    margin-top: 3rem;
 }
 
 /* Header style

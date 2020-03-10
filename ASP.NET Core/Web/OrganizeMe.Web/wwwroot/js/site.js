@@ -1,7 +1,7 @@
 ﻿(function ($) {
     "use strict";
 
-    if ($('section').is('.removeContainer') || $('div').is('.removeContainer')) {
+     if ($('section').is('.removeContainer')) {
          $('main').removeClass('container');
      };
 

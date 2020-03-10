@@ -1,7 +1,9 @@
 /*dropdown*/
+@import url(https://fonts.googleapis.com/css?family=Lato:300);
 * {
   padding: 0;
   margin: 0;
+  font-family: 'Lato', sans-serif;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -46,6 +48,7 @@ ul {
 }
 
 body {
+  font-family: 'Lato',sans-serif;
   padding: 1em 0;
 }
 
@@ -64,7 +67,7 @@ body {
   background: #ebe9e6;
   color: black;
   padding: .5em .5em 1em;
-  max-width: 20.5em;
+  max-width: 20em;
   min-height: 15em;
   margin: .5em auto;
   border-radius: 5px;
