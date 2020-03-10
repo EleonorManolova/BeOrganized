@@ -24,6 +24,7 @@
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
 
+        
         public IActionResult HttpError(int statusCode)
         {
             if (statusCode == 404)
