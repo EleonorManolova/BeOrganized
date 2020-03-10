@@ -4,19 +4,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Common;
 
-    public class CreateViewModel
+    public class EventInputViewModel : IValidatableObject
     {
-        [BindProperty]
-        public Input Input { get; set; }
-
-        public string GoogleApi { get; set; }
-    }
-
-    public class Input : IValidatableObject
-    {
-        [Required(ErrorMessage = "The Title is required.")]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         public string Title { get; set; }
 
         [Required]
@@ -27,7 +19,7 @@
         [Required]
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.EventDateFormatiing)]
         public DateTime StartTime { get; set; }
 
         [Required]
@@ -38,7 +30,7 @@
         [Required]
         [Display(Name = "End Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.EventDateFormatiing)]
         public DateTime EndTime { get; set; }
 
         public string Location { get; set; }

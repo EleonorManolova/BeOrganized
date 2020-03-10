@@ -14,20 +14,15 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\Calendar\Index.cshtml" />
-  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Views\Calendar\Index.cshtml" />
-    <None Include="wwwroot\css\calendar.all.css" />
+    <None Include="wwwroot\css\calendar.index.css" />
     <None Include="wwwroot\css\style.css" />
     <None Include="wwwroot\css\style.css.map" />
     <None Include="wwwroot\css\Events.Create.scss" />
-    <None Include="wwwroot\js\calendar.all.js" />
+    <None Include="wwwroot\js\calendar.index.js" />
     <None Include="wwwroot\js\events.create.js" />
   </ItemGroup>
 
@@ -56,14 +51,5 @@
     <ProjectReference Include="..\..\Services\OrganizeMe.Services\OrganizeMe.Services.csproj" />
     <ProjectReference Include="..\OrganizeMe.Web.Infrastructure\OrganizeMe.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\OrganizeMe.Web.ViewModels\OrganizeMe.Web.ViewModels.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="wwwroot\js\events.create.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="wwwroot\js\site.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>

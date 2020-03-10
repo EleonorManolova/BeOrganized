@@ -27,6 +27,8 @@
 
         public DbSet<Event> Events { get; set; }
 
+        public DbSet<Habit> Habits { get; set; }
+
         public DbSet<Setting> Settings { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);

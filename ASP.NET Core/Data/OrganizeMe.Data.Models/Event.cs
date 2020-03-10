@@ -33,6 +33,6 @@
 
         public string CalendarId { get; set; }
 
-        public Calendar Calendar { get; set; }
+        public virtual Calendar Calendar { get; set; }
     }
 }

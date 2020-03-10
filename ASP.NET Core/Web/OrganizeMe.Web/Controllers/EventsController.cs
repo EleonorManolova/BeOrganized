@@ -4,42 +4,36 @@
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
+    using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Web.ViewModels.Events;
 
     public class EventsController : Controller
     {
         private readonly IConfiguration configuration;
+        private readonly IEventService eventService;
 
-        public EventsController(IConfiguration configuration)
+        public EventsController(IConfiguration configuration, IEventService eventService)
         {
             this.configuration = configuration;
+            this.eventService = eventService;
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            var model = new CreateViewModel
-            {
-                Input = new Input
-                {
-                    StartDate = DateTime.Now,
-                    StartTime = DateTime.Now,
-                    EndDate = DateTime.Now,
-                    EndTime = DateTime.Now.AddMinutes(30),
-                },
-                GoogleApi = this.configuration["GoogleMaps:ApiKey"],
-            };
+            var model = this.eventService.GetEventViewModel(this.configuration["GoogleMaps:ApiKey"]);
             return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(CreateViewModel model)
+        public IActionResult Create(EventCreateViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
+            // TODO:Save event
             return this.Redirect("/");
         }
     }
