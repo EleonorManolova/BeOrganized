@@ -35,6 +35,58 @@
         "dist/jquery.validate.unobtrusive.js",
         "dist/jquery.validate.unobtrusive.min.js"
       ]
+    },
+    {
+      "library": "@fullcalendar/core@4.4.0",
+      "destination": "wwwroot/lib/node_modules/core/",
+      "files": [
+        "main.css",
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/daygrid@4.4.0",
+      "destination": "wwwroot/lib/node_modules/daygrid/",
+      "files": [
+        "main.css",
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/timegrid@4.4.0",
+      "destination": "wwwroot/lib/node_modules/timegrid/",
+      "files": [
+        "main.css",
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/interaction@4.4.0",
+      "destination": "wwwroot/lib/node_modules/interaction/",
+      "files": [
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/resource-common@4.4.0",
+      "destination": "wwwroot/lib/node_modules/resource-common/",
+      "files": [
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/resource-daygrid@4.4.0",
+      "destination": "wwwroot/lib/node_modules/resource-daygrid/",
+      "files": [
+        "main.js"
+      ]
+    },
+    {
+      "library": "@fullcalendar/resource-timegrid@4.4.0",
+      "destination": "wwwroot/lib/node_modules/resource-timegrid/",
+      "files": [
+        "main.js"
+      ]
     }
   ]
 }
