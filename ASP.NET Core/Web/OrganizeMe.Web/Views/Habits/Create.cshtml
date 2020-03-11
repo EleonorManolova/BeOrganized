@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Habit Create">
+        <form class="mb-3" asp-area="" asp-controller="Habits" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Title" class="control-label"></label>
@@ -21,7 +21,8 @@
             </div>
             <div class="select form-group">
                 <label asp-for="Input.Duration" class="control-label"></label>
-                <select asp-for="Input.Duration" data-placeholder="Choose Duration" class="chosen-select-no-single custom-select">
+                <select asp-for="Input.Duration" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Duration</option>
                     @foreach (var duration in Model.Durations)
                     {
                         <option value="@duration">@duration</option>
@@ -31,7 +32,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="Input.Frequency" class="control-label">How often?</label>
-                <select asp-for="Input.Frequency" data-placeholder="Choose Time" class="chosen-select-no-single custom-select">
+                <select asp-for="Input.Frequency" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Time</option>
                     @foreach (var frequency in Model.Frequencies)
                     {
                         <option value="@frequency">@frequency</option>
@@ -41,7 +43,8 @@
             </div>
             <div class="select form-group">
                 <label>Prefered Time</label>
-                <select asp-for="Input.DayTime" data-placeholder="Choose Time" class="chosen-select-no-single custom-select">
+                <select asp-for="Input.DayTime" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Time</option>
                     @foreach (var daytime in Model.DayTimes)
                     {
                         <option value="@daytime">@daytime</option>
@@ -50,10 +53,9 @@
                 <span asp-validation-for="Input.DayTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-dark btn-lg" value="Create" />
+                <button type="submit" class="btn btn-dark btn-lg">Create</button>
                 <a asp-controller="Calendar" asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
             </div>
         </form>
     </div>
 </div>
-

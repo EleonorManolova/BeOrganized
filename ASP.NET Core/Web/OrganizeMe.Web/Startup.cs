@@ -15,7 +15,10 @@
     using OrganizeMe.Data.Models;
     using OrganizeMe.Data.Repositories;
     using OrganizeMe.Data.Seeding;
+    using OrganizeMe.Services;
     using OrganizeMe.Services.Data;
+    using OrganizeMe.Services.Data.Events;
+    using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Services.Messaging;
     using OrganizeMe.Web.ViewModels;
@@ -58,6 +61,10 @@
             // Application services
             services.AddTransient<IEmailSender, SendGridEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IHabitService, HabitService>();
+            services.AddTransient<IEnumParseService, EnumParseService>();
+            services.AddTransient<IStringFormatService, StringFormatService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

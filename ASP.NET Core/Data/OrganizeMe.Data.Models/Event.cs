@@ -2,7 +2,7 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
+    using OrganizeMe.Common;
     using OrganizeMe.Data.Common.Models;
 
     public class Event : BaseDeletableModel<string>
@@ -28,11 +28,11 @@
 
         public string Address { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(AttributesConstraints.DescriptionMaxLength)]
         public string Description { get; set; }
 
         public string CalendarId { get; set; }
 
-        public Calendar Calendar { get; set; }
+        public virtual Calendar Calendar { get; set; }
     }
 }

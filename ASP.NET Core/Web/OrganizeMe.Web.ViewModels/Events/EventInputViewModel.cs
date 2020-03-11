@@ -5,45 +5,38 @@
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Common;
 
-    public class CreateViewModel
+    public class EventInputViewModel : IValidatableObject
     {
-        [BindProperty]
-        public Input Input { get; set; }
-
-        public string GoogleApi { get; set; }
-    }
-
-    public class Input : IValidatableObject
-    {
-        [Required(ErrorMessage = "The Title is required.")]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         public string Title { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.DateFromat)]
         public DateTime StartTime { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "End Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.DateFromat)]
         public DateTime EndTime { get; set; }
 
         public string Location { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(AttributesConstraints.DescriptionMaxLength)]
         public string Description { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

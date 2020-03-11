@@ -9,7 +9,6 @@
 
     public class CalendarController : Controller
     {
-        [HttpGet]
         public IActionResult Index()
         {
             return this.View();

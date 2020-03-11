@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\OrganizeMe.Data.Models\OrganizeMe.Data.Models.csproj" />
+    <ProjectReference Include="..\..\OrganizeMe.Common\OrganizeMe.Common.csproj" />
     <ProjectReference Include="..\..\Services\OrganizeMe.Services.Mapping\OrganizeMe.Services.Mapping.csproj" />
   </ItemGroup>
 
