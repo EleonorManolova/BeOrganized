@@ -87,6 +87,13 @@
       "files": [
         "main.js"
       ]
+    },
+    {
+      "library": "qrcode@1.4.4",
+      "destination": "wwwroot/lib/qrcode/",
+      "files": [
+        "build/qrcode.js"
+      ]
     }
   ]
 }

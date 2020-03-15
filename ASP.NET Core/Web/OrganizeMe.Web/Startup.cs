@@ -22,6 +22,11 @@
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Services.Messaging;
     using OrganizeMe.Web.ViewModels;
+    using OrganizeMe.Web.ViewModels.Events;
+    using OrganizeMe.Web.ViewModels.Habits;
+
+    using EmailSender = OrganizeMe.Services.Messaging.EmailSender;
+    using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
 
     public class Startup
     {
@@ -59,18 +64,22 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, SendGridEmailSender>(x => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHabitService, HabitService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
             services.AddTransient<IStringFormatService, StringFormatService>();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
+            AutoMapperConfig.RegisterMappings(
+                typeof(ErrorViewModel).GetTypeInfo().Assembly,
+                typeof(HabitInputViewModel).GetTypeInfo().Assembly,
+                typeof(EventInputViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
@@ -107,6 +116,7 @@
 
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(
                 endpoints =>
