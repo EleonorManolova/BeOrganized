@@ -37,6 +37,7 @@
       ]
     },
     {
+      // Full calendar Main
       "library": "@fullcalendar/core@4.4.0",
       "destination": "wwwroot/lib/node_modules/core/",
       "files": [
@@ -45,6 +46,7 @@
       ]
     },
     {
+      // Full calendar DayGrid
       "library": "@fullcalendar/daygrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/daygrid/",
       "files": [
@@ -53,6 +55,7 @@
       ]
     },
     {
+      // Full calendar TimeGrid
       "library": "@fullcalendar/timegrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/timegrid/",
       "files": [
@@ -61,6 +64,7 @@
       ]
     },
     {
+      // Full calendar Interactions
       "library": "@fullcalendar/interaction@4.4.0",
       "destination": "wwwroot/lib/node_modules/interaction/",
       "files": [
@@ -68,6 +72,7 @@
       ]
     },
     {
+      // Full calendar Resource Common
       "library": "@fullcalendar/resource-common@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-common/",
       "files": [
@@ -75,6 +80,7 @@
       ]
     },
     {
+      // Full calendar Resource DayGrid
       "library": "@fullcalendar/resource-daygrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-daygrid/",
       "files": [
@@ -82,6 +88,7 @@
       ]
     },
     {
+      // Full calendar Resource TimeGrid
       "library": "@fullcalendar/resource-timegrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-timegrid/",
       "files": [
@@ -89,11 +96,15 @@
       ]
     },
     {
-      "library": "qrcode@1.4.4",
+      // QRCode Generator in Two-factor Authenticator
+      "library": "qrcodejs@1.0.0",
       "destination": "wwwroot/lib/qrcode/",
-      "files": [
-        "build/qrcode.js"
-      ]
+      //"files": [
+      //  "build/qrcode.js",
+      //  "build/qrcode.min.js.map",
+      //  "build/qrcode.min.js",
+      //  "lib"
+      //]
     }
   ]
 }
