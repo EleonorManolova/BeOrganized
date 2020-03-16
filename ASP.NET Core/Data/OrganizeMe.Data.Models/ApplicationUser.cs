@@ -17,9 +17,11 @@ namespace OrganizeMe.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
         }
 
+        public string FullName { get; set; }
+
         public string CalendarId { get; set; }
 
-        public Calendar Calendar { get; set; }
+        public virtual Calendar Calendar { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }

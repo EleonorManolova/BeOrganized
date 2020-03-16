@@ -27,7 +27,7 @@
         [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
 
-        public string Address { get; set; }
+        public string Location { get; set; }
 
         [MaxLength(AttributesConstraints.DescriptionMaxLength)]
         public string Description { get; set; }

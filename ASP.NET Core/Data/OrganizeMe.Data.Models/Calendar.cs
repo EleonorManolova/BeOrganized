@@ -4,13 +4,15 @@
 
     using OrganizeMe.Data.Common.Models;
 
-    public class Calendar : BaseDeletableModel<string>
+    public class Calendar : BaseDeletableModel<int>
     {
         public Calendar()
         {
             this.Events = new HashSet<Event>();
             this.Habits = new HashSet<Habit>();
         }
+
+        public string Title { get; set; }
 
         public string UserId { get; set; }
 

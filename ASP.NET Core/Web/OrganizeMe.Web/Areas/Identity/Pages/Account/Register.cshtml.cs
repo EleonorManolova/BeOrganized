@@ -15,6 +15,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
+    using OrganizeMe.Common;
     using OrganizeMe.Data.Models;
 
     [AllowAnonymous]
@@ -46,20 +47,28 @@
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
+
+            [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+            [Display(Name = "Full Name")]
+            public string FullName { get; internal set; }
+
+            [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+            [StringLength(100, ErrorMessage = AttributesErrorMessages.PasswordStringLengthMessage, MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = AttributesErrorMessages.PasswordDismatchMessage)]
             public string ConfirmPassword { get; set; }
         }
 
@@ -75,7 +84,14 @@
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.Email, Email = this.Input.Email };
+                var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email };
+                var calemdar = new Calendar
+                {
+                    Id = 1,
+                    Title = "Default",
+                    User = user,
+                };
+                user.Calendar = calemdar;
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
@@ -89,7 +105,9 @@
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: this.Request.Scheme);
 
-                    await this.emailSender.SendEmailAsync(this.Input.Email, "Confirm your email",
+                    await this.emailSender.SendEmailAsync(
+                        this.Input.Email,
+                        "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (this.userManager.Options.SignIn.RequireConfirmedAccount)
