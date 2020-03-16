@@ -2,14 +2,28 @@
 {
     using System.Diagnostics;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using OrganizeMe.Common;
     using OrganizeMe.Web.ViewModels;
 
     public class HomeController : BaseController
     {
         public IActionResult Index()
         {
+            if (this.User.Identity.IsAuthenticated && !this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+            {
+                return this.RedirectToAction(nameof(this.IndexLoggedIn));
+            }
+
             return this.View();
+        }
+
+        [Authorize]
+        [Route("/Home/Index")]
+        public IActionResult IndexLoggedIn()
+        {
+            return this.Redirect("/Calendar");
         }
 
         public IActionResult Privacy()
