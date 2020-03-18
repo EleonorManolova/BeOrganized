@@ -9,7 +9,7 @@ body {
 
 .fc-scroller, .fc-time-grid-container {
     overflow: auto;
-    height: 1180px;
+   height: 1180px;
 }
 
 .fc-button {

@@ -42,7 +42,9 @@
       "destination": "wwwroot/lib/node_modules/core/",
       "files": [
         "main.css",
-        "main.js"
+        "main.min.css",
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -51,7 +53,9 @@
       "destination": "wwwroot/lib/node_modules/daygrid/",
       "files": [
         "main.css",
-        "main.js"
+        "main.min.css",
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -60,7 +64,9 @@
       "destination": "wwwroot/lib/node_modules/timegrid/",
       "files": [
         "main.css",
-        "main.js"
+        "main.min.css",
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -68,7 +74,8 @@
       "library": "@fullcalendar/interaction@4.4.0",
       "destination": "wwwroot/lib/node_modules/interaction/",
       "files": [
-        "main.js"
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -76,7 +83,8 @@
       "library": "@fullcalendar/resource-common@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-common/",
       "files": [
-        "main.js"
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -84,7 +92,8 @@
       "library": "@fullcalendar/resource-daygrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-daygrid/",
       "files": [
-        "main.js"
+        "main.js",
+        "main.min.js"
       ]
     },
     {
@@ -92,19 +101,22 @@
       "library": "@fullcalendar/resource-timegrid@4.4.0",
       "destination": "wwwroot/lib/node_modules/resource-timegrid/",
       "files": [
-        "main.js"
+        "main.js",
+        "main.min.js"
       ]
     },
     {
       // QRCode Generator in Two-factor Authenticator
       "library": "qrcodejs@1.0.0",
-      "destination": "wwwroot/lib/qrcode/",
-      //"files": [
-      //  "build/qrcode.js",
-      //  "build/qrcode.min.js.map",
-      //  "build/qrcode.min.js",
-      //  "lib"
-      //]
+      "destination": "wwwroot/lib/qrcode/"
+    },
+    {
+      "library": "elasticsearch@16.6.0",
+      "destination": "wwwroot/lib/elasticsearch",
+      "files": [
+        ".eslintrc.js",
+        ".eslintrc.min.js"
+      ]
     }
   ]
 }

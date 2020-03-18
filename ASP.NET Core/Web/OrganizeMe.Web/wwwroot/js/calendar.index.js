@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { // this object will be "parsed" into an Event Object
                 id: 1,
                 title: 'Home', // a property!
-                start: '2020-03-09 10:30', // a property!
-                end: '2020-03-09 13:30',// a property! ** see important note below about 'end' **
+                start: '2020-03-16 10:30', // a property!
+                end: '2020-03-16 13:30',// a property! ** see important note below about 'end' **
                 color: 'darksalmon'
             }
         ],
