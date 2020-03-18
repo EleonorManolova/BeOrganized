@@ -4,7 +4,10 @@
     this.ViewData["Title"] = "Home Page";
 }
 <head>
-    <environment names="Staging,Production,Development">
+    <environment names="Development">
+        <link href="~/css/home.index.min.css" rel="stylesheet" asp-append-version="true">
+    </environment>
+    <environment names="Staging,Production">
         <link href="~/css/home.index.css" rel="stylesheet" asp-append-version="true">
     </environment>
 </head>

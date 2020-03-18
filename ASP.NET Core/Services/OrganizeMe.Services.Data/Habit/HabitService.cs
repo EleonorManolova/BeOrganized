@@ -2,18 +2,42 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
+    using OrganizeMe.Data.Common.Repositories;
+    using OrganizeMe.Data.Models;
     using OrganizeMe.Data.Models.Enums;
+    using OrganizeMe.Services.Mapping;
     using OrganizeMe.Web.ViewModels.Habits;
 
     public class HabitService : IHabitService
     {
         private readonly IEnumParseService enumParseService;
+        private readonly IDeletableEntityRepository<Habit> habitsRepository;
 
-        public HabitService(IEnumParseService enumParseService)
+        public HabitService(IEnumParseService enumParseService, IDeletableEntityRepository<Habit> habitsRepository)
         {
             this.enumParseService = enumParseService;
+            this.habitsRepository = habitsRepository;
         }
+
+        // public async Task<bool> AddAsync(HabitInputViewModel habitViewModel)
+        // {
+        //    if (this.habitsRepository.AllWithDeleted()
+        //        .Any(x => x.Id == habitViewModel. && x.RemoteId == remoteNews.RemoteId))
+        //    {
+        //        // Already exists
+        //        return false;
+        //    }
+
+        // var habit = habitViewModel.To<Habit>().First();
+        //    news.SearchText = this.GetSearchText(news);
+
+        // await this.habitsRepository.AddAsync(habit);
+        //    await this.habitsRepository.SaveChangesAsync();
+        //    return true;
+        // }
 
         public HabitCreateViewModel GetHabitViewModel()
         {

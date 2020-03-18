@@ -2,12 +2,15 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using OrganizeMe.Common;
     using OrganizeMe.Data.Common.Models;
     using OrganizeMe.Data.Models.Enums;
 
     public class Habit : BaseDeletableModel<string>
     {
         [Required]
+        [MinLength(AttributesConstraints.TitleMinLength)]
+        [MaxLength(AttributesConstraints.TitleMaxLength)]
         public string Title { get; set; }
 
         public bool IsCompleted { get; set; }

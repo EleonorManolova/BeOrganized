@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    using Microsoft.AspNetCore.Mvc;
     using OrganizeMe.Common;
+    using OrganizeMe.Data.Models;
+    using OrganizeMe.Services.Mapping;
 
-    public class EventInputViewModel : IValidatableObject
+    public class EventInputViewModel : IValidatableObject, IMapFrom<Event>
     {
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+        [StringLength(AttributesConstraints.TitleMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringLengthMessage, MinimumLength = AttributesConstraints.TitleMinLength)]
         public string Title { get; set; }
 
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
@@ -20,7 +22,7 @@
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.DateFromat)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.EventDateFromat)]
         public DateTime StartTime { get; set; }
 
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
@@ -31,12 +33,12 @@
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [Display(Name = "End Time")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.DateFromat)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = AttributesConstraints.EventDateFromat)]
         public DateTime EndTime { get; set; }
 
         public string Location { get; set; }
 
-        [MaxLength(AttributesConstraints.DescriptionMaxLength)]
+        [MaxLength(AttributesConstraints.EventDescriptionMaxLength, ErrorMessage =AttributesErrorMessages.PasswordStringMaxLengthMessage)]
         public string Description { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

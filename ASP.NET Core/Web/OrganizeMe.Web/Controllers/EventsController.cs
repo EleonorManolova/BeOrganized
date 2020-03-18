@@ -1,10 +1,10 @@
 ﻿namespace OrganizeMe.Web.Controllers
 {
     using System;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
-
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Web.ViewModels.Events;
 
@@ -27,15 +27,15 @@
         }
 
         [HttpPost]
-        public IActionResult Create(EventCreateViewModel model)
+        public async Task<IActionResult> Create(EventCreateViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            // TODO:Save event
-            return this.Redirect("/Calendar");
+            await this.eventService.CreateAsync(model.Input);
+            return this.Redirect($"/Calendar");
         }
     }
 }

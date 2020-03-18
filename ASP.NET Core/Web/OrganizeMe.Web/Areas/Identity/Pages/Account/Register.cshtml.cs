@@ -53,7 +53,7 @@
 
             [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
             [Display(Name = "Full Name")]
-            public string FullName { get; internal set; }
+            public string FullName { get;  set; }
 
             [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
             [EmailAddress]

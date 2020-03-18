@@ -11,8 +11,11 @@
 <hr />
 
 <head>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/events.create.css" asp-append-version="true">
+    </environment>
     <environment names="Staging,Production,Development">
-        <link rel="stylesheet" href="~/css/Events.Create.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/css/events.create.min.css" asp-append-version="true">
     </environment>
 </head>
 
@@ -74,8 +77,12 @@
         <a href="/Calendar" class="btn btn-secondary btn-lg">Cancel</a>
 
     </form>
-    <environment names="Staging,Production,Development">
+    <environment names="Development">
         <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
         <script src="~/js/events.create.js" asp-append-version="true">JS</script>
+    </environment>
+    <environment names="Staging,Production,Development">
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
+        <script src="~/js/events.create.min.js" asp-append-version="true">JS</script>
     </environment>
 </body>

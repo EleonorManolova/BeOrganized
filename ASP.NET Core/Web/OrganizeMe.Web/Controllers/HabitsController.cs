@@ -1,6 +1,7 @@
 ﻿namespace OrganizeMe.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+
     using OrganizeMe.Data.Models.Enums;
     using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Web.ViewModels.Habits;
@@ -33,7 +34,7 @@
                 return this.View(model);
             }
 
-            model.Input.DayTime = this.habitService.GetEnum<DayTime>(model.Input.DayTime);
+           // model.Input.DayTime = this.habitService.GetEnum<DayTime>(model.Input.DayTime);
 
             // saveToDb
             return this.Redirect("/");

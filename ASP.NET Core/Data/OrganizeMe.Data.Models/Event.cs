@@ -9,6 +9,8 @@
     public class Event : BaseDeletableModel<string>
     {
         [Required]
+        [MinLength(AttributesConstraints.TitleMinLength)]
+        [MaxLength(AttributesConstraints.TitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
@@ -29,7 +31,7 @@
 
         public string Location { get; set; }
 
-        [MaxLength(AttributesConstraints.DescriptionMaxLength)]
+        [MaxLength(AttributesConstraints.EventDescriptionMaxLength)]
         public string Description { get; set; }
 
         public string CalendarId { get; set; }

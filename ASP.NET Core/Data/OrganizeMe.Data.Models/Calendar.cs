@@ -1,7 +1,9 @@
 ﻿namespace OrganizeMe.Data.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
+    using OrganizeMe.Common;
     using OrganizeMe.Data.Common.Models;
 
     public class Calendar : BaseDeletableModel<int>
@@ -12,6 +14,9 @@
             this.Habits = new HashSet<Habit>();
         }
 
+        [Required]
+        [MinLength(AttributesConstraints.TitleMinLength)]
+        [MaxLength(AttributesConstraints.TitleMaxLength)]
         public string Title { get; set; }
 
         public string UserId { get; set; }

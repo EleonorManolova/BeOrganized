@@ -14,20 +14,14 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="Views\Calendar\Index.cshtml" />
-  </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Views\Calendar\Index.cshtml" />
-    <None Include="wwwroot\css\calendar.all.css" />
+    <None Include="..\..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\css\style.css" />
     <None Include="wwwroot\css\style.css.map" />
-    <None Include="wwwroot\css\Events.Create.scss" />
-    <None Include="wwwroot\js\calendar.all.js" />
+    <None Include="wwwroot\css\events.create.scss" />
     <None Include="wwwroot\js\events.create.js" />
   </ItemGroup>
 
