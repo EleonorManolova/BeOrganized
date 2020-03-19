@@ -6,7 +6,7 @@
     using OrganizeMe.Common;
     using OrganizeMe.Data.Common.Models;
 
-    public class Calendar : BaseDeletableModel<int>
+    public class Calendar : BaseDeletableModel<string>
     {
         public Calendar()
         {
@@ -19,6 +19,7 @@
         [MaxLength(AttributesConstraints.TitleMaxLength)]
         public string Title { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

@@ -34,6 +34,7 @@
         [MaxLength(AttributesConstraints.EventDescriptionMaxLength)]
         public string Description { get; set; }
 
+        [Required]
         public string CalendarId { get; set; }
 
         public virtual Calendar Calendar { get; set; }

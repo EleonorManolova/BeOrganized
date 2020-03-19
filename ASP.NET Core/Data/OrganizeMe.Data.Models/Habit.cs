@@ -24,6 +24,7 @@
         [Required]
         public DayTime DayTime { get; set; }
 
+        [Required]
         public string CalendarId { get; set; }
 
         public virtual Calendar Calendar { get; set; }

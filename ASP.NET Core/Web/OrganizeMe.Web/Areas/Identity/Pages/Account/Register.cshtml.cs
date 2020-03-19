@@ -1,5 +1,6 @@
 ﻿namespace OrganizeMe.Web.Areas.Identity.Pages.Account
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -15,7 +16,9 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
     using OrganizeMe.Common;
+    using OrganizeMe.Data;
     using OrganizeMe.Data.Models;
 
     [AllowAnonymous]
@@ -48,15 +51,17 @@
         public class InputModel
         {
             [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+            [Remote("VerifyUsername", "Users")]
             [Display(Name = "Username")]
             public string UserName { get; set; }
 
             [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
             [Display(Name = "Full Name")]
-            public string FullName { get;  set; }
+            public string FullName { get; set; }
 
             [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
             [EmailAddress]
+            [Remote("VerifyEmail", "Users")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -74,6 +79,11 @@
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                this.Response.Redirect("/");
+            }
+
             this.ReturnUrl = returnUrl;
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -85,13 +95,13 @@
             if (this.ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email };
-                var calemdar = new Calendar
+                var calendar = new Calendar
                 {
-                    Id = 1,
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Default",
                     User = user,
                 };
-                user.Calendar = calemdar;
+                user.Calendar = calendar;
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {
