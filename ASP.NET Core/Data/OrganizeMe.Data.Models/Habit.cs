@@ -1,5 +1,6 @@
 ﻿namespace OrganizeMe.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using OrganizeMe.Common;
@@ -8,6 +9,11 @@
 
     public class Habit : BaseDeletableModel<string>
     {
+        public Habit()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
         [Required]
         [MinLength(AttributesConstraints.TitleMinLength)]
         [MaxLength(AttributesConstraints.TitleMaxLength)]

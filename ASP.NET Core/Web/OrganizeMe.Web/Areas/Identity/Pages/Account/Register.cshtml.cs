@@ -97,8 +97,7 @@
                 var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email };
                 var calendar = new Calendar
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    Title = "Default",
+                    Title = GlobalConstants.DefaultCalendarTitle,
                     User = user,
                 };
                 user.Calendar = calendar;

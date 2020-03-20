@@ -14,11 +14,11 @@
 
     public class EnableAuthenticatorModel : PageModel
     {
+        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
+
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<EnableAuthenticatorModel> logger;
         private readonly UrlEncoder urlEncoder;
-
-        private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         public EnableAuthenticatorModel(
             UserManager<ApplicationUser> userManager,

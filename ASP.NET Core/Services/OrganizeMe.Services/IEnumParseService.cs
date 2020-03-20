@@ -6,6 +6,8 @@
     {
         string GetEnumDescription(string name, Type typeOfEnum);
 
+        bool IsEnumValid<TEnum>(string description);
+
         TEnum Parse<TEnum>(string description);
     }
 }

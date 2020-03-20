@@ -1,5 +1,6 @@
 ﻿namespace OrganizeMe.Data.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -10,6 +11,7 @@
     {
         public Calendar()
         {
+            this.Id = Guid.NewGuid().ToString();
             this.Events = new HashSet<Event>();
             this.Habits = new HashSet<Habit>();
         }

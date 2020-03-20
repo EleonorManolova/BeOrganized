@@ -8,6 +8,11 @@
 
     public class Event : BaseDeletableModel<string>
     {
+        public Event()
+        {
+            this.Id = Guid.NewGuid().ToString();
+        }
+
         [Required]
         [MinLength(AttributesConstraints.TitleMinLength)]
         [MaxLength(AttributesConstraints.TitleMaxLength)]
