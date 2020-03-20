@@ -18,11 +18,13 @@
     using OrganizeMe.Data.Seeding;
     using OrganizeMe.Services;
     using OrganizeMe.Services.Data;
+    using OrganizeMe.Services.Data.Calendar;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Services.Messaging;
     using OrganizeMe.Web.ViewModels;
+    using OrganizeMe.Web.ViewModels.Calendar;
     using OrganizeMe.Web.ViewModels.Events;
     using OrganizeMe.Web.ViewModels.Habits;
 
@@ -62,6 +64,28 @@
 
             services.AddSingleton(this.configuration);
 
+            // Authentification
+            // TODO:When create website change link
+            services.AddAuthentication()
+            .AddGoogle(options =>
+            {
+                IConfigurationSection googleAuthNSection =
+                    this.configuration.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            })
+            .AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = this.configuration["Authentication:Microsoft:ClientId"];
+                microsoftOptions.ClientSecret = this.configuration["Authentication:Microsoft:ClientSecret"];
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = this.configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
+            });
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -69,6 +93,7 @@
 
             // Application services
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ICalendarService, CalendarService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHabitService, HabitService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
@@ -82,6 +107,7 @@
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
+                typeof(EventCalendarViewModel).GetTypeInfo().Assembly,
                 typeof(HabitInputViewModel).GetTypeInfo().Assembly,
                 typeof(EventInputViewModel).GetTypeInfo().Assembly);
 
