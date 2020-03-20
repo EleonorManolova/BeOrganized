@@ -1,18 +1,24 @@
 ﻿namespace OrganizeMe.Web.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
     using OrganizeMe.Data.Models.Enums;
+    using OrganizeMe.Services;
     using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Web.ViewModels.Habits;
 
+    [Authorize]
     public class HabitsController : Controller
     {
         private readonly IHabitService habitService;
+        private readonly IEnumParseService enumParseService;
 
-        public HabitsController(IHabitService habitService)
+        public HabitsController(IHabitService habitService, IEnumParseService enumParseService)
         {
             this.habitService = habitService;
+            this.enumParseService = enumParseService;
         }
 
         public IActionResult Index()
@@ -22,21 +28,24 @@
 
         public IActionResult Create()
         {
-            var model = this.habitService.GetHabitViewModel();
+            var model = this.habitService.GetHabitViewModel(this.User.Identity.Name);
             return this.View(model);
         }
 
         [HttpPost]
-        public IActionResult Create(HabitCreateViewModel model)
+        public async Task<IActionResult> CreateAsync(HabitCreateViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-           // model.Input.DayTime = this.habitService.GetEnum<DayTime>(model.Input.DayTime);
+            if (!this.enumParseService.IsEnumValid<DayTime>(model.Input.DayTime) || !this.enumParseService.IsEnumValid<Frequency>(model.Input.Frequency) || !this.enumParseService.IsEnumValid<Duration>(model.Input.Duration))
+            {
+                return this.View(model);
+            }
 
-            // saveToDb
+            await this.habitService.CreateAsync(model.Input);
             return this.Redirect("/");
         }
     }

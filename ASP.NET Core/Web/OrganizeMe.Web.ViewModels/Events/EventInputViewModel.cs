@@ -38,8 +38,10 @@
 
         public string Location { get; set; }
 
-        [MaxLength(AttributesConstraints.EventDescriptionMaxLength, ErrorMessage =AttributesErrorMessages.PasswordStringMaxLengthMessage)]
+        [MaxLength(AttributesConstraints.EventDescriptionMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringMaxLengthMessage)]
         public string Description { get; set; }
+
+        public string CalendarId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

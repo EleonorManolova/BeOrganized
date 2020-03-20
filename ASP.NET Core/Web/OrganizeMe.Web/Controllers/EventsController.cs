@@ -3,11 +3,13 @@
     using System;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Web.ViewModels.Events;
 
+    [Authorize]
     public class EventsController : Controller
     {
         private readonly IConfiguration configuration;
@@ -22,7 +24,7 @@
         [HttpGet]
         public IActionResult Create()
         {
-            var model = this.eventService.GetEventViewModel(this.configuration["GoogleMaps:ApiKey"]);
+            var model = this.eventService.GetEventViewModel(this.configuration["GoogleMaps:ApiKey"], this.User.Identity.Name);
             return this.View(model);
         }
 

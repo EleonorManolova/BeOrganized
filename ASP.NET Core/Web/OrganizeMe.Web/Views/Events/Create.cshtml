@@ -1,7 +1,5 @@
 ﻿@using OrganizeMe.Web.ViewModels.Events
 @model EventCreateViewModel
-
-
 @{
     ViewData["Title"] = "Event Create";
 
@@ -71,6 +69,15 @@
             <label asp-for="Input.Description"></label>
             <textarea asp-for="Input.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
             <span asp-validation-for="Input.Description" class="text-danger"></span>
+        </div>
+
+        <div class="select form-group">
+            <label>Calendar</label>
+            <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select"
+                    asp-items="@(new SelectList(Model.Calendars,"Id","Title"))">
+                <option disabled>Choose Calendar</option>
+            </select>
+            <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-dark btn-lg">Create</button>
