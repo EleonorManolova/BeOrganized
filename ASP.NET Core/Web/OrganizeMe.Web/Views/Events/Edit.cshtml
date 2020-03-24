@@ -1,0 +1,74 @@
+﻿@model OrganizeMe.Web.ViewModels.Events.EventEditViewModel;
+@{
+    ViewData["Title"] = "Event Edit";
+
+}
+<head>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/events.create.css" asp-append-version="true">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/events.create.min.css" asp-append-version="true">
+    </environment>
+</head>
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<form asp-action="Edit" class="mb-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div hidden data="@ViewData["Id"]"></div>
+    <div class="form-group">
+        <label asp-for="Output.Title" class="control-label"></label>
+        <input asp-for="Output.Title" class="form-control  col-md-5" />
+        <span asp-validation-for="Output.Title" class="text-danger"></span>
+    </div>
+
+    <div id="calendar" class="form-group">
+        <input id="startDate" asp-for="Output.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block ">
+        <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
+        <input asp-for="Output.StartTime" class="inputTime form-control  d-inline-block" />
+
+        <div class="delimeter d-inline-block"> to </div>
+
+        <input id="endDate" asp-for="Output.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
+        <i class="fa fa-bars btn border-right border-bottom d-inline-block" onclick="showCalendarRight()"></i>
+        <input asp-for="Output.EndTime" class="inputTime form-control d-inline-block" /><br />
+
+        <span asp-validation-for="Output.StartDate" class="text-danger"></span>
+        <span asp-validation-for="Output.StartTime" class="text-danger"></span>
+        <span asp-validation-for="Output.EndDate" class="text-danger"></span>
+        <span asp-validation-for="Output.EndTime" class="text-danger"></span>
+        <partial name="_CalendarDropdownPartial" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Output.Location" class="control-label"></label>
+        <input asp-for="Output.Location" class="form-control mb-2" id="autocomplete4" />
+        <span asp-validation-for="Output.Location" class="text-danger"></span>
+        <div id="map"></div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Output.Description"></label>
+        <textarea asp-for="Output.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
+        <span asp-validation-for="Output.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Output.CalendarId" class="control-label"></label>
+        <select asp-for="Output.CalendarId" class="form-control" asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
+            
+            <option disabled>Choose Calendar</option>
+        </select>
+        <span asp-validation-for="Output.CalendarId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-dark btn-lg" />
+    </div>
+</form>
+
+
+<div>
+    <a class="btn btn-secondary btn-lg" asp-action="Index">Back to List</a>
+</div>

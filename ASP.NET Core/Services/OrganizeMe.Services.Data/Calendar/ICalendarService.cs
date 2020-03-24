@@ -3,7 +3,6 @@
     using System.Collections.Generic;
 
     using OrganizeMe.Web.ViewModels.Calendar;
-    using OrganizeMe.Web.ViewModels.Habits;
 
     public interface ICalendarService
     {

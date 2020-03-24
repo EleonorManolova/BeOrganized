@@ -8,10 +8,16 @@
 
     public interface IEventService
     {
-        Task<bool> CreateAsync(EventInputViewModel eventViewModel);
+        Task<bool> CreateAsync(EventViewModel eventViewModel);
 
-        EventCreateViewModel GetEventViewModel(string googleApi, string username);
+        EventCreateViewModel GetEventViewModel(string username);
 
         ICollection<EventCalendarViewModel> GetAllByCalendarId(string calendarId);
+
+        EventEditViewModel GetEventById(string eventId, string username);
+
+        Task UpdateEvent(EventEditViewModel model, string eventId);
+
+        ICollection<T> GetAllCalendarTitlesByUsername<T>(string username);
     }
 }

@@ -2,14 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Microsoft.EntityFrameworkCore;
     using OrganizeMe.Common;
     using OrganizeMe.Data.Common.Repositories;
     using OrganizeMe.Data.Models;
-    using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Web.ViewModels.Calendar;
-    using OrganizeMe.Web.ViewModels.Habits;
 
     public class CalendarService : ICalendarService
     {
@@ -22,9 +21,7 @@
 
         public ICollection<T> GetAllCalendarTitlesByUserId<T>(string username)
         {
-            var result = this.calendarRepository.All().Where(x => x.User.UserName == username).To<T>().ToList();
-
-            // this.calendarRepository.All().Where(x => x.User.UserName == username).ToList().ForEach(x => result.Add(new CalendarHabitViewModel { Id = x.Id, Title = x.Title, }));
+            var result = this.calendarRepository.All().Include(x => x.User).Where(x => x.User.UserName == username).To<T>().ToList();
             return result;
         }
 

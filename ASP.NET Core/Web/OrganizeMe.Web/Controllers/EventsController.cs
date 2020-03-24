@@ -2,7 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
-
+    using System.Web;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -24,7 +24,7 @@
         [HttpGet]
         public IActionResult Create()
         {
-            var model = this.eventService.GetEventViewModel(this.configuration["GoogleMaps:ApiKey"], this.User.Identity.Name);
+            var model = this.eventService.GetEventViewModel(this.User.Identity.Name);
             return this.View(model);
         }
 
@@ -37,7 +37,39 @@
             }
 
             await this.eventService.CreateAsync(model.Input);
-            return this.Redirect($"/Calendar");
+            return this.Redirect("/Calendar");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return this.BadRequest();
+            }
+
+            var eventFromDb = this.eventService.GetEventById(id, this.User.Identity.Name);
+            if (eventFromDb == null)
+            {
+                return this.NotFound();
+            }
+
+            this.TempData["EventId"] = id;
+
+            return this.View(eventFromDb);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EventEditViewModel model)
+        {
+            var id = this.TempData["EventId"].ToString();
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
+            await this.eventService.UpdateEvent(model, id);
+            return this.Redirect("/Calendar");
         }
     }
 }

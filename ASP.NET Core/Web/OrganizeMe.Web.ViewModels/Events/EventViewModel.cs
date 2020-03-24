@@ -4,11 +4,12 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using AutoMapper;
     using OrganizeMe.Common;
     using OrganizeMe.Data.Models;
     using OrganizeMe.Services.Mapping;
 
-    public class EventInputViewModel : IValidatableObject, IMapFrom<Event>
+    public class EventViewModel : IValidatableObject, IMapFrom<Event>, IHaveCustomMappings
     {
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
         [StringLength(AttributesConstraints.TitleMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringLengthMessage, MinimumLength = AttributesConstraints.TitleMinLength)]
@@ -41,14 +42,26 @@
         [MaxLength(AttributesConstraints.EventDescriptionMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringMaxLengthMessage)]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+        [Display(Name = "Calendar")]
         public string CalendarId { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var startDateTime = new DateTime(this.StartDate.Year, this.StartDate.Month, this.StartDate.Day, this.StartTime.Hour, this.StartTime.Minute, this.StartTime.Second);
-            var endDateTime = new DateTime(this.EndDate.Year, this.EndDate.Month, this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute, this.EndTime.Second);
+        public DateTime StartDateTime => new DateTime(this.StartDate.Year, this.StartDate.Month, this.StartDate.Day, this.StartTime.Hour, this.StartTime.Minute, this.StartTime.Second);
 
-            if (startDateTime > endDateTime)
+        public DateTime EndDateTime => new DateTime(this.EndDate.Year, this.EndDate.Month, this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute, this.EndTime.Second);
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Event, EventViewModel>()
+                .ForMember(x => x.StartDate, y => y.MapFrom(x => x.StartDateTime.Date))
+                .ForMember(x => x.StartTime, y => y.MapFrom(x => default(DateTime).Add(x.StartDateTime.TimeOfDay)))
+                .ForMember(x => x.EndDate, y => y.MapFrom(x => x.EndDateTime.Date))
+                .ForMember(x => x.EndTime, y => y.MapFrom(x => default(DateTime).Add(x.EndDateTime.TimeOfDay)));
+        }
+
+        public IEnumerable<ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext)
+        {
+            if (this.StartDateTime > this.EndDateTime)
             {
                 yield return new ValidationResult("The start day and time must be before the end day and time.");
             }

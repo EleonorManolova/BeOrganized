@@ -54,6 +54,11 @@
 
         public async Task<IActionResult> OnGetAsync()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.Redirect("/");
+            }
+
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {
@@ -67,6 +72,11 @@
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.Redirect("/");
+            }
+
             var user = await this.userManager.GetUserAsync(this.User);
             if (user == null)
             {

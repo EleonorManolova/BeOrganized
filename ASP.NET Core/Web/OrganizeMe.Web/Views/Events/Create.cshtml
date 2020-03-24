@@ -11,8 +11,9 @@
 <head>
     <environment names="Development">
         <link rel="stylesheet" href="~/css/events.create.css" asp-append-version="true">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     </environment>
-    <environment names="Staging,Production,Development">
+    <environment names="Staging,Production">
         <link rel="stylesheet" href="~/css/events.create.min.css" asp-append-version="true">
     </environment>
 </head>
@@ -29,35 +30,19 @@
             <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block ">
             <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
             <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" />
+
             <div class="delimeter d-inline-block"> to </div>
+
             <input id="endDate" asp-for="Input.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
             <i class="fa fa-bars btn border-right border-bottom d-inline-block" onclick="showCalendarRight()"></i>
             <input asp-for="Input.EndTime" class="inputTime form-control d-inline-block" /><br />
+
             <span asp-validation-for="Input.StartDate" class="text-danger"></span>
             <span asp-validation-for="Input.StartTime" class="text-danger"></span>
             <span asp-validation-for="Input.EndDate" class="text-danger"></span>
             <span asp-validation-for="Input.EndTime" class="text-danger"></span>
-            <ul>
-                <!-- calendar  -->
-                <div id="calendarStartDate" class="calendar">
-                    <div class="group">
-                        <p class="left pointer minusmonth">&laquo;</p>
-                        <p class="left monthname center pointer"></p>
-                        <p class="right pointer addmonth">&raquo;</p>
-                    </div>
-                    <ul class="group">
-                        <li>Mo</li>
-                        <li>Tu</li>
-                        <li>We</li>
-                        <li>Th</li>
-                        <li>Fr</li>
-                        <li>Sa</li>
-                        <li>Su</li>
-                    </ul>
-                </div>
-            </ul>
+            <partial name="_CalendarDropdownPartial" />
         </div>
-
         <div class="form-group">
             <label asp-for="Input.Location"></label>
             <input asp-for="Input.Location" class="form-control mb-2" id="autocomplete4" value="" placeholder="Add location" />
@@ -72,9 +57,9 @@
         </div>
 
         <div class="select form-group">
-            <label>Calendar</label>
+            <label asp-for="Input.CalendarId"></label>
             <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select"
-                    asp-items="@(new SelectList(Model.Calendars,"Id","Title"))">
+                    asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
                 <option disabled>Choose Calendar</option>
             </select>
             <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
@@ -84,12 +69,10 @@
         <a href="/Calendar" class="btn btn-secondary btn-lg">Cancel</a>
 
     </form>
-    <environment names="Development">
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
-        <script src="~/js/events.create.js" asp-append-version="true">JS</script>
-    </environment>
-    <environment names="Staging,Production,Development">
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
-        <script src="~/js/events.create.min.js" asp-append-version="true">JS</script>
-    </environment>
+    @*<environment names="Development">
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Model.GoogleApi&libraries=places&callback=initAutocomplete" async defer></script>
+        </environment>*@
 </body>

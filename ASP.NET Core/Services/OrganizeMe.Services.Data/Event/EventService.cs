@@ -23,16 +23,14 @@
             this.calendarService = calendarService;
         }
 
-        public async Task<bool> CreateAsync(EventInputViewModel eventViewModel)
+        public async Task<bool> CreateAsync(EventViewModel eventViewModel)
         {
             Event eventFromForm = new Event
             {
                 Title = eventViewModel.Title,
                 Location = eventViewModel.Location,
-                StartDate = eventViewModel.StartDate,
-                StartTime = eventViewModel.StartTime,
-                EndDate = eventViewModel.EndDate,
-                EndTime = eventViewModel.EndTime,
+                StartDateTime = eventViewModel.StartDateTime,
+                EndDateTime = eventViewModel.EndDateTime,
                 Description = eventViewModel.Description,
                 CalendarId = eventViewModel.CalendarId,
             };
@@ -48,22 +46,54 @@
             return events;
         }
 
-        public EventCreateViewModel GetEventViewModel(string googleApi, string username)
+        public EventEditViewModel GetEventById(string eventId, string username)
+        {
+            var eventFromDb = this.eventRepository.All().Where(x => x.Id == eventId).To<EventViewModel>().First();
+            var eventResult = new EventEditViewModel
+            {
+                Output = eventFromDb,
+                Calendars = this.GetAllCalendarTitlesByUsername<CalendarEventViewModel>(username),
+            };
+            return eventResult;
+        }
+
+        public ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
+        {
+            return this.calendarService.GetAllCalendarTitlesByUserId<T>(username);
+        }
+
+        public EventCreateViewModel GetEventViewModel(string username)
         {
             var model = new EventCreateViewModel
             {
-                Input = new EventInputViewModel
+                Input = new EventViewModel
                 {
                     StartDate = DateTime.Now,
                     StartTime = DateTime.Now,
                     EndDate = DateTime.Now,
                     EndTime = DateTime.Now.AddMinutes(30),
                 },
-                GoogleApi = googleApi,
-                Calendars = this.calendarService.GetAllCalendarTitlesByUserId<CalendarEventViewModel>(username),
+                Calendars = this.GetAllCalendarTitlesByUsername<CalendarEventViewModel>(username),
             };
 
             return model;
+        }
+
+        public async Task UpdateEvent(EventEditViewModel model, string eventId)
+        {
+            var eventNew = new Event
+            {
+                Id = eventId,
+                Title = model.Output.Title,
+                Location = model.Output.Location,
+                StartDateTime = model.Output.StartDateTime,
+                EndDateTime = model.Output.EndDateTime,
+                Description = model.Output.Description,
+                CalendarId = model.Output.CalendarId,
+            };
+
+            this.eventRepository.Update(eventNew);
+            await this.eventRepository.SaveChangesAsync();
         }
     }
 }

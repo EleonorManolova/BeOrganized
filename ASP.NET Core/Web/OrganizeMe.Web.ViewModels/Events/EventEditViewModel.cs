@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public class EventCreateViewModel
+    public class EventEditViewModel
     {
-        public EventViewModel Input { get; set; }
+        public EventViewModel Output { get; set; }
 
         public ICollection<CalendarEventViewModel> Calendars { get; set; } = new HashSet<CalendarEventViewModel>();
     }
