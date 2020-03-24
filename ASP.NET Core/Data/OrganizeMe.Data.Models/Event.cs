@@ -19,22 +19,14 @@
         public string Title { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
-        public DateTime StartDate { get; set; }
+        public DateTime StartDateTime { get; set; }
 
         [Required]
-        [DataType(DataType.Time)]
-        public DateTime StartTime { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime EndDate { get; set; }
-
-        [Required]
-        [DataType(DataType.Time)]
-        public DateTime EndTime { get; set; }
+        public DateTime EndDateTime { get; set; }
 
         public string Location { get; set; }
+
+        public string Coordinates { get; set; }
 
         [MaxLength(AttributesConstraints.EventDescriptionMaxLength)]
         public string Description { get; set; }

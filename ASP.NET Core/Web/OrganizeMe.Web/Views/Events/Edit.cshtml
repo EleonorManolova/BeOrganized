@@ -46,7 +46,9 @@
         <label asp-for="Output.Location" class="control-label"></label>
         <input asp-for="Output.Location" class="form-control mb-2" id="autocomplete4" />
         <span asp-validation-for="Output.Location" class="text-danger"></span>
-        <div id="map"></div>
+        <input hidden id="coordinates" asp-for="Output.Coordinates" />
+        <div id="mapWithCoordinates"></div>
+        
     </div>
 
     <div class="form-group">

@@ -109,7 +109,7 @@
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
                 typeof(EventCalendarViewModel).GetTypeInfo().Assembly,
                 typeof(HabitInputViewModel).GetTypeInfo().Assembly,
-                typeof(EventInputViewModel).GetTypeInfo().Assembly);
+                typeof(EventViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())

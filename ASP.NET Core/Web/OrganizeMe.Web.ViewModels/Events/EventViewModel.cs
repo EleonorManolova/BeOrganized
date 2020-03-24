@@ -39,6 +39,8 @@
 
         public string Location { get; set; }
 
+        public string Coordinates { get; set; }
+
         [MaxLength(AttributesConstraints.EventDescriptionMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringMaxLengthMessage)]
         public string Description { get; set; }
 

@@ -127,9 +127,9 @@ textarea {
   min-height: 5vh;
 }
 
-#map {
-  max-height: 400px;
-  height: 50rem;
+#map, #mapWithCoordinates {
+    max-height: 400px;
+    height: 50rem;
 }
 
 #description {

@@ -33,6 +33,7 @@
                 EndDateTime = eventViewModel.EndDateTime,
                 Description = eventViewModel.Description,
                 CalendarId = eventViewModel.CalendarId,
+                Coordinates = eventViewModel.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString(),
             };
 
             await this.eventRepository.AddAsync(eventFromForm);
@@ -90,6 +91,7 @@
                 EndDateTime = model.Output.EndDateTime,
                 Description = model.Output.Description,
                 CalendarId = model.Output.CalendarId,
+                Coordinates = model.Output.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString(),
             };
 
             this.eventRepository.Update(eventNew);

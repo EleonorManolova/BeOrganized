@@ -8,11 +8,34 @@ function showCalendarLeft() {
 }
 //Google Map
 function initAutocomplete() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 42.6979, lng: 23.3217 },
-        zoom: 13,
-        mapTypeId: 'roadmap'
-    });
+    var map;
+    if (document.getElementById("map") === null) {
+        if (document.getElementById('coordinates') === null || document.getElementById('coordinates').value === "") {
+            map = new google.maps.Map(document.getElementById('mapWithCoordinates'), {
+                center: { lat: 42.6979, lng: 23.3217 },
+                zoom: 13,
+                mapTypeId: 'roadmap'
+            })
+        }
+        else {
+            let coordinates = (document.getElementById('coordinates').value).toString().split(', ');
+            let lat = +coordinates[0];
+            let lng = +coordinates[1];
+
+            map = new google.maps.Map(document.getElementById('mapWithCoordinates'), {
+                center: { lat: lat, lng: lng },
+                zoom: 18,
+                mapTypeId: 'roadmap'
+            })
+        }
+    }
+    else {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 42.6979, lng: 23.3217 },
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        })
+    }
 
     // Create the search box and link it to the UI element.
     var input = document.getElementById('autocomplete4', {
@@ -70,8 +93,10 @@ function initAutocomplete() {
             } else {
                 bounds.extend(place.geometry.location);
             }
+            document.getElementById('coordinates').value = place.geometry.location.toString();
         });
         map.fitBounds(bounds);
+
     });
 };
 
