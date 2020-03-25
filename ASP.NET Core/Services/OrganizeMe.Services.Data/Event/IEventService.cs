@@ -17,7 +17,5 @@
         EventEditViewModel GetEventById(string eventId, string username);
 
         Task UpdateEvent(EventEditViewModel model, string eventId);
-
-        ICollection<T> GetAllCalendarTitlesByUsername<T>(string username);
     }
 }

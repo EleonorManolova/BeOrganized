@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
     using OrganizeMe.Data.Common.Repositories;
@@ -14,6 +15,9 @@
 
     public class EventService : IEventService
     {
+        private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
+        private const string InvalidDateTime = "The start day and time must be before the end day and time.";
+
         private readonly IDeletableEntityRepository<Event> eventRepository;
         private readonly ICalendarService calendarService;
 
@@ -25,6 +29,21 @@
 
         public async Task<bool> CreateAsync(EventViewModel eventViewModel)
         {
+            if (string.IsNullOrEmpty(eventViewModel.Title) ||
+                string.IsNullOrEmpty(eventViewModel.CalendarId) ||
+                eventViewModel.StartDate == null ||
+                eventViewModel.StartTime == null ||
+                eventViewModel.EndDate == null ||
+                eventViewModel.EndTime == null)
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (eventViewModel.StartDateTime > eventViewModel.EndDateTime)
+            {
+                throw new ArgumentException(InvalidDateTime);
+            }
+
             Event eventFromForm = new Event
             {
                 Title = eventViewModel.Title,
@@ -33,7 +52,9 @@
                 EndDateTime = eventViewModel.EndDateTime,
                 Description = eventViewModel.Description,
                 CalendarId = eventViewModel.CalendarId,
-                Coordinates = eventViewModel.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString(),
+                Coordinates = string.IsNullOrEmpty(eventViewModel.Coordinates) ?
+                string.Empty :
+                eventViewModel.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString(),
             };
 
             await this.eventRepository.AddAsync(eventFromForm);
@@ -49,6 +70,12 @@
 
         public EventEditViewModel GetEventById(string eventId, string username)
         {
+            if (string.IsNullOrEmpty(eventId) ||
+               string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
             var eventFromDb = this.eventRepository.All().Where(x => x.Id == eventId).To<EventViewModel>().First();
             var eventResult = new EventEditViewModel
             {
@@ -58,13 +85,13 @@
             return eventResult;
         }
 
-        public ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
-        {
-            return this.calendarService.GetAllCalendarTitlesByUserId<T>(username);
-        }
-
         public EventCreateViewModel GetEventViewModel(string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
             var model = new EventCreateViewModel
             {
                 Input = new EventViewModel
@@ -96,6 +123,11 @@
 
             this.eventRepository.Update(eventNew);
             await this.eventRepository.SaveChangesAsync();
+        }
+
+        private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
+        {
+            return this.calendarService.GetAllCalendarTitlesByUserId<T>(username);
         }
     }
 }
