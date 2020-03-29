@@ -4,30 +4,38 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Moq;
+    using Nest;
     using OrganizeMe.Data.Common.Repositories;
     using OrganizeMe.Data.Models;
     using OrganizeMe.Services.Data.Calendar;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Services.Mapping;
+    using OrganizeMe.Web.ViewModels.Calendar;
     using OrganizeMe.Web.ViewModels.Events;
     using Xunit;
 
+    using Calendar = OrganizeMe.Data.Models.Calendar;
+
     public class EventsServiceTests
     {
+        private Mock<IDeletableEntityRepository<Event>> eventsRepository;
+        private EventService eventService;
+
+        public EventsServiceTests()
+        {
+            var elasticClient = new ElasticClient();
+            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
+            var calendarService = new CalendarService(calendarRepository.Object);
+            this.eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
+            this.eventService = new EventService(this.eventsRepository.Object, calendarService, elasticClient);
+        }
 
         [Fact]
         public async Task CreateAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventViewModel>();
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
-
             var model = new EventViewModel
             {
                 Title = "Test",
@@ -40,19 +48,13 @@
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
             };
-            var result = await eventService.CreateAsync(model);
+            var result = await this.eventService.CreateAsync(model);
             Assert.True(result);
         }
 
-        [Fact(Skip = "Dont pass")]
+        [Fact]
         public async Task CreateAsync_WithCorrectData_ShouldCreateCorrectly()
         {
-            InitializeAutomapper<EventViewModel>();
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
-
             var model = new EventViewModel
             {
                 Title = "Test",
@@ -66,12 +68,22 @@
                 Coordinates = "42.99, 32.99",
             };
 
-            await eventService.CreateAsync(model);
-            var actualResult = eventsRepository.Object.All().FirstOrDefault();
-            var expectedResult = model;
+            var expectedResult = new Event
+            {
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
 
-            // eventsRepository.Setup(x => x.All().First()).Returns(model);
-            // eventsRepository.Verify(x=>x.cr)
+            this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { expectedResult }.AsQueryable());
+            await this.eventService.CreateAsync(model);
+            var actualResult = this.eventsRepository.Object.All().FirstOrDefault();
+
+            this.eventsRepository.Verify(x => x.All(), Times.Once);
 
             Assert.Equal(expectedResult.Title, actualResult.Title);
             Assert.Equal(expectedResult.CalendarId, actualResult.CalendarId);
@@ -92,11 +104,6 @@
         public async Task CreateAsync_WithNullOrEmptyArguments_ShouldThrowAnArgumentException(string title, string calendarId)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
-            InitializeAutomapper<EventViewModel>();
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
 
             var model = new EventViewModel
             {
@@ -109,21 +116,17 @@
             };
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                  eventService.CreateAsync(model));
+                  this.eventService.CreateAsync(model));
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
         [Theory]
         [InlineData("2020/02/02 12:00:00", "2020/02/02 12:01:00", "2020/02/02 12:00:00", "2020/02/02 12:00:00")]
         [InlineData("2020/02/02 12:00:00", "2020/02/02 12:00:00", "2020/02/02 12:00:00", "2020/02/02 11:00:00")]
+        [InlineData("2020/02/02 23:59:00", "2020/02/02 23:59:00", "2020/02/02 00:30:00", "2020/02/02 00:30:00")]
         public async Task CreateAsync_WithStartDateAfterEndDate_ShouldThrowAnArgumentException(string startDate, string startTime, string endDate, string endTime)
         {
             var exeptionErrorMessage = "The start day and time must be before the end day and time.";
-            InitializeAutomapper<EventViewModel>();
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
 
             var model = new EventViewModel
             {
@@ -136,35 +139,60 @@
             };
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                  eventService.CreateAsync(model));
+                  this.eventService.CreateAsync(model));
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
-        //[Fact]
-        //public async Task GetEventById_WithCorrectData_ShouldReturnCorrectResult()
-        //{
-        //    InitializeAutomapper<EventViewModel>();
-        //    var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-        //    var calendarService = new CalendarService(calendarRepository.Object);
-        //    var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-        //    var eventService = new EventService(eventsRepository.Object, calendarService);
+        [Fact]
+        public void GetEditViewModelById_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            InitializeAutomapper<EventViewModel>();
+            var user = new ApplicationUser
+            {
+                Id = "User1",
+                UserName = "Username",
+            };
 
-        //    var model = new EventViewModel
-        //    {
-        //        Title = "Test",
-        //        StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
-        //        StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
-        //        EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
-        //        EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
-        //        CalendarId = "1",
-        //        Description = "test description",
-        //        Location = "Hotel Test",
-        //        Coordinates = "42.99, 32.99",
-        //    };
-        //    var result = await eventService.CreateAsync(model);
+            var model = new Event
+            {
+                Id = "Test1",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
 
-        //    Assert.True(result);
-        //}
+            var eventViewModel = new EventViewModel
+            {
+                Title = "Test",
+                StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
+                StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
+
+            this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { model }.AsQueryable());
+            var actualResult = this.eventService.GetEditViewModelById(model.Id, user.UserName);
+            var expectedResult = eventViewModel;
+            var actualResultOutput = actualResult.Output;
+
+            this.eventsRepository.Verify(x => x.All(), Times.Once);
+
+            Assert.Equal(expectedResult.Title, actualResultOutput.Title);
+            Assert.Equal(expectedResult.CalendarId, actualResultOutput.CalendarId);
+            Assert.Equal(expectedResult.Location, actualResultOutput.Location);
+            Assert.Equal(expectedResult.Coordinates, actualResultOutput.Coordinates);
+            Assert.Equal(expectedResult.Description, actualResultOutput.Description);
+            Assert.Equal(expectedResult.StartDateTime, actualResultOutput.StartDateTime);
+            Assert.Equal(expectedResult.EndDateTime, actualResultOutput.EndDateTime);
+        }
 
         [Theory]
         [InlineData("", "Test")]
@@ -173,16 +201,56 @@
         [InlineData("1", null)]
         [InlineData("", "")]
         [InlineData(null, null)]
-        public void GetEventById_WithNullOrEmptyArguments_ShouldThrowAnArgumentException(string eventId, string username)
+        public void GetEditViewModelById_WithNullOrEmptyArguments_ShouldThrowAnArgumentException(string eventId, string username)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
 
             var exeption = Assert.Throws<ArgumentException>(() =>
-                  eventService.GetEventById(eventId, username));
+                  this.eventService.GetEditViewModelById(eventId, username));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public void GetCreateViewModel_WithCorrectData_ShouldReturnCorrectly()
+        {
+            InitializeAutomapper<EventViewModel>();
+            var user = new ApplicationUser
+            {
+                Id = "User1",
+                UserName = "Username",
+            };
+
+            var eventViewModel = new EventViewModel
+            {
+                StartDate = DateTime.Now,
+                StartTime = DateTime.Now,
+                EndDate = DateTime.Now,
+                EndTime = DateTime.Now.AddMinutes(30),
+            };
+
+            var actualResult = this.eventService.GetCreateViewModel(user.UserName);
+            var expectedResult = eventViewModel;
+            var actualResultOutput = actualResult.Input;
+
+            Assert.Equal(expectedResult.Title, actualResultOutput.Title);
+            Assert.Equal(expectedResult.CalendarId, actualResultOutput.CalendarId);
+            Assert.Equal(expectedResult.Location, actualResultOutput.Location);
+            Assert.Equal(expectedResult.Coordinates, actualResultOutput.Coordinates);
+            Assert.Equal(expectedResult.Description, actualResultOutput.Description);
+            Assert.Equal(expectedResult.StartDateTime, actualResultOutput.StartDateTime);
+            Assert.Equal(expectedResult.EndDateTime, actualResultOutput.EndDateTime);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetCreateViewModel_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string username)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = Assert.Throws<ArgumentException>(() =>
+                  this.eventService.GetCreateViewModel(username));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
@@ -190,16 +258,80 @@
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public void GetEventViewModel_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string username)
+        public async Task GetByIdAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
-            var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var calendarService = new CalendarService(calendarRepository.Object);
-            var eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            var eventService = new EventService(eventsRepository.Object, calendarService);
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                  this.eventService.GetByIdAsync(id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            InitializeAutomapper<EventViewModel>();
+
+            var model = new Event
+            {
+                Id = "Test1",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
+
+            this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(model.Id)).ReturnsAsync(model);
+            var actualResult = await this.eventService.GetByIdAsync(model.Id);
+            var expectedResult = model;
+
+            this.eventsRepository.Verify(x => x.GetByIdWithDeletedAsync(model.Id), Times.Once);
+
+            Assert.Equal(expectedResult.Title, actualResult.Title);
+            Assert.Equal(expectedResult.CalendarId, actualResult.CalendarId);
+            Assert.Equal(expectedResult.Location, actualResult.Location);
+            Assert.Equal(expectedResult.Coordinates, actualResult.Coordinates);
+            Assert.Equal(expectedResult.Description, actualResult.Description);
+            Assert.Equal(expectedResult.StartDateTime, actualResult.StartDateTime);
+            Assert.Equal(expectedResult.EndDateTime, actualResult.EndDateTime);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_WithIncorrectUsername_ShouldThrowAnArgumentNullException()
+        {
+            var exeptionErrorMessage = "Event with Id: {0} does not exist.";
+            InitializeAutomapper<EventViewModel>();
+
+            var model = new Event
+            {
+                Id = "Test1",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                 this.eventService.GetByIdAsync(model.Id));
+            Assert.Equal(string.Format(exeptionErrorMessage, model.Id), exeption.Message);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetAllByCalendarId_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
 
             var exeption = Assert.Throws<ArgumentException>(() =>
-                  eventService.GetEventViewModel(username));
+                 this.eventService.GetAllByCalendarId(id));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
