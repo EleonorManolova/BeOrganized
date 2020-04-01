@@ -23,6 +23,7 @@
     using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Services.Messaging;
+    using OrganizeMe.Web.Extentions;
     using OrganizeMe.Web.ViewModels;
     using OrganizeMe.Web.ViewModels.Calendar;
     using OrganizeMe.Web.ViewModels.Events;
@@ -64,6 +65,11 @@
 
             services.AddSingleton(this.configuration);
 
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+            });
+
             // Authentification
             // TODO:When create website change link
             services.AddAuthentication()
@@ -86,6 +92,7 @@
                 facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
             });
 
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -97,7 +104,6 @@
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHabitService, HabitService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
-            services.AddTransient<IStringFormatService, StringFormatService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
         }
@@ -135,6 +141,8 @@
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            app.UseResponseCompression();
 
             // Azure
             // app.UseApplicationInsights();
