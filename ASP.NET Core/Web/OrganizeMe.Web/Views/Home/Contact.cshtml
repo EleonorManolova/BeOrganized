@@ -1,0 +1,28 @@
+﻿@model OrganizeMe.Web.ViewModels.Home.ContactViewModel
+@{
+    this.ViewData["Title"] = "Contact us";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<form asp-area="" asp-action="Contact" asp-controller="Home">
+    <div asp-validation-summary="All" class="text-danger"></div>    
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control col-md-5" placeholder="Enter name">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control col-md-5" placeholder="Enter email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <textarea asp-for="Message" class="form-control col-md-5 min-vh-50" rows="3" placeholder="Enter message"></textarea>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-dark btn-lg">Submit</button>
+    <a href="/" class="btn btn-secondary btn-lg">Cancel</a>
+</form>

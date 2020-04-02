@@ -18,9 +18,14 @@
 
         public AuthMessageSenderOptions Options { get; } // set only via Secret Manager
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public Task SendEmailAsync(string emailReciever, string subject, string message)
         {
-            return this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, this.Options.SupportEmail, subject, message, email);
+            if (emailReciever == this.Options.SupportEmail)
+            {
+                this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, "contactForm@organize.me", subject, message, emailReciever);
+            }
+
+            return this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, this.Options.SupportEmail, subject, message, emailReciever);
         }
 
         public Task Execute(string apiKey, string host, string fromName, string from, string subject, string message, string email)
@@ -40,8 +45,6 @@
             };
             msg.AddTo(new EmailAddress(email));
 
-            // Disable click tracking.
-            // See https://sendgrid.com/docs/User_Guide/Settings/tracking.html
             msg.SetClickTracking(false, false);
 
             return client.SendEmailAsync(msg);

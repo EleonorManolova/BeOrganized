@@ -8,11 +8,13 @@
     // Preloader (if the #preloader div exists)
     $(window).on('load', function () {
         if ($('#preloader').length) {
-            $('#preloader').delay(50).fadeOut('slow', function () {
+            $('#preloader').delay(5).fadeOut('slow', function () {
                 $(this).remove();
             });
         }
     });
+
+    $("#emailNotification").delay(3600).fadeOut('slow');
 
     // Header scroll class
 

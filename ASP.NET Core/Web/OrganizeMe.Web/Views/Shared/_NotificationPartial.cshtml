@@ -1,0 +1,10 @@
+﻿@{
+    var hasNotification = TempData["EmailSended"] != null;
+}
+
+@if (hasNotification)
+{
+    <div id="emailNotification" class="alert alert-info alert-dismissible fade show notification" role="alert">
+        @TempData["EmailSended"]
+    </div>
+}
