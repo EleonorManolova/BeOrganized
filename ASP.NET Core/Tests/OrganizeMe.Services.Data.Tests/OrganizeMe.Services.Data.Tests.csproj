@@ -8,6 +8,11 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
@@ -29,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\OrganizeMe.Data\OrganizeMe.Data.csproj" />
     <ProjectReference Include="..\..\Services\OrganizeMe.Services.Data\OrganizeMe.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Web\OrganizeMe.Web.ViewModels\OrganizeMe.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

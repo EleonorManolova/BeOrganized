@@ -39,10 +39,10 @@
             var model = new EventViewModel
             {
                 Title = "Test",
-                StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
-                EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
                 CalendarId = "1",
                 Description = "test description",
                 Location = "Hotel Test",
@@ -58,10 +58,10 @@
             var model = new EventViewModel
             {
                 Title = "Test",
-                StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
-                EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
                 CalendarId = "1",
                 Description = "test description",
                 Location = "Hotel Test",
@@ -108,10 +108,10 @@
             var model = new EventViewModel
             {
                 Title = title,
-                StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
-                EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
                 CalendarId = calendarId,
             };
 
@@ -168,10 +168,10 @@
             var eventViewModel = new EventViewModel
             {
                 Title = "Test",
-                StartDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                StartTime = new DateTime(1999, 1, 1, 12, 0, 0),
-                EndDate = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndTime = new DateTime(1999, 1, 1, 12, 30, 0),
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
                 CalendarId = "1",
                 Description = "test description",
                 Location = "Hotel Test",
@@ -323,6 +323,55 @@
             Assert.Equal(string.Format(exeptionErrorMessage, model.Id), exeption.Message);
         }
 
+        [Fact]
+        public void GetAllByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            InitializeAutomapper<EventViewModel>();
+            InitializeAutomapper<EventCalendarViewModel>();
+
+            var calendar = new Calendar
+            {
+                Id = "Test1",
+                Title = "Default",
+            };
+
+            var model = new Event
+            {
+                Id = "Test1",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+                Calendar = calendar,
+                CalendarId = calendar.Id,
+            };
+
+            var eventCalendarViewModel = new EventCalendarViewModel
+            {
+                Title = "Test",
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
+            };
+
+            this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { model }.AsQueryable());
+            var actualResultColleciton = this.eventService.GetAllByCalendarId(calendar.Id);
+            var expectedResult = eventCalendarViewModel;
+            var actualResult = actualResultColleciton.First();
+
+            this.eventsRepository.Verify(x => x.All(), Times.Once);
+            Assert.Single(actualResultColleciton);
+
+            Assert.Equal(expectedResult.Title, actualResult.Title);
+            Assert.Equal(expectedResult.StartDate, actualResult.StartDate);
+            Assert.Equal(expectedResult.StartTime, actualResult.StartTime);
+            Assert.Equal(expectedResult.EndDate, actualResult.EndDate);
+            Assert.Equal(expectedResult.EndTime, actualResult.EndTime);
+        }
+
         [Theory]
         [InlineData("")]
         [InlineData(null)]
@@ -334,6 +383,47 @@
                  this.eventService.GetAllByCalendarId(id));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            InitializeAutomapper<EventViewModel>();
+
+            var model = new Event
+            {
+                Id = "Test1",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+                CalendarId = "1",
+            };
+
+            var eventViewModel = new EventViewModel
+            {
+                Title = "Test",
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
+                CalendarId = "1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+            };
+
+            var eventEditViewModel = new EventEditViewModel
+            {
+                Output = eventViewModel,
+            };
+
+            var result = await this.eventService.UpdateAsync(eventEditViewModel, model.Id);
+
+            // this.eventsRepository.Verify(x => x.Update(model), Times.Once);
+            Assert.True(result);
         }
 
         private static void InitializeAutomapper<T>()

@@ -7,13 +7,6 @@
 
     public class EnumParseService : IEnumParseService
     {
-        private readonly IStringFormatService stringFormatService;
-
-        public EnumParseService(IStringFormatService stringFormatService)
-        {
-            this.stringFormatService = stringFormatService;
-        }
-
         public string GetEnumDescription(string name, Type typeOfEnum)
         {
             FieldInfo specificField = typeOfEnum.GetField(name);
