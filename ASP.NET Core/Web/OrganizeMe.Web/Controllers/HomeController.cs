@@ -50,6 +50,11 @@
         [HttpPost]
         public async Task<IActionResult> Contact(ContactViewModel model)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             await this.emailSender.SendEmailAsync(GlobalConstants.SupportEmail, $"Email from {model.Name}", model.Message + $"Message send from {model.Email}");
             this.TempData["EmailSended"] = EmailSendedNotification;
             return this.RedirectToAction(nameof(this.Index));
