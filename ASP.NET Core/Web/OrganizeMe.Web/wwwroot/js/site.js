@@ -2,8 +2,8 @@
     "use strict";
 
     if ($('section').is('.removeContainer') || $('div').is('.removeContainer')) {
-         $('main').removeClass('container');
-     };
+        $('main').removeClass('container');
+    };
 
     // Preloader (if the #preloader div exists)
     $(window).on('load', function () {
@@ -14,21 +14,8 @@
         }
     });
 
+     // Notification alert Fade out
     $("#emailNotification").delay(3600).fadeOut('slow');
-
-    // Header scroll class
-
-    //$(window).scroll(function () {
-    //    if ($(this).scrollTop() > 10) {
-    //        $('#header').addClass('header-scrolled');
-    //    } else {
-    //        $('#header').removeClass('header-scrolled');
-    //    }
-    //});
-
-    //if ($(window).scrollTop() > 100) {
-    //    $('#header').addClass('header-scrolled');
-    //}
 
     // Smooth scroll for the navigation and links with .scrollto classes
     $('.main-nav a, .mobile-nav a, .scrollto').on('click', function () {

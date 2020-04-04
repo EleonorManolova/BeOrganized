@@ -27,7 +27,7 @@
             <span asp-validation-for="Input.Title" class="text-danger"></span>
         </div>
         <div id="calendar" class="form-group">
-            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block ">
+            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block  ">
             <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
             <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" />
 
@@ -45,24 +45,32 @@
         </div>
         <div class="form-group">
             <label asp-for="Input.Location"></label>
-            <input asp-for="Input.Location" class="form-control mb-2" id="autocomplete4" value="" placeholder="Add location" />
+            <input asp-for="Input.Location" class="form-control mb-2 col-md-5" id="autocomplete4" value="" placeholder="Add location" />
             <span asp-validation-for="Input.Location" class="text-danger"></span>
             <div id="map"></div>
-            <input hidden id="coordinates" asp-for="Input.Coordinates"/>
+            <input hidden id="coordinates" asp-for="Input.Coordinates" />
         </div>
 
         <div class="form-group">
             <label asp-for="Input.Description"></label>
-            <textarea asp-for="Input.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
+            <textarea asp-for="Input.Description" class="form-control min-vh-50 col-md-5" rows="3" placeholder="Add Description"></textarea>
             <span asp-validation-for="Input.Description" class="text-danger"></span>
         </div>
 
-        <div class="select form-group">
+        <div class="form-group">
             <label asp-for="Input.CalendarId"></label>
-            <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select"
+            <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select col-md-5 "
                     asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
                 <option disabled>Choose Calendar</option>
             </select>
+            <select asp-for="Input.ColorId" class="chosen-select-no-single custom-select col-md-1">
+                @*asp-items="@(new SelectList(Model.Colors, "Id", "Hex"))">*@
+                @foreach (var color in Model.Colors)
+                {
+                    <option value="@color.Id" style="background-color:@color.Hex" title="@color.Name"></option>
+                }
+            </select>
+            <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
             <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
         </div>
 

@@ -10,6 +10,6 @@
 
         T GetEnum<T>(string description);
 
-        HabitCreateViewModel GetHabitViewModel(string username);
+        Task<HabitCreateViewModel> GetHabitViewModelAsync(string username);
     }
 }

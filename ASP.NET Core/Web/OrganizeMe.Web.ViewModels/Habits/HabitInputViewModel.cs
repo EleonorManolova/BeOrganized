@@ -24,5 +24,8 @@
         public string DayTime { get; set; }
 
         public string CalendarId { get; set; }
+
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+        public int ColorId { get; set; }
     }
 }

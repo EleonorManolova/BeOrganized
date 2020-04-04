@@ -48,6 +48,9 @@
         [Display(Name = "Calendar")]
         public string CalendarId { get; set; }
 
+        [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+        public int ColorId { get; set; }
+
         public DateTime StartDateTime => new DateTime(this.StartDate.Year, this.StartDate.Month, this.StartDate.Day, this.StartTime.Hour, this.StartTime.Minute, this.StartTime.Second);
 
         public DateTime EndDateTime => new DateTime(this.EndDate.Year, this.EndDate.Month, this.EndDate.Day, this.EndTime.Hour, this.EndTime.Minute, this.EndTime.Second);

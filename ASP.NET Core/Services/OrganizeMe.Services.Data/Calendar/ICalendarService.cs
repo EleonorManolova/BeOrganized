@@ -1,13 +1,16 @@
 ﻿namespace OrganizeMe.Services.Data.Calendar
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    using OrganizeMe.Web.ViewModels.Calendar;
+    using OrganizeMe.Data.Models;
 
     public interface ICalendarService
     {
-        CalendarIndexViewModel GetDefaultCalendarIndexViewModel(string username);
+        Task<ICollection<T>> GetAllCalendarTitlesByUserIdAsync<T>(string username);
 
-        ICollection<T> GetAllCalendarTitlesByUserId<T>(string username);
+        Task<string> GetDefaultCalendarIdAsync(string username);
+
+        Task<int> GetDefaultCalendarColorIdAsync(string username);
     }
 }
