@@ -19,7 +19,6 @@
     using OrganizeMe.Services;
     using OrganizeMe.Services.Data;
     using OrganizeMe.Services.Data.Calendar;
-    using OrganizeMe.Services.Data.Color;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Services.Data.Habits;
     using OrganizeMe.Services.Mapping;
@@ -93,7 +92,6 @@
                 facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
             });
 
-            services.AddElasticsearch(this.configuration);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -105,7 +103,6 @@
             services.AddTransient<ICalendarService, CalendarService>();
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHabitService, HabitService>();
-            services.AddTransient<IColorService, ColorService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
@@ -116,6 +113,7 @@
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
+                typeof(EventCalendarViewModel).GetTypeInfo().Assembly,
                 typeof(HabitInputViewModel).GetTypeInfo().Assembly,
                 typeof(EventViewModel).GetTypeInfo().Assembly);
 

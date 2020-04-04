@@ -48,7 +48,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> ContactAsync(ContactViewModel model)
+        public async Task<IActionResult> Contact(ContactViewModel model)
         {
             if (!this.ModelState.IsValid)
             {

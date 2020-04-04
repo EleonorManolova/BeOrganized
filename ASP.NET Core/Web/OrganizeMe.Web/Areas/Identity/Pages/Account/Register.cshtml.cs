@@ -110,7 +110,6 @@
                 {
                     Title = GlobalConstants.DefaultCalendarTitle,
                     User = user,
-                    DefaultCalendarColorId = 1,
                 };
                 user.Calendar = calendar;
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);

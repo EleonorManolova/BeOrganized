@@ -1,7 +1,6 @@
 ﻿namespace OrganizeMe.Data.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using OrganizeMe.Common;
@@ -31,10 +30,6 @@
 
         [MaxLength(AttributesConstraints.EventDescriptionMaxLength)]
         public string Description { get; set; }
-
-        public int ColorId { get; set; }
-
-        public virtual Color Color { get; set; }
 
         [Required]
         public string CalendarId { get; set; }

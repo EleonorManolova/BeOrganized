@@ -7,10 +7,10 @@ body {
 }
 
 
-/*.fc-scroller, .fc-time-grid-container {
+.fc-scroller, .fc-time-grid-container {
     overflow: auto;
    height: 1180px;
-}*/
+}
 
 .fc-button {
     background-color: rgba(199, 135, 83, 0.829);

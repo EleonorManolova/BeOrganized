@@ -26,9 +26,9 @@
             return this.View();
         }
 
-        public async Task<IActionResult> CreateAsync()
+        public IActionResult Create()
         {
-            var model = await this.habitService.GetHabitViewModelAsync(this.User.Identity.Name);
+            var model = this.habitService.GetHabitViewModel(this.User.Identity.Name);
             return this.View(model);
         }
 

@@ -30,7 +30,6 @@
                 Title = habitViewModel.Title,
                 CalendarId = habitViewModel.CalendarId,
                 IsCompleted = false,
-                ColorId = habitViewModel.ColorId,
             };
             habit.DayTime = this.enumParseService.Parse<DayTime>(habitViewModel.DayTime);
             habit.Duration = this.enumParseService.Parse<Duration>(habitViewModel.Duration);
@@ -41,7 +40,7 @@
             return true;
         }
 
-        public async Task<HabitCreateViewModel> GetHabitViewModelAsync(string username)
+        public HabitCreateViewModel GetHabitViewModel(string username)
         {
             var dayTimes = Enum.GetNames(typeof(DayTime));
             var frequencies = Enum.GetNames(typeof(Frequency));
@@ -73,7 +72,7 @@
                 DayTimes = dayTimesDescriptions,
                 Frequencies = frequenciesDescriptions,
                 Durations = durationsDescriptions,
-                Calendars = await this.calendarService.GetAllCalendarTitlesByUserIdAsync<CalendarHabitViewModel>(username),
+                Calendars = this.calendarService.GetAllCalendarTitlesByUserId<CalendarHabitViewModel>(username),
             };
 
             return habitViewModel;

@@ -22,11 +22,6 @@
         public string Title { get; set; }
 
         [Required]
-        public int DefaultCalendarColorId { get; set; }
-
-        public virtual Color DefaultCalendarColor { get; set; }
-
-        [Required]
         public string UserId { get; set; }
 
         public virtual ApplicationUser User { get; set; }

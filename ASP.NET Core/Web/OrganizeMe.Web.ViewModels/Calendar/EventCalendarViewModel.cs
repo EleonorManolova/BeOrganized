@@ -1,31 +1,34 @@
 ﻿namespace OrganizeMe.Web.ViewModels.Calendar
 {
     using System;
-    using System.Text.Json.Serialization;
 
+    using AutoMapper;
     using OrganizeMe.Data.Models;
     using OrganizeMe.Services.Mapping;
 
-    public class EventCalendarViewModel : IMapFrom<Event>
+    public class EventCalendarViewModel : IHaveCustomMappings
     {
-        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonPropertyName("start")]
-        public DateTime StartDateTime { get; set; }
+        public DateTime StartDate { get; set; }
 
-        [JsonPropertyName("end")]
-        public DateTime EndDateTime { get; set; }
+        public DateTime StartTime { get; set; }
 
-        public string Location { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public string Coordinates { get; set; }
+        public DateTime EndTime { get; set; }
 
-        public string Description { get; set; }
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Event, EventCalendarViewModel>().ForMember(
+                m => m.Title,
+                opt => opt.MapFrom(x => x.Title));
 
-        public string CalendarId { get; set; }
-
-        [JsonPropertyName("color")]
-        public string ColorHex { get; set; }
+            configuration.CreateMap<Event, EventCalendarViewModel>()
+                .ForMember(x => x.StartDate, y => y.MapFrom(x => x.StartDateTime.Date))
+                .ForMember(x => x.StartTime, y => y.MapFrom(x => default(DateTime).Add(x.StartDateTime.TimeOfDay)))
+                .ForMember(x => x.EndDate, y => y.MapFrom(x => x.EndDateTime.Date))
+                .ForMember(x => x.EndTime, y => y.MapFrom(x => default(DateTime).Add(x.EndDateTime.TimeOfDay)));
+        }
     }
 }

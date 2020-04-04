@@ -11,7 +11,6 @@
     using OrganizeMe.Data.Common.Repositories;
     using OrganizeMe.Data.Models;
     using OrganizeMe.Services.Data.Calendar;
-    using OrganizeMe.Services.Data.Color;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Web.ViewModels.Calendar;
@@ -29,11 +28,9 @@
         {
             var elasticClient = new ElasticClient();
             var calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            var colorRepository = new Mock<OrganizeMe.Data.Common.Repositories.IRepository<Color>>();
             var calendarService = new CalendarService(calendarRepository.Object);
-            var colorService = new ColorService(colorRepository.Object);
             this.eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
-            this.eventService = new EventService(this.eventsRepository.Object, calendarService, elasticClient, colorService);
+            this.eventService = new EventService(this.eventsRepository.Object, calendarService, elasticClient);
         }
 
         [Fact]
@@ -50,9 +47,7 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                ColorId = 1,
             };
-
             var result = await this.eventService.CreateAsync(model);
             Assert.True(result);
         }
@@ -71,7 +66,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                ColorId = 1,
             };
 
             var expectedResult = new Event
@@ -83,7 +77,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { expectedResult }.AsQueryable());
@@ -99,7 +92,6 @@
             Assert.Equal(expectedResult.Description, actualResult.Description);
             Assert.Equal(expectedResult.StartDateTime, actualResult.StartDateTime);
             Assert.Equal(expectedResult.EndDateTime, actualResult.EndDateTime);
-            Assert.Equal(expectedResult.ColorId, actualResult.ColorId);
         }
 
         [Theory]
@@ -121,7 +113,6 @@
                 EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
                 EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
                 CalendarId = calendarId,
-                ColorId = 1,
             };
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
@@ -145,7 +136,6 @@
                 EndDate = DateTime.ParseExact(endDate, "yyyy/MM/dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                 EndTime = DateTime.ParseExact(endTime, "yyyy/MM/dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture),
                 CalendarId = "1",
-                ColorId = 1,
             };
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
@@ -154,7 +144,7 @@
         }
 
         [Fact]
-        public async Task GetEditViewModelByIdAsync_WithCorrectData_ShouldReturnCorrectResult()
+        public void GetEditViewModelById_WithCorrectData_ShouldReturnCorrectResult()
         {
             InitializeAutomapper<EventViewModel>();
             var user = new ApplicationUser
@@ -173,7 +163,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             var eventViewModel = new EventViewModel
@@ -187,11 +176,10 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                ColorId = 1,
             };
 
             this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { model }.AsQueryable());
-            var actualResult = await this.eventService.GetEditViewModelByIdAsync(model.Id, user.UserName);
+            var actualResult = this.eventService.GetEditViewModelById(model.Id, user.UserName);
             var expectedResult = eventViewModel;
             var actualResultOutput = actualResult.Output;
 
@@ -204,7 +192,6 @@
             Assert.Equal(expectedResult.Description, actualResultOutput.Description);
             Assert.Equal(expectedResult.StartDateTime, actualResultOutput.StartDateTime);
             Assert.Equal(expectedResult.EndDateTime, actualResultOutput.EndDateTime);
-            Assert.Equal(expectedResult.ColorId, actualResultOutput.ColorId);
         }
 
         [Theory]
@@ -214,18 +201,18 @@
         [InlineData("1", null)]
         [InlineData("", "")]
         [InlineData(null, null)]
-        public async Task GetEditViewModelByIdAsync_WithNullOrEmptyArguments_ShouldThrowAnArgumentException(string eventId, string username)
+        public void GetEditViewModelById_WithNullOrEmptyArguments_ShouldThrowAnArgumentException(string eventId, string username)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
 
-            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                  this.eventService.GetEditViewModelByIdAsync(eventId, username));
+            var exeption = Assert.Throws<ArgumentException>(() =>
+                  this.eventService.GetEditViewModelById(eventId, username));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
         [Fact]
-        public async Task GetCreateViewModelAsync_WithCorrectData_ShouldReturnCorrectly()
+        public void GetCreateViewModel_WithCorrectData_ShouldReturnCorrectly()
         {
             InitializeAutomapper<EventViewModel>();
             var user = new ApplicationUser
@@ -240,10 +227,9 @@
                 StartTime = DateTime.Now,
                 EndDate = DateTime.Now,
                 EndTime = DateTime.Now.AddMinutes(30),
-                ColorId = 1,
             };
 
-            var actualResult = await this.eventService.GetCreateViewModelAsync(user.UserName);
+            var actualResult = this.eventService.GetCreateViewModel(user.UserName);
             var expectedResult = eventViewModel;
             var actualResultOutput = actualResult.Input;
 
@@ -254,18 +240,17 @@
             Assert.Equal(expectedResult.Description, actualResultOutput.Description);
             Assert.Equal(expectedResult.StartDateTime, actualResultOutput.StartDateTime);
             Assert.Equal(expectedResult.EndDateTime, actualResultOutput.EndDateTime);
-            Assert.Equal(expectedResult.ColorId, actualResultOutput.ColorId);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public async Task GetCreateViewModelAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string username)
+        public void GetCreateViewModel_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string username)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
 
-            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                  this.eventService.GetCreateViewModelAsync(username));
+            var exeption = Assert.Throws<ArgumentException>(() =>
+                  this.eventService.GetCreateViewModel(username));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
@@ -298,7 +283,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(model.Id)).ReturnsAsync(model);
@@ -314,7 +298,6 @@
             Assert.Equal(expectedResult.Description, actualResult.Description);
             Assert.Equal(expectedResult.StartDateTime, actualResult.StartDateTime);
             Assert.Equal(expectedResult.EndDateTime, actualResult.EndDateTime);
-            Assert.Equal(expectedResult.Color, actualResult.Color);
         }
 
         [Fact]
@@ -333,7 +316,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
@@ -342,7 +324,7 @@
         }
 
         [Fact]
-        public async Task GetAllByCalendarIdAsync_WithCorrectData_ShouldReturnCorrectResult()
+        public void GetAllByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
         {
             InitializeAutomapper<EventViewModel>();
             InitializeAutomapper<EventCalendarViewModel>();
@@ -364,18 +346,19 @@
                 Coordinates = "42.99, 32.99",
                 Calendar = calendar,
                 CalendarId = calendar.Id,
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             var eventCalendarViewModel = new EventCalendarViewModel
             {
                 Title = "Test",
-                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                StartDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                StartTime = new DateTime(0001, 1, 1, 12, 0, 0),
+                EndDate = new DateTime(2020, 02, 02, 0, 0, 0),
+                EndTime = new DateTime(0001, 1, 1, 12, 30, 0),
             };
 
             this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { model }.AsQueryable());
-            var actualResultColleciton = await this.eventService.GetAllByCalendarIdAsync(calendar.Id);
+            var actualResultColleciton = this.eventService.GetAllByCalendarId(calendar.Id);
             var expectedResult = eventCalendarViewModel;
             var actualResult = actualResultColleciton.First();
 
@@ -383,19 +366,21 @@
             Assert.Single(actualResultColleciton);
 
             Assert.Equal(expectedResult.Title, actualResult.Title);
-            Assert.Equal(expectedResult.StartDateTime, actualResult.StartDateTime);
-            Assert.Equal(expectedResult.EndDateTime, actualResult.EndDateTime);
+            Assert.Equal(expectedResult.StartDate, actualResult.StartDate);
+            Assert.Equal(expectedResult.StartTime, actualResult.StartTime);
+            Assert.Equal(expectedResult.EndDate, actualResult.EndDate);
+            Assert.Equal(expectedResult.EndTime, actualResult.EndTime);
         }
 
         [Theory]
         [InlineData("")]
         [InlineData(null)]
-        public async Task GetAllByCalendarIdAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        public void GetAllByCalendarId_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
         {
             var exeptionErrorMessage = "One or more required properties are null.";
 
-            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                 this.eventService.GetAllByCalendarIdAsync(id));
+            var exeption = Assert.Throws<ArgumentException>(() =>
+                 this.eventService.GetAllByCalendarId(id));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
@@ -415,7 +400,6 @@
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
                 CalendarId = "1",
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
             var eventViewModel = new EventViewModel
@@ -429,7 +413,6 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 Coordinates = "42.99, 32.99",
-                ColorId = 1,
             };
 
             var eventEditViewModel = new EventEditViewModel

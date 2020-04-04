@@ -18,18 +18,17 @@ document.addEventListener('DOMContentLoaded', function () {
         locale: 'en-gb',
         navLinks: true, // can click day/week names to navigate views
         editable: true,
-        height: "auto",
-        views: {
-            dayGridMonth: { // name of view
-                titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
-                // other view-specific options here
-            }
+        customButtons: {
         },
-        events: eventsJson,
-        eventRender: function (info) {
-            console.log(info.event.extendedProps);
-            // {description: "Lecture", department: "BioChemistry"}
-        }
+        events: [
+            { // this object will be "parsed" into an Event Object
+                id: 1,
+                title: 'Home', // a property!
+                start: '2020-03-16 10:30', // a property!
+                end: '2020-03-16 13:30',// a property! ** see important note below about 'end' **
+                color: 'darksalmon'
+            }
+        ],
     });
     var ev = calendar.getEvents();
     for (var i = 0; i < ev.length; i++) {
