@@ -22,6 +22,9 @@
         public bool IsCompleted { get; set; }
 
         [Required]
+        public DateTime StartDateTime { get; set; }
+
+        [Required]
         public Duration Duration { get; set; }
 
         [Required]
@@ -29,6 +32,10 @@
 
         [Required]
         public DayTime DayTime { get; set; }
+
+        public int ColorId { get; set; }
+
+        public virtual Color Color { get; set; }
 
         [Required]
         public string CalendarId { get; set; }

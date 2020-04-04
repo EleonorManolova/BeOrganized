@@ -1,25 +1,32 @@
 ﻿namespace OrganizeMe.Web.Controllers
 {
+    using System.Text.Json;
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using OrganizeMe.Data.Models;
     using OrganizeMe.Services.Data.Calendar;
+    using OrganizeMe.Services.Data.Events;
 
     [Authorize]
     public class CalendarController : Controller
     {
         private readonly ICalendarService calendarService;
+        private readonly IEventService eventService;
 
-        public CalendarController(ICalendarService calendarService)
+        public CalendarController(ICalendarService calendarService, IEventService eventService)
         {
             this.calendarService = calendarService;
+            this.eventService = eventService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            var model = this.calendarService.GetDefaultCalendarIndexViewModel(this.User.Identity.Name);
-            return this.View(model);
+            var calendarId = await this.calendarService.GetDefaultCalendarIdAsync(this.User.Identity.Name);
+            var events = await this.eventService.GetAllByCalendarIdAsync(calendarId);
+
+            var eventsJson = JsonSerializer.Serialize(events);
+            return this.View((object)eventsJson);
         }
     }
 }

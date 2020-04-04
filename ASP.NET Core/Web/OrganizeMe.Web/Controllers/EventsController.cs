@@ -1,35 +1,34 @@
 ﻿namespace OrganizeMe.Web.Controllers
 {
-    using System;
     using System.Threading.Tasks;
-    using System.Web;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using OrganizeMe.Services.Data.Events;
     using OrganizeMe.Web.ViewModels.Events;
 
     [Authorize]
     public class EventsController : Controller
     {
-        private readonly IConfiguration configuration;
+        private const string DeleteErrorMessage = "Failed to delete the recipe.";
+        private const string DeleteSuccessMessage = "You successfully deleted recipe {0} !";
+
         private readonly IEventService eventService;
 
-        public EventsController(IConfiguration configuration, IEventService eventService)
+        public EventsController(IEventService eventService)
         {
-            this.configuration = configuration;
             this.eventService = eventService;
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            var model = this.eventService.GetEventViewModel(this.User.Identity.Name);
+            var model = await this.eventService.GetCreateViewModelAsync(this.User.Identity.Name);
             return this.View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EventCreateViewModel model)
+        public async Task<IActionResult> CreateAsync(EventCreateViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -41,14 +40,14 @@
         }
 
         [HttpGet]
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> EditAsync(string id)
         {
             if (id == null)
             {
                 return this.BadRequest();
             }
 
-            var eventFromDb = this.eventService.GetEventById(id, this.User.Identity.Name);
+            var eventFromDb = await this.eventService.GetEditViewModelByIdAsync(id, this.User.Identity.Name);
             if (eventFromDb == null)
             {
                 return this.NotFound();
@@ -60,7 +59,7 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(EventEditViewModel model)
+        public async Task<IActionResult> EditAsync(EventEditViewModel model)
         {
             var id = this.TempData["EventId"].ToString();
             if (!this.ModelState.IsValid)
@@ -68,7 +67,25 @@
                 return this.View(model);
             }
 
-            await this.eventService.UpdateEvent(model, id);
+            await this.eventService.UpdateAsync(model, id);
+            return this.Redirect("/Calendar");
+        }
+
+        [HttpPost]
+        [Route("/Events/Delete/{id}")]
+        public async Task<IActionResult> DeleteConfirmAsync(string id)
+        {
+            var recipeTitle = (await this.eventService.GetByIdAsync(id)).Title;
+
+            if (!await this.eventService.DeleteAsync(id))
+            {
+                this.TempData["Error"] = DeleteErrorMessage;
+
+                return this.Redirect($"/Events/Delete/{id}");
+            }
+
+            this.TempData["Success"] = string.Format(DeleteSuccessMessage, recipeTitle);
+
             return this.Redirect("/Calendar");
         }
     }

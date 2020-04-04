@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using OrganizeMe.Data.Models;
     using OrganizeMe.Web.ViewModels.Calendar;
     using OrganizeMe.Web.ViewModels.Events;
 
@@ -10,12 +11,18 @@
     {
         Task<bool> CreateAsync(EventViewModel eventViewModel);
 
-        EventCreateViewModel GetEventViewModel(string username);
+        Task<Event> GetByIdAsync(string id);
 
-        ICollection<EventCalendarViewModel> GetAllByCalendarId(string calendarId);
+        Task<EventCreateViewModel> GetCreateViewModelAsync(string username);
 
-        EventEditViewModel GetEventById(string eventId, string username);
+        Task<ICollection<EventCalendarViewModel>> GetAllByCalendarIdAsync(string calendarId);
 
-        Task UpdateEvent(EventEditViewModel model, string eventId);
+        Task<EventEditViewModel> GetEditViewModelByIdAsync(string eventId, string username);
+
+        Task<bool> UpdateAsync(EventEditViewModel model, string eventId);
+
+        Task<bool> DeleteAsync(string id);
+
+        Task<ICollection<Event>> GetAllAsync(string username);
     }
 }
