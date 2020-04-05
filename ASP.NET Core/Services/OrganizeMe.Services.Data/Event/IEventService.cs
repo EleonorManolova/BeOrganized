@@ -13,16 +13,16 @@
 
         Task<Event> GetByIdAsync(string id);
 
-        Task<EventCreateViewModel> GetCreateViewModelAsync(string username);
+        EventCreateViewModel GetCreateViewModel(string username);
 
-        Task<ICollection<EventCalendarViewModel>> GetAllByCalendarIdAsync(string calendarId);
+        ICollection<EventCalendarViewModel> GetAllByCalendarId(string calendarId);
 
-        Task<EventEditViewModel> GetEditViewModelByIdAsync(string eventId, string username);
+        EventEditViewModel GetEditViewModelById(string eventId, string username);
 
         Task<bool> UpdateAsync(EventEditViewModel model, string eventId);
 
         Task<bool> DeleteAsync(string id);
 
-        Task<ICollection<Event>> GetAllAsync(string username);
+        ICollection<Event> GetAll(string username);
     }
 }

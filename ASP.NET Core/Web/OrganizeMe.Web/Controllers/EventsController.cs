@@ -21,9 +21,9 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateAsync()
+        public IActionResult Create()
         {
-            var model = await this.eventService.GetCreateViewModelAsync(this.User.Identity.Name);
+            var model =  this.eventService.GetCreateViewModel(this.User.Identity.Name);
             return this.View(model);
         }
 
@@ -40,14 +40,14 @@
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditAsync(string id)
+        public IActionResult Edit(string id)
         {
             if (id == null)
             {
                 return this.BadRequest();
             }
 
-            var eventFromDb = await this.eventService.GetEditViewModelByIdAsync(id, this.User.Identity.Name);
+            var eventFromDb = this.eventService.GetEditViewModelById(id, this.User.Identity.Name);
             if (eventFromDb == null)
             {
                 return this.NotFound();

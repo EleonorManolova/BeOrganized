@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.EntityFrameworkCore;
     using Nest;
     using OrganizeMe.Data.Common.Repositories;
     using OrganizeMe.Data.Models;
@@ -90,18 +89,22 @@
             return eventFromDb;
         }
 
-        public async Task<ICollection<EventCalendarViewModel>> GetAllByCalendarIdAsync(string calendarId)
+        public ICollection<EventCalendarViewModel> GetAllByCalendarId(string calendarId)
         {
             if (string.IsNullOrEmpty(calendarId))
             {
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var events = await this.eventRepository.All().Where(x => x.CalendarId == calendarId).To<EventCalendarViewModel>().ToListAsync();
+            var events = this.eventRepository
+                .All()
+                .Where(x => x.CalendarId == calendarId)
+                .To<EventCalendarViewModel>()
+                .ToList();
             return events;
         }
 
-        public async Task<EventEditViewModel> GetEditViewModelByIdAsync(string eventId, string username)
+        public EventEditViewModel GetEditViewModelById(string eventId, string username)
         {
             if (string.IsNullOrEmpty(eventId) ||
                string.IsNullOrEmpty(username))
@@ -109,16 +112,16 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var eventFromDb = await this.eventRepository.All().Where(x => x.Id == eventId).To<EventViewModel>().FirstAsync();
+            var eventFromDb = this.eventRepository.All().Where(x => x.Id == eventId).To<EventViewModel>().First();
             var eventResult = new EventEditViewModel
             {
                 Output = eventFromDb,
-                Calendars = await this.GetAllCalendarTitlesByUsernameAsync<CalendarEventViewModel>(username),
+                Calendars = this.GetAllCalendarTitlesByUsername<CalendarEventViewModel>(username),
             };
             return eventResult;
         }
 
-        public async Task<EventCreateViewModel> GetCreateViewModelAsync(string username)
+        public EventCreateViewModel GetCreateViewModel(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -133,10 +136,10 @@
                     StartTime = DateTime.Now,
                     EndDate = DateTime.Now,
                     EndTime = DateTime.Now.AddMinutes(30),
-                    ColorId = await this.calendarService.GetDefaultCalendarColorIdAsync(username),
+                    ColorId = this.calendarService.GetDefaultCalendarColorId(username),
                 },
-                Calendars = await this.GetAllCalendarTitlesByUsernameAsync<CalendarEventViewModel>(username),
-                Colors = await this.colorService.GetAllColorsAsync(),
+                Calendars = this.GetAllCalendarTitlesByUsername<CalendarEventViewModel>(username),
+                Colors = this.colorService.GetAllColors(),
             };
 
             return model;
@@ -180,7 +183,7 @@
 
             if (eventFromDb == null)
             {
-                throw new ArgumentNullException(string.Format(InvalidEventIdErrorMessage, id));
+                throw new ArgumentException(string.Format(InvalidEventIdErrorMessage, id));
             }
 
             this.eventRepository.Delete(eventFromDb);
@@ -190,15 +193,23 @@
             return result > 0;
         }
 
-        public async Task<ICollection<Event>> GetAllAsync(string username)
+        public ICollection<Event> GetAll(string username)
         {
-            var all = await this.eventRepository.All().Where(x => x.Calendar.User.UserName == username).ToListAsync();
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var all = this.eventRepository
+                .All()
+                .Where(x => x.Calendar.User.UserName == username)
+                .ToList();
             return all;
         }
 
-        private async Task<ICollection<T>> GetAllCalendarTitlesByUsernameAsync<T>(string username)
+        private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
         {
-            return await this.calendarService.GetAllCalendarTitlesByUserIdAsync<T>(username);
+            return this.calendarService.GetAllCalendarTitlesByUserId<T>(username);
         }
     }
 }

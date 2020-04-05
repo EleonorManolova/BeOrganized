@@ -23,13 +23,14 @@
                 {
                     UserName = configuration["Root:AdminName"],
                     Email = configuration["Root:AdminEmail"],
+                    EmailConfirmed = true,
                 };
 
                 IdentityResult result = await userManager.CreateAsync(user, configuration["Root:AdminPassword"]);
 
                 if (result.Succeeded)
                 {
-                   await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
+                    await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRoleName);
                 }
             }
         }

@@ -1,7 +1,8 @@
 ﻿namespace OrganizeMe.Web.ViewModels.Events
 {
-    using OrganizeMe.Data.Models;
     using System.Collections.Generic;
+
+    using OrganizeMe.Data.Models;
 
     public class EventCreateViewModel
     {

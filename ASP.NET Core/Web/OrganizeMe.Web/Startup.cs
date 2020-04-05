@@ -93,7 +93,7 @@
                 facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
             });
 
-            services.AddElasticsearch(this.configuration);
+            //services.AddElasticsearch(this.configuration);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
