@@ -1,10 +1,13 @@
 ﻿@{
-    var hasNotification = TempData["EmailSended"] != null;
+    var hasNotification = TempData["NotificationSuccess"] != null || TempData["NotificationError"] != null;
 }
 
 @if (hasNotification)
 {
-    <div id="emailNotification" class="alert alert-info alert-dismissible fade show notification" role="alert">
-        @TempData["EmailSended"]
+    <div class="alert alert-info alert-dismissible fade show notification" role="alert">
+        @TempData["NotificationSuccess"]
+    </div>
+    <div  class="alert alert-danger alert-dismissible fade show notification" role="alert">
+        @TempData["NotificationError"]
     </div>
 }

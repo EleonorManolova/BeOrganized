@@ -15,7 +15,7 @@
     });
 
      // Notification alert Fade out
-    $("#emailNotification").delay(3600).fadeOut('slow');
+    $(".notification").delay(3600).fadeOut('slow');
 
     // Smooth scroll for the navigation and links with .scrollto classes
     $('.main-nav a, .mobile-nav a, .scrollto').on('click', function () {

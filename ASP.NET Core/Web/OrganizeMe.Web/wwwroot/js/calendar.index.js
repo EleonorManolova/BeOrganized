@@ -1,3 +1,43 @@
+function ShowDetailsNew(info) {
+    var eventFromWeb = info["event"];
+    $.ajax({
+        url: '/Events/Details',
+        datatype: "json",
+        data: { id: eventFromWeb.id },
+        type: "get",
+        contenttype: 'application/json; charset=utf-8',
+        async: true,
+        success: function (data) {
+            $("#eventDetails").html(data);
+        },
+        error: function (xhr) {
+            alert('error');
+        }
+    });
+
+    $('#hoverDetails').show();
+};
+
+function DeleteButton() {
+    var id = $('#deleteButton').data("id");
+    $.ajax({
+        url: '/Events/Delete',
+        datatype: "json",
+        data: { id: id },
+        type: "get",
+        contenttype: 'application/json; charset=utf-8',
+        async: true,
+        success: function (data) {
+            $("#eventDelete").html(data);
+        },
+        error: function (xhr) {
+            alert('error');
+        }
+    })
+
+    $('#hoverDelete').show();
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
 
@@ -26,10 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         events: eventsJson,
-        eventRender: function (info) {
-            console.log(info.event.extendedProps);
-            // {description: "Lecture", department: "BioChemistry"}
-        }
+        eventClick: ShowDetailsNew,
     });
     var ev = calendar.getEvents();
     for (var i = 0; i < ev.length; i++) {
@@ -38,19 +75,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     calendar.render();
 });
-//$(document).ready(function () {
-//    var ev = calendar.getEvents;
-//    for (var i = 0; i < events.length; i++) {
-//        ev[i].href = `/Events/Details/id=${ev[i].id}`
-//    }
-//    //var events = document.getElementsByClassName('fc-event');
-//    //for (var i = 0; i < events.length; i++) {
-//    //    events[i].href = `/Events/Details/id=${events[i].id}`
-//    //}
-//});
-//remove scroll
-    //$(document).ready(function () {
-    //    var container = document.getElementsByClassName('fc-scroller');
-    //    container[0].style.overflow = 'auto';
-    //    container[0].style.height = '1180px'
-    //});
+
+$(window).on("load", function () {
+    $('#deleteButton').click(function (e) { e.stopPropagation() });
+    $('#hoverDetails').click(function () {
+        $('#hoverDetails').hide();
+    });
+    $('#closeButtonDetails').click(function () {
+        $('#hoverDetails').hide();
+    });
+});
+
+$(window).on("load", function () {
+    $('#hoverDelete').click(function () {
+        $('#hoverDelete').hide();
+    });
+    $('#closeButtonDelete').click(function () {
+        $('#hoverDelete').hide();
+    });
+    $('#cancelDelete').click(function () {
+        $('#hoverDelete').hide();
+    });
+});

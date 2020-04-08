@@ -30,15 +30,29 @@
         <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
         <a asp-controller="Habits" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Habit</a>
     </div>
+    <div id="hoverDetails" class="hover_bkgr_fricc">
+        <span class="helper"></span>
+        <div>
+            <div id="closeButtonDetails" class="popupCloseButton">&times;</div>
+            <div id="eventDetails"></div>
+        </div>
+    </div>
+    <div id="hoverDelete" class="hover_bkgr_fricc">
+        <span class="helper"></span>
+        <div>
+            <div id="closeButtonDelete" class="popupCloseButton">&times;</div>
+            <div id="eventDelete"></div>
+        </div>
+    </div>
     <div id='calendar' class="removeContainer"></div>
 
     <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src='~/lib/node_modules/core/main.js'></script>
         <script src='~/lib/node_modules/daygrid/main.js'></script>
         <script src='~/lib/node_modules/timegrid//main.js'></script>
         @*<script src='~/lib/node_modules/rrule/main.js'></script>*@
-        @*<script src='~/lib/node_modules/interaction/main.js'></script>*@
+        <script src='~/lib/node_modules/interaction/main.js'></script>
         <script src='~/lib/node_modules/resource-common/main.js'></script>
         @*<script src='~/lib/node_modules/resource-timegrid/main.js'></script>*@
         @*<script src='~/lib/node_modules/resource-daygrid/main.js'></script>*@
@@ -49,7 +63,6 @@
         <script src="~/js/calendar.index.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
-        /**/
         <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
         <script src='~/lib/node_modules/core/main.min.js'></script>
         <script src='~/lib/node_modules/daygrid/main.min.js'></script>

@@ -6,6 +6,16 @@ function showCalendarLeft() {
         calendarStart.style.display = "inline-block";
     }
 }
+
+var selected = $("#color_me").css("background-color", function () {
+    var color = $("option:selected", this).attr("class"); return color;
+});
+
+$("#color_me").change(function () {
+    var color = $("option:selected", this).attr("class");
+    $("#color_me").css("background-color", color);
+});
+
 //Google Map
 function initAutocomplete() {
     var map;

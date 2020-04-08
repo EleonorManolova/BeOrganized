@@ -20,10 +20,10 @@
             this.eventService = eventService;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
-            var calendarId = await this.calendarService.GetDefaultCalendarIdAsync(this.User.Identity.Name);
-            var events = await this.eventService.GetAllByCalendarIdAsync(calendarId);
+            var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
+            var events = this.eventService.GetAllByCalendarId(calendarId);
 
             var eventsJson = JsonSerializer.Serialize(events);
             return this.View((object)eventsJson);

@@ -1,7 +1,8 @@
 ﻿@using OrganizeMe.Web.ViewModels.Events
-@model EventCreateViewModel
+@model EventChangeViewModel
 @{
     ViewData["Title"] = "Event Create";
+    var calendar = Model.Calendars.Where(x => x.Title == "Default").First();
 
 }
 
@@ -22,56 +23,55 @@
     <form class="mb-3" asp-area="" asp-controller="Events" asp-action="Create" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Input.Title"></label>
-            <input asp-for="Input.Title" class="form-control col-md-5" placeholder="Enter title">
-            <span asp-validation-for="Input.Title" class="text-danger"></span>
+            <label asp-for="EventModel.Title"></label>
+            <input asp-for="EventModel.Title" class="form-control col-md-5" placeholder="Enter title">
+            <span asp-validation-for="EventModel.Title" class="text-danger"></span>
         </div>
         <div id="calendar" class="form-group">
-            <input id="startDate" asp-for="Input.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block  ">
+            <input id="startDate" asp-for="EventModel.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block  ">
             <i class="fa fa-bars border-right border-bottom btn d-inline-block" onclick="showCalendarLeft()"></i>
-            <input asp-for="Input.StartTime" class="inputTime form-control  d-inline-block" />
+            <input asp-for="EventModel.StartTime" class="inputTime form-control  d-inline-block" />
 
             <div class="delimeter d-inline-block"> to </div>
 
-            <input id="endDate" asp-for="Input.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
+            <input id="endDate" asp-for="EventModel.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
             <i class="fa fa-bars btn border-right border-bottom d-inline-block" onclick="showCalendarRight()"></i>
-            <input asp-for="Input.EndTime" class="inputTime form-control d-inline-block" /><br />
+            <input asp-for="EventModel.EndTime" class="inputTime form-control d-inline-block" /><br />
 
-            <span asp-validation-for="Input.StartDate" class="text-danger"></span>
-            <span asp-validation-for="Input.StartTime" class="text-danger"></span>
-            <span asp-validation-for="Input.EndDate" class="text-danger"></span>
-            <span asp-validation-for="Input.EndTime" class="text-danger"></span>
+            <span asp-validation-for="EventModel.StartDate" class="text-danger"></span>
+            <span asp-validation-for="EventModel.StartTime" class="text-danger"></span>
+            <span asp-validation-for="EventModel.EndDate" class="text-danger"></span>
+            <span asp-validation-for="EventModel.EndTime" class="text-danger"></span>
             <partial name="_CalendarDropdownPartial" />
         </div>
         <div class="form-group">
-            <label asp-for="Input.Location"></label>
-            <input asp-for="Input.Location" class="form-control mb-2 col-md-5" id="autocomplete4" value="" placeholder="Add location" />
-            <span asp-validation-for="Input.Location" class="text-danger"></span>
+            <label asp-for="EventModel.Location"></label>
+            <input asp-for="EventModel.Location" class="form-control mb-2 col-md-5" id="autocomplete4" value="" placeholder="Add location" />
+            <span asp-validation-for="EventModel.Location" class="text-danger"></span>
             <div id="map"></div>
-            <input hidden id="coordinates" asp-for="Input.Coordinates" />
+            <input hidden id="coordinates" asp-for="EventModel.Coordinates" />
         </div>
 
         <div class="form-group">
-            <label asp-for="Input.Description"></label>
-            <textarea asp-for="Input.Description" class="form-control min-vh-50 col-md-5" rows="3" placeholder="Add Description"></textarea>
-            <span asp-validation-for="Input.Description" class="text-danger"></span>
+            <label asp-for="EventModel.Description"></label>
+            <textarea asp-for="EventModel.Description" class="form-control min-vh-50 col-md-5" rows="3" placeholder="Add Description"></textarea>
+            <span asp-validation-for="EventModel.Description" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label asp-for="Input.CalendarId"></label>
-            <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select col-md-5 "
+            <label asp-for="EventModel.CalendarId"></label>
+            <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select col-md-2 "
                     asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
                 <option disabled>Choose Calendar</option>
             </select>
-            <select asp-for="Input.ColorId" class="chosen-select-no-single custom-select col-md-1">
-                @*asp-items="@(new SelectList(Model.Colors, "Id", "Hex"))">*@
+            <select id="color_me" asp-for="EventModel.ColorId" class="chosen-select-no-single custom-select col-md-2">
                 @foreach (var color in Model.Colors)
                 {
-                    <option value="@color.Id" style="background-color:@color.Hex" title="@color.Name"></option>
+                    <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
                 }
             </select>
-            <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
-            <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
+            <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
+            <span asp-validation-for="EventModel.ColorId" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-dark btn-lg">Create</button>

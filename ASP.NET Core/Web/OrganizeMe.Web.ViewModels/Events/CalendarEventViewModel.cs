@@ -8,5 +8,11 @@
         public string Id { get; set; }
 
         public string Title { get; set; }
+
+        public string DefaultCalendarColorId { get; set; }
+
+        public string DefaultCalendarColorHex { get; set; }
+
+        public string DefaultCalendarColorName { get; set; }
     }
 }

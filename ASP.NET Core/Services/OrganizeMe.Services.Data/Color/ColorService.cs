@@ -1,9 +1,8 @@
 ﻿namespace OrganizeMe.Services.Data.Color
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using System.Linq;
 
-    using Microsoft.EntityFrameworkCore;
     using OrganizeMe.Data.Common.Repositories;
     using OrganizeMe.Data.Models;
 
@@ -16,9 +15,11 @@
             this.colorReposository = colorReposository;
         }
 
-        public async Task<ICollection<Color>> GetAllColorsAsync()
+        public ICollection<Color> GetAllColors()
         {
-            var colors = await this.colorReposository.All().ToListAsync();
+            var colors = this.colorReposository
+                .All()
+                .ToList();
             return colors;
         }
     }

@@ -56,7 +56,7 @@
             }
 
             await this.emailSender.SendEmailAsync(GlobalConstants.SupportEmail, $"Email from {model.Name}", model.Message + $"Message send from {model.Email}");
-            this.TempData["EmailSended"] = EmailSendedNotification;
+            this.TempData["NotificationSuccess"] = EmailSendedNotification;
             return this.RedirectToAction(nameof(this.Index));
         }
 

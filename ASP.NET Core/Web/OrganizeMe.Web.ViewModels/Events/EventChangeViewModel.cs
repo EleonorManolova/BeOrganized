@@ -4,9 +4,9 @@
 
     using OrganizeMe.Data.Models;
 
-    public class EventCreateViewModel
+    public class EventChangeViewModel
     {
-        public EventViewModel Input { get; set; }
+        public EventViewModel EventModel { get; set; }
 
         public ICollection<CalendarEventViewModel> Calendars { get; set; } = new HashSet<CalendarEventViewModel>();
 
