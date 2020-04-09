@@ -1,41 +1,44 @@
-function ShowDetailsNew(info) {
-    var eventFromWeb = info["event"];
+function EventChange(info) {
+    const id = info.event.id;
+    const startDateTime = info.event.start.toISOString();
+    const endDateTime = info.event.end.toISOString();
+
+    connection.invoke("EventsChange", { id, startDateTime, endDateTime })
+}
+
+function callAjax(eventId, url, divId) {
     $.ajax({
-        url: '/Events/Details',
+        url: url,
         datatype: "json",
-        data: { id: eventFromWeb.id },
+        data: { id: eventId },
         type: "get",
         contenttype: 'application/json; charset=utf-8',
         async: true,
         success: function (data) {
-            $("#eventDetails").html(data);
+            $(divId).html(data);
         },
         error: function (xhr) {
             alert('error');
         }
     });
+}
 
+function ShowDetails(info) {
+    var eventFromWeb = info["event"];
+    callAjax(eventFromWeb.id, "/Events/Details", "#eventDetails")
     $('#hoverDetails').show();
 };
 
 function DeleteButton() {
-    var id = $('#deleteButton').data("id");
-    $.ajax({
-        url: '/Events/Delete',
-        datatype: "json",
-        data: { id: id },
-        type: "get",
-        contenttype: 'application/json; charset=utf-8',
-        async: true,
-        success: function (data) {
-            $("#eventDelete").html(data);
-        },
-        error: function (xhr) {
-            alert('error');
-        }
-    })
-
+    let id = $('#deleteButton').data("id");
+    callAjax(id, '/Events/Delete', "#eventDelete");
     $('#hoverDelete').show();
+};
+
+function ShowDetailsResult() {
+    let id = $('#detailsButton').data("id");
+    callAjax(id, '/Events/Details', "#eventDetails");
+    $('#hoverDetails').show();
 };
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -66,7 +69,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         events: eventsJson,
-        eventClick: ShowDetailsNew,
+        eventClick: ShowDetails,
+        eventDrop: EventChange,
+        eventResize: EventChange,
     });
     var ev = calendar.getEvents();
     for (var i = 0; i < ev.length; i++) {
@@ -77,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 $(window).on("load", function () {
-    $('#deleteButton').click(function (e) { e.stopPropagation() });
+    //$('#deleteButton').click(function (e) { e.stopPropagation() });
     $('#hoverDetails').click(function () {
         $('#hoverDetails').hide();
     });

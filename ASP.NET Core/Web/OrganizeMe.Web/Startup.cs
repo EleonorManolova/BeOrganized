@@ -25,6 +25,7 @@
     using OrganizeMe.Services.Mapping;
     using OrganizeMe.Services.Messaging;
     using OrganizeMe.Web.Extentions;
+    using OrganizeMe.Web.Hubs;
     using OrganizeMe.Web.ViewModels;
     using OrganizeMe.Web.ViewModels.Calendar;
     using OrganizeMe.Web.ViewModels.Events;
@@ -71,6 +72,11 @@
                 options.EnableForHttps = true;
             });
 
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
+
             // Authentification
             // TODO:When create website change link
             services.AddAuthentication()
@@ -93,7 +99,7 @@
                 facebookOptions.AppSecret = this.configuration["Authentication:Facebook:AppSecret"];
             });
 
-            //services.AddElasticsearch(this.configuration);
+            services.AddElasticsearch(this.configuration);
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -106,6 +112,7 @@
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IHabitService, HabitService>();
             services.AddTransient<IColorService, ColorService>();
+            services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
@@ -160,6 +167,7 @@
             app.UseEndpoints(
                 endpoints =>
                     {
+                        endpoints.MapHub<EventsHub>("/eventshub");
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapRazorPages();

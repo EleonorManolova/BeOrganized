@@ -1,11 +1,24 @@
-﻿(function ($) {
+﻿let connection = null;
+
+setupConnection = () => {
+    connection = new signalR.HubConnectionBuilder()
+        .withUrl("/eventshub")
+        .build();
+
+    connection.start()
+        .catch(err => console.error(err.toString()));
+};
+
+setupConnection();
+
+(function ($) {
     "use strict";
 
     if ($('section').is('.removeContainer') || $('div').is('.removeContainer')) {
         $('main').removeClass('container');
     };
 
-    // Preloader (if the #preloader div exists)
+    // Preloader 
     $(window).on('load', function () {
         if ($('#preloader').length) {
             $('#preloader').delay(5).fadeOut('slow', function () {
@@ -14,7 +27,7 @@
         }
     });
 
-     // Notification alert Fade out
+    // Notification alert Fade out
     $(".notification").delay(3600).fadeOut('slow');
 
     // Smooth scroll for the navigation and links with .scrollto classes
