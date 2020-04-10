@@ -1,0 +1,19 @@
+﻿@model BeOrganized.Web.ViewModels.Events.EventDetailsViewModel
+<div>
+    <h3><span class="dot mt-1" style="background-color:@Model.ColorHex"></span> @Model.Title</h3>
+    @if (Model.StartDateTime.Date == Model.EndDateTime.Date)
+    {
+        <p>@Model.StartDateTime.ToString("dd MMMM HH:mm") - @Model.EndDateTime.ToString("HH:mm")</p>
+    }
+    else
+    {
+        <p>@Model.StartDateTime.ToString("dd MMMM HH:mm") - @Model.EndDateTime.ToString("dd MMMM HH:mm")</p>
+    }
+    <hr />
+    <h5>@Model.Location</h5>
+    <p>@Model.Description</p>
+    <h5>@Model.CalendarTitle Calendar</h5>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" title="Edit Event"><i class="fas fa-edit m-1"></i></a> | <a id="deleteButton" onclick="DeleteButton()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+</div>

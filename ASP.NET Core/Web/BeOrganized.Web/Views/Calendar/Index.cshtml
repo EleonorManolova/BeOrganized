@@ -1,0 +1,64 @@
+﻿@model object
+@{
+    ViewData["Title"] = "Calendar";
+}
+
+<head>
+    <environment names="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+        <link rel="stylesheet" href="~/css/calendar.index.css" asp-append-version="true">
+
+        <link href='~/lib/node_modules/core/main.css' rel='stylesheet' />
+        <link href='~/lib/node_modules/daygrid/main.css' rel='stylesheet' />
+        <link href='~/lib/node_modules/timegrid/main.css' rel='stylesheet' />
+        @*<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+            <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />*@
+
+
+        <link href="~/css/calendar.index.css" rel="stylesheet" asp-append-version="true" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/css/calendar.index.min.css" asp-append-version="true">
+        <link href='~/lib/node_modules/core/main.min.css' rel='stylesheet' />
+        <link href='~/lib/node_modules/daygrid/main.min.css' rel='stylesheet' />
+        <link href='~/lib/node_modules/timegrid/main.min.css' rel='stylesheet' />
+    </environment>
+</head>
+
+<body>
+    <div id="buttons">
+        <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
+        <a asp-controller="Habits" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Habit</a>
+    </div>
+    <div id='calendar' class="removeContainer"></div>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+        <script src='~/lib/node_modules/core/main.js'></script>
+        <script src='~/lib/node_modules/daygrid/main.js'></script>
+        <script src='~/lib/node_modules/timegrid//main.js'></script>
+        @*<script src='~/lib/node_modules/rrule/main.js'></script>*@
+        <script src='~/lib/node_modules/interaction/main.js'></script>
+        <script src='~/lib/node_modules/resource-common/main.js'></script>
+        @*<script src='~/lib/node_modules/resource-timegrid/main.js'></script>*@
+        @*<script src='~/lib/node_modules/resource-daygrid/main.js'></script>*@
+
+        <script>
+             var eventsJson=@Html.Raw(@Model);
+        </script>
+       @* <script src="~/js/calendar.index.js" asp-append-version="true"></script>*@
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src='~/lib/node_modules/core/main.min.js'></script>
+        <script src='~/lib/node_modules/daygrid/main.min.js'></script>
+        <script src='~/lib/node_modules/timegrid//main.min.js'></script>
+        @*<script src='~/lib/node_modules/rrule/main.min.js'></script>*@
+        <script src='~/lib/node_modules/interaction/main.min.js'></script>
+        <script src='~/lib/node_modules/resource-common/main.min.js'></script>
+        @*<script src='~/lib/node_modules/resource-timegrid/main.min.js'></script>*@
+        @*<script src='~/lib/node_modules/resource-daygrid/main.min.js'></script>*@
+
+        <script src="~/js/calendar.index.min.js" asp-append-version="true"></script>
+    </environment>
+</body>

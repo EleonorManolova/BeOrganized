@@ -1,0 +1,370 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+
+
+.container {
+    margin-top: 5rem;
+}
+
+
+/* Cookie
+-------------------------------------------------- */
+
+#cookieConsent, .notification {
+    margin-top: 5rem;
+    margin-bottom: 0;
+}
+
+/* Button style
+-------------------------------------------------- */
+
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: #719cb1 !important;
+    border-color: #6b8b9b !important;
+}
+
+    .btn-primary:hover {
+        background-color: #6b8b9b !important;
+        border-color: #6b8b9b !important;
+    }
+
+.btn-secondary, .btn-secondary:active, .btn-secondary:visited {
+    background-color: #9bb9c7 !important;
+    border-color: #719cb1 !important;
+}
+    .btn-secondary:hover {
+        background-color: #82aec3 !important;
+        border-color: #719cb1 !important;
+    }
+    /* Header style
+-------------------------------------------------- */
+    header {
+        transition: all 0.5s;
+        box-sizing: border-box;
+    }
+
+    header .logo {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        width: 10%;
+        position: fixed;
+        float: left;
+        z-index: 1040;
+    }
+
+    header .fixed-top:nth-child(2) {
+        z-index: 1030;
+    }
+
+#header {
+    height: 110px;
+    transition: all 0.5s;
+    z-index: 997;
+    transition: all 0.5s;
+    padding: 20px 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    transition: all 0.5s;
+    z-index: 997;
+}
+
+    #header.header-scrolled,
+    #header.header-pages {
+        height: 70px;
+        padding: 15px 0;
+        background-color: #fff;
+        box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.3);
+    }
+
+        #header.header-scrolled #topbar,
+        #header.header-pages #topbar {
+            display: none;
+        }
+
+header .logo img {
+    padding: 0;
+    margin: 2px 0;
+    max-height: 63px;
+}
+
+#header .logo {
+    font-size: 36px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: 3px;
+}
+
+    #header .logo a,
+    #header .logo a:hover {
+        color: #413e66;
+        text-decoration: none;
+    }
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    font-size: x-large;
+    padding-left: 3.3125rem;
+}
+
+.toggler {
+    float: right;
+    margin: 0.5rem;
+}
+
+.nav-link {
+    margin-left: 0.5rem;
+}
+
+.main-nav,
+.main-nav * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+    .main-nav > ul > li {
+        position: relative;
+        white-space: nowrap;
+        float: left;
+    }
+
+    .main-nav a {
+        display: block;
+        position: relative;
+        color: #413e66;
+        padding: 10px 15px;
+        transition: 0.3s;
+        font-size: 14px;
+        font-family: "Open Sans", sans-serif;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+        .main-nav a:hover,
+        .main-nav .active > a,
+        .main-nav li:hover > a {
+            color: #1bb1dc;
+            text-decoration: none;
+        }
+
+
+/* Services Section
+--------------------------------*/
+
+#services {
+    padding: 60px 0 40px 0;
+}
+
+    #services .box {
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin: 0 10px 40px 10px;
+        background: #fff;
+        box-shadow: 0 10px 29px 0 rgba(68, 88, 144, 0.1);
+        transition: all 0.3s ease-in-out;
+        text-align: center;
+    }
+
+        #services .box:hover {
+            -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+        }
+
+    #services .icon {
+        margin: 0 auto 15px auto;
+        padding-top: 12px;
+        display: inline-block;
+        text-align: center;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+    }
+
+        #services .icon img {
+            font-size: 36px;
+            height: 30px;
+        }
+
+    #services .title {
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 18px;
+        color: #67667c;
+    }
+
+    #services .box:hover .title a {
+        color: #1bb1dc;
+    }
+
+    #services .description {
+        font-size: 14px;
+        line-height: 28px;
+        margin-bottom: 0;
+        text-align: left;
+        color: #67667c;
+    }
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: #F7F7F5
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    line-height: 60px; /* Vertically center the text there */
+}
+
+/* Preloader
+-------------------------------------------------- */
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    overflow: hidden;
+    background: #fff;
+}
+
+    #preloader:before {
+        content: "";
+        position: fixed;
+        top: calc(50% - 30px);
+        left: calc(50% - 30px);
+        border: 6px solid #f2f2f2;
+        border-top: 6px solid #696960;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* ColorDot
+-------------------------------------------------- */
+
+.dot {
+    height: 25px;
+    width: 25px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Popup box BEGIN */
+.hover_bkgr_fricc {
+    background: rgba(0,0,0,.4);
+    cursor: pointer;
+    display: none;
+    height: 100%;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
+
+    .hover_bkgr_fricc .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
+    .hover_bkgr_fricc > div {
+        background-color: #fff;
+        box-shadow: 10px 10px 60px #555;
+        display: inline-block;
+        height: auto;
+        max-width: 551px;
+        min-height: 100px;
+        vertical-align: middle;
+        width: 60%;
+        position: relative;
+        border-radius: 8px;
+        padding: 15px 5%;
+    }
+
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+    .popupCloseButton:hover {
+        background-color: #ccc;
+    }

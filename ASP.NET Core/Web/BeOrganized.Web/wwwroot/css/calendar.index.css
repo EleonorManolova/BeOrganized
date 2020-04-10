@@ -1,0 +1,37 @@
+body {
+    overflow: auto;
+}
+
+#buttons{
+    margin-top:5rem;
+}
+
+
+/*.fc-scroller, .fc-time-grid-container {
+    overflow: auto;
+   height: 1180px;
+}*/
+
+.fc-button {
+    background-color: rgba(199, 135, 83, 0.829);
+    border-color: rgba(199, 135, 83, 0.952);
+}
+
+    .fc-button:hover {
+        background-color: rgba(134, 80, 36, 0.829);
+        border-color: rgba(199, 135, 83, 0.952);
+    }
+
+    .fc-button-primary:not(:disabled).fc-button-active,
+    .fc-button:disabled {
+        background-color: rgba(199, 135, 83, 0.658);
+        border-color: rgba(199, 135, 83, 0.952);
+    }
+
+.fc th.fc-today {
+    background-color: rgba(224, 182, 148, 0.692);
+}
+
+.fc td.fc-today {
+    background-color: white;
+}
