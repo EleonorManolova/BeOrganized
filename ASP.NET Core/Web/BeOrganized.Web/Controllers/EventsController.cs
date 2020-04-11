@@ -2,12 +2,12 @@
 {
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.SignalR;
     using BeOrganized.Services.Data.Events;
     using BeOrganized.Web.Hubs;
     using BeOrganized.Web.ViewModels.Events;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
 
     [Authorize]
     public class EventsController : Controller

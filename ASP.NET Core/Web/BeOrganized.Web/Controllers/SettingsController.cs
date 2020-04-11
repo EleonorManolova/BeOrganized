@@ -3,11 +3,11 @@
     using System;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Mvc;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data;
     using BeOrganized.Web.ViewModels.Settings;
+    using Microsoft.AspNetCore.Mvc;
 
     public class SettingsController : BaseController
     {

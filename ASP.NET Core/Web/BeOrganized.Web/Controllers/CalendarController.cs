@@ -3,10 +3,10 @@
     using System.Text.Json;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Events;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
     public class CalendarController : Controller

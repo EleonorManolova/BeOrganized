@@ -1,3 +1,16 @@
+let connection = null;
+
+setupConnection = () => {
+    connection = new signalR.HubConnectionBuilder()
+        .withUrl("/eventshub")
+        .build();
+
+    connection.start()
+        .catch(err => console.error(err.toString()));
+};
+
+setupConnection();
+
 function EventChange(info) {
     const id = info.event.id;
     const startDateTime = info.event.start.toISOString();

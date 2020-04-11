@@ -33,16 +33,38 @@ for details on configuring this project to bundle and minify static web assets. 
     background-color: #9bb9c7 !important;
     border-color: #719cb1 !important;
 }
+
     .btn-secondary:hover {
         background-color: #82aec3 !important;
         border-color: #719cb1 !important;
     }
-    /* Header style
--------------------------------------------------- */
-    header {
-        transition: all 0.5s;
-        box-sizing: border-box;
+
+.btn-info, .btn-info:active, .btn-info:visited {
+    background-color: #a6adb1 !important;
+    border-color: #86959c !important;
+}
+
+    .btn-info:hover {
+        background-color: #7b878d !important;
+        border-color: #7b878d !important;
     }
+
+.btn-danger, .btn-danger:active, .btn-danger:visited {
+    background-color: #e47b69 !important;
+    border-color: #de7563 !important;
+}
+
+    .btn-danger:hover {
+        background-color: #ce614e !important;
+        border-color: #ce614e !important;
+    }
+
+/* Header style
+-------------------------------------------------- */
+header {
+    transition: all 0.5s;
+    box-sizing: border-box;
+}
 
     header .logo {
         margin: 0;

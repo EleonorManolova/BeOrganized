@@ -1,9 +1,9 @@
 ﻿namespace BeOrganized.Web.Controllers
 {
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
     using BeOrganized.Common;
     using BeOrganized.Data.Models;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
 
     [Route("Identity/[controller]/[action]")]
     public class UsersController : BaseController

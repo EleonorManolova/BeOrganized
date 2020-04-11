@@ -1,17 +1,4 @@
-﻿let connection = null;
-
-setupConnection = () => {
-    connection = new signalR.HubConnectionBuilder()
-        .withUrl("/eventshub")
-        .build();
-
-    connection.start()
-        .catch(err => console.error(err.toString()));
-};
-
-setupConnection();
-
-(function ($) {
+﻿(function ($) {
     "use strict";
 
     if ($('section').is('.removeContainer') || $('div').is('.removeContainer')) {

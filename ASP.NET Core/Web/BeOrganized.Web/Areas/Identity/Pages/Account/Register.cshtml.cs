@@ -8,6 +8,9 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using BeOrganized.Common;
+    using BeOrganized.Data;
+    using BeOrganized.Data.Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -17,9 +20,6 @@
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
-    using BeOrganized.Common;
-    using BeOrganized.Data;
-    using BeOrganized.Data.Models;
 
     [AllowAnonymous]
     public class RegisterModel : PageModel

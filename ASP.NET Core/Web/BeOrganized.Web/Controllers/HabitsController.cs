@@ -2,12 +2,12 @@
 {
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
     using BeOrganized.Data.Models.Enums;
     using BeOrganized.Services;
     using BeOrganized.Services.Data.Habits;
     using BeOrganized.Web.ViewModels.Habits;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
     public class HabitsController : Controller

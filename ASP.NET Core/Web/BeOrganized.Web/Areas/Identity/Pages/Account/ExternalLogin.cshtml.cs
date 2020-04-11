@@ -9,6 +9,8 @@
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
 
+    using BeOrganized.Common;
+    using BeOrganized.Data.Models;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,8 +18,6 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Logging;
-    using BeOrganized.Common;
-    using BeOrganized.Data.Models;
 
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel

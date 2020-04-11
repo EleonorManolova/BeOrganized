@@ -15,6 +15,7 @@
         public string Email { get; set; }
 
         [Required(ErrorMessage = AttributesErrorMessages.RequiredErrorMessage)]
+        [MinLength(AttributesConstraints.ContactNameMinLength)]
         [MaxLength(AttributesConstraints.ContactMessageMaxLength, ErrorMessage = AttributesErrorMessages.PasswordStringMaxLengthMessage)]
         public string Message { get; set; }
 

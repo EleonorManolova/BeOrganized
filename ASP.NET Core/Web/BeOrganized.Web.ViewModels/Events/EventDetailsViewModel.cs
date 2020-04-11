@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class EventDetailsViewModel
+    public class HabitDetailsViewModel
     {
         public string Id { get; set; }
 

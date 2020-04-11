@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Microsoft.EntityFrameworkCore;
     using BeOrganized.Common;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Mapping;
+    using Microsoft.EntityFrameworkCore;
 
     public class CalendarService : ICalendarService
     {

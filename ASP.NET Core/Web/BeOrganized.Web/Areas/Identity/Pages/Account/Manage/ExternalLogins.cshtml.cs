@@ -5,11 +5,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using BeOrganized.Data.Models;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
-    using BeOrganized.Data.Models;
 
     public class ExternalLoginsModel : PageModel
     {

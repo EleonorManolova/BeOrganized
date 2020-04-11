@@ -3,12 +3,12 @@
     using System.Diagnostics;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity.UI.Services;
-    using Microsoft.AspNetCore.Mvc;
     using BeOrganized.Common;
     using BeOrganized.Web.ViewModels;
     using BeOrganized.Web.ViewModels.Home;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity.UI.Services;
+    using Microsoft.AspNetCore.Mvc;
 
     public class HomeController : BaseController
     {
