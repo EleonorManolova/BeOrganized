@@ -13,6 +13,7 @@
 
         // Contact
         public const int ContactMessageMaxLength = 1000;
+        public const int ContactMessageMinLength = 10;
         public const int ContactNameMinLength = 3;
     }
 }

@@ -2,14 +2,6 @@
 {
     using System.Reflection;
 
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
     using BeOrganized.Data;
     using BeOrganized.Data.Common;
     using BeOrganized.Data.Common.Repositories;
@@ -21,7 +13,8 @@
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Color;
     using BeOrganized.Services.Data.Events;
-    using BeOrganized.Services.Data.Habits;
+    using BeOrganized.Services.Data.Goal;
+    using BeOrganized.Services.Data.Habit;
     using BeOrganized.Services.Mapping;
     using BeOrganized.Services.Messaging;
     using BeOrganized.Web.Extentions;
@@ -29,7 +22,15 @@
     using BeOrganized.Web.ViewModels;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
-    using BeOrganized.Web.ViewModels.Habits;
+    using BeOrganized.Web.ViewModels.Golas;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     using EmailSender = BeOrganized.Services.Messaging.EmailSender;
     using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
@@ -110,10 +111,12 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICalendarService, CalendarService>();
             services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IGoalService, GoalService>();
             services.AddTransient<IHabitService, HabitService>();
             services.AddTransient<IColorService, ColorService>();
             services.AddTransient<ISearchService, SearchService>();
             services.AddTransient<IEnumParseService, EnumParseService>();
+            services.AddTransient<IDateTimeService, DateTimeService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
         }
@@ -123,7 +126,7 @@
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
-                typeof(HabitInputViewModel).GetTypeInfo().Assembly,
+                typeof(GoalInputViewModel).GetTypeInfo().Assembly,
                 typeof(EventViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
@@ -131,10 +134,7 @@
             {
                 var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-                if (env.IsDevelopment())
-                {
-                    dbContext.Database.Migrate();
-                }
+                dbContext.Database.Migrate();
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }

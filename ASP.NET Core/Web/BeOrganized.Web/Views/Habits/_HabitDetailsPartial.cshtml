@@ -1,0 +1,19 @@
+﻿@model BeOrganized.Web.ViewModels.Habits.HabitDetailsViewModel
+<div>
+    <h3><span class="dot mt-1" style="background-color:@Model.GoalColorHex"></span> @Model.Title</h3>
+    @if (Model.StartDateTime.Date == Model.EndDateTime.Date)
+    {
+        <p>@Model.StartDateTime.ToString("dd MMMM HH:mm") - @Model.EndDateTime.ToString("HH:mm")</p>
+    }
+    else
+    {
+        <p>@Model.StartDateTime.ToString("dd MMMM HH:mm") - @Model.EndDateTime.ToString("dd MMMM HH:mm")</p>
+    }
+    <hr />
+    <h5>@Model.GoalFrequency</h5>
+    <p>@Model.GoalDuration, @Model.GoalDayTime</p>
+    <h5>@Model.GoalCalendarTitle Calendar</h5>
+</div>
+<div>
+    <a asp-controller="Goals" asp-action="Edit" asp-route-habitId="@Model.Id" asp-route-goalId="@Model.GoalId" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+</div>

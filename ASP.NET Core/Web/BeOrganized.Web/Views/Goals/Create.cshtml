@@ -1,9 +1,9 @@
 ﻿@using BeOrganized.Data.Models.Enums
 @using System.Linq
-@model BeOrganized.Web.ViewModels.Habits.HabitCreateViewModel
+@model BeOrganized.Web.ViewModels.Golas.GoalCreateViewModel
 
 @{
-    ViewData["Title"] = "Habit Create";
+    ViewData["Title"] = "Goal Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form class="mb-3" asp-area="" asp-controller="Habits" asp-action="Create" method="post">
+        <form class="mb-3" asp-area="" asp-controller="Goals" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Input.Title" class="control-label"></label>
@@ -52,13 +52,20 @@
                 </select>
                 <span asp-validation-for="Input.DayTime" class="text-danger"></span>
             </div>
-            <div class="select form-group">
-                <label>Calendar</label>
-                <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select"
-                        asp-items="@(new SelectList(Model.Calendars,"Id","Title"))">
-                    <option disabled>Choose Calendar</option>                    
+            <div class="form-group">
+                <label asp-for="Input.CalendarId"></label>
+                <select asp-for="Input.CalendarId" class="chosen-select-no-single custom-select col-md-4 "
+                        asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
+                    <option disabled>Choose Calendar</option>
+                </select>
+                <select id="color_me" asp-for="Input.ColorId" class="chosen-select-no-single custom-select col-md-4">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
                 </select>
                 <span asp-validation-for="Input.CalendarId" class="text-danger"></span>
+                <span asp-validation-for="Input.ColorId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-dark btn-lg">Create</button>

@@ -20,6 +20,7 @@ function EventChange(info) {
 }
 
 function callAjax(eventId, url, divId) {
+
     $.ajax({
         url: url,
         datatype: "json",
@@ -37,26 +38,40 @@ function callAjax(eventId, url, divId) {
 }
 
 function ShowDetails(info) {
-    var eventFromWeb = info["event"];
-    callAjax(eventFromWeb.id, "/Events/Details", "#eventDetails")
+    console.log(info);
+    var elementFromWeb = info["event"];
+    if (info.event.extendedProps.iscompleted != null) {
+        // Is Habit
+        callAjax(elementFromWeb.id, "/Habits/Details", "#elementDetails")
+    }
+    else {
+        // Is Event
+        callAjax(elementFromWeb.id, "/Events/Details", "#elementDetails")
+    }
     $('#hoverDetails').show();
 };
 
 function DeleteButton() {
     let id = $('#deleteButton').data("id");
-    callAjax(id, '/Events/Delete', "#eventDelete");
+    callAjax(id, '/Events/Delete', "#elementDelete");
+    $('#hoverDelete').show();
+};
+
+function DeleteButtonHabit() {
+    let id = $('#deleteButton').data("id");
+    callAjax(id, '/Habits/Delete', "#elementDelete");
     $('#hoverDelete').show();
 };
 
 function ShowDetailsResult() {
     let id = $('#detailsButton').data("id");
-    callAjax(id, '/Events/Details', "#eventDetails");
+    callAjax(id, '/Events/Details', "#elementDetails");
     $('#hoverDetails').show();
 };
 
 document.addEventListener('DOMContentLoaded', function () {
     var calendarEl = document.getElementById('calendar');
-
+    let all = eventsJson.concat(habitsJson);
     var calendar = new FullCalendar.Calendar(calendarEl, {
         header: {
             left: 'prev,next today ',
@@ -69,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
             day: 'numeric'
         },
         firstDay: 1,
-        plugins: ['interaction', 'dayGrid', 'timeGrid', 'dayGrid'],
+        plugins: ['interaction', 'dayGrid', 'rrule', 'timeGrid', 'dayGrid'],
         defaultView: 'timeGridWeek',
         locale: 'en-gb',
         navLinks: true, // can click day/week names to navigate views
@@ -81,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // other view-specific options here
             }
         },
-        events: eventsJson,
+        events: all,
         eventClick: ShowDetails,
         eventDrop: EventChange,
         eventResize: EventChange,

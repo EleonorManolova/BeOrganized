@@ -13,7 +13,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Events = new HashSet<Event>();
-            this.Habits = new HashSet<Habit>();
+            this.Goals = new HashSet<Goal>();
         }
 
         [Required]
@@ -33,6 +33,6 @@
 
         public virtual ICollection<Event> Events { get; set; }
 
-        public virtual ICollection<Habit> Habits { get; set; }
+        public virtual ICollection<Goal> Goals { get; set; }
     }
 }

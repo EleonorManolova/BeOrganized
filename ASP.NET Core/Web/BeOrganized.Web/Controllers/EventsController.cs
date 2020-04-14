@@ -10,7 +10,7 @@
     using Microsoft.AspNetCore.SignalR;
 
     [Authorize]
-    public class EventsController : Controller
+    public class EventsController : BaseController
     {
         private const string DeleteErrorMessage = "Failed to delete the event.";
         private const string DeleteSuccessMessage = "You successfully deleted event {0} !";

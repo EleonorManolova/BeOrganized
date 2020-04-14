@@ -3,8 +3,9 @@
     using System.Collections.Generic;
 
     using BeOrganized.Data.Models;
+    using BeOrganized.Services.Mapping;
 
-    public class GoalCreateViewModel
+    public class GoalCreateViewModel : IMapFrom<Goal>
     {
         public GoalInputViewModel Input { get; set; }
 

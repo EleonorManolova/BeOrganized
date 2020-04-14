@@ -12,6 +12,6 @@
 
         public ICollection<EventCalendarViewModel> Events { get; set; }
 
-        public ICollection<HabitCalendarViewModel> Habits { get; set; }
+         public ICollection<HabitCalendarViewModel> Habits { get; set; }
     }
 }
