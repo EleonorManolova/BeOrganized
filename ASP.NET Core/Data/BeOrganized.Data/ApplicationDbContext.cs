@@ -6,10 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore;
     using BeOrganized.Data.Common.Models;
     using BeOrganized.Data.Models;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -26,6 +26,8 @@
         public DbSet<Calendar> Calendars { get; set; }
 
         public DbSet<Event> Events { get; set; }
+
+        public DbSet<Goal> Goals { get; set; }
 
         public DbSet<Habit> Habits { get; set; }
 

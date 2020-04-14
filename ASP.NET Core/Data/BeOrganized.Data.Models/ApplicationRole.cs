@@ -3,8 +3,8 @@ namespace BeOrganized.Data.Models
 {
     using System;
 
-    using Microsoft.AspNetCore.Identity;
     using BeOrganized.Data.Common.Models;
+    using Microsoft.AspNetCore.Identity;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

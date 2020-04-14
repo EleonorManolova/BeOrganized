@@ -3,11 +3,11 @@
     using System;
     using System.Threading.Tasks;
 
+    using BeOrganized.Common;
+    using BeOrganized.Data.Models;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using BeOrganized.Common;
-    using BeOrganized.Data.Models;
 
     public class UsersSeeder : ISeeder
     {

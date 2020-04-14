@@ -1,87 +1,99 @@
-﻿namespace BeOrganized.Services.Data.Habits
+﻿namespace BeOrganized.Services.Data.Habit
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Data.Models.Enums;
-    using BeOrganized.Services.Data.Calendar;
+    using BeOrganized.Services;
+    using BeOrganized.Services.Mapping;
+    using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Habits;
 
     public class HabitService : IHabitService
     {
-        private readonly IEnumParseService enumParseService;
-        private readonly IDeletableEntityRepository<Habit> habitsRepository;
-        private readonly ICalendarService calendarService;
+        private const string InvaliHabitIdErrorMessage = "Habit with Id: {0} does not exist.";
+        private const string InvalidGoalModelErrorMessage = "Goal does not exist.";
+        private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
 
-        public HabitService(IEnumParseService enumParseService, IDeletableEntityRepository<Habit> habitsRepository, ICalendarService calendarService)
+        private readonly IDeletableEntityRepository<Habit> habitRepository;
+        private readonly IDateTimeService dateTimeService;
+        private readonly ISearchService searchService;
+
+        public HabitService(IDeletableEntityRepository<Habit> habitRepository, IDateTimeService dateTimeService, ISearchService searchService)
         {
-            this.enumParseService = enumParseService;
-            this.habitsRepository = habitsRepository;
-            this.calendarService = calendarService;
+            this.habitRepository = habitRepository;
+            this.dateTimeService = dateTimeService;
+            this.searchService = searchService;
         }
 
-        public async Task<bool> CreateAsync(HabitInputViewModel habitViewModel)
+        public ICollection<HabitCalendarViewModel> GetAllByCalendarId(string calendarId)
         {
-            var habit = new Habit
+            if (string.IsNullOrEmpty(calendarId))
             {
-                Title = habitViewModel.Title,
-                CalendarId = habitViewModel.CalendarId,
-                IsCompleted = false,
-                ColorId = habitViewModel.ColorId,
-            };
-            habit.DayTime = this.enumParseService.Parse<DayTime>(habitViewModel.DayTime);
-            habit.Duration = this.enumParseService.Parse<Duration>(habitViewModel.Duration);
-            habit.Frequency = this.enumParseService.Parse<Frequency>(habitViewModel.Frequency);
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
 
-            await this.habitsRepository.AddAsync(habit);
-            await this.habitsRepository.SaveChangesAsync();
-            return true;
+            var habits = this.habitRepository.All().Where(x => x.Goal.CalendarId == calendarId).To<HabitCalendarViewModel>().ToList();
+            return habits;
         }
 
-        public HabitCreateViewModel GetHabitViewModel(string username)
+        public async Task<bool> GenerateHabitsInitialAsync(Goal goal)
         {
-            var dayTimes = Enum.GetNames(typeof(DayTime));
-            var frequencies = Enum.GetNames(typeof(Frequency));
-            var durations = Enum.GetNames(typeof(Duration));
-
-            var dayTimesDescriptions = new List<string>();
-            var frequenciesDescriptions = new List<string>();
-            var durationsDescriptions = new List<string>();
-            foreach (var dayTime in dayTimes)
+            if (goal == null)
             {
-                dayTimesDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(dayTime, typeof(DayTime)));
+                throw new ArgumentException(InvalidGoalModelErrorMessage);
             }
 
-            foreach (var frequency in frequencies)
+            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString());
+
+            foreach (var time in startEndDateTimes)
             {
-                frequenciesDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(frequency, typeof(Frequency)));
+                var habit = new Habit()
+                {
+                    Title = goal.Title,
+                    StartDateTime = time.Start,
+                    EndDateTime = time.End,
+                    Goal = goal,
+                };
+
+                await this.searchService.CreateIndexAsync<Habit>(habit);
+                await this.habitRepository.AddAsync(habit);
             }
 
-            foreach (var duration in durations)
-            {
-                durationsDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(duration, typeof(Duration)));
-            }
+            var result = await this.habitRepository.SaveChangesAsync();
 
-            var habitViewModel = new HabitCreateViewModel
-            {
-                DayTimes = dayTimesDescriptions,
-                Frequencies = frequenciesDescriptions,
-                Durations = durationsDescriptions,
-                Calendars = this.calendarService.GetAllCalendarTitlesByUserId<CalendarHabitViewModel>(username),
-            };
-
-            return habitViewModel;
+            return result > 0;
         }
 
-        public T GetEnum<T>(string description)
+        public void GenerateMoreHabits(string calendarId)
         {
-            return this.enumParseService.Parse<T>(description);
+            if (string.IsNullOrEmpty(calendarId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var goals = this.habitRepository.All().Where(x => x.Goal.Calendar.Id == calendarId);
+        }
+
+        public HabitDetailsViewModel GetDetailsViewModelById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = this.habitRepository.All().Where(x => x.Id == id).To<HabitDetailsViewModel>().First();
+
+            if (habit == null)
+            {
+                throw new ArgumentException(string.Format(InvaliHabitIdErrorMessage, id));
+            }
+
+            return habit;
         }
     }
 }

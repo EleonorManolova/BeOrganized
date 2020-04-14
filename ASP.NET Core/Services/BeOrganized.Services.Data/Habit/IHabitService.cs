@@ -1,15 +1,19 @@
-﻿namespace BeOrganized.Services.Data.Habits
+﻿namespace BeOrganized.Services.Data.Habit
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using BeOrganized.Data.Models;
+    using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Habits;
 
     public interface IHabitService
     {
-        Task<bool> CreateAsync(HabitInputViewModel habitViewModel);
+        HabitDetailsViewModel GetDetailsViewModelById(string id);
 
-        T GetEnum<T>(string description);
+        void GenerateMoreHabits(string calendarId);
 
-        HabitCreateViewModel GetHabitViewModel(string username);
+        Task<bool> GenerateHabitsInitialAsync(Goal goal);
+        ICollection<HabitCalendarViewModel> GetAllByCalendarId(string calendarId);
     }
 }

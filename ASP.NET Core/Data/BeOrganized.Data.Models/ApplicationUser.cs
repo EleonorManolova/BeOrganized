@@ -4,8 +4,8 @@ namespace BeOrganized.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using Microsoft.AspNetCore.Identity;
     using BeOrganized.Data.Common.Models;
+    using Microsoft.AspNetCore.Identity;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
