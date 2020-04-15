@@ -32,5 +32,7 @@
 
         [Display(Name = "Goal Id")]
         public string GoalId { get; set; }
+
+        public bool IsCompleted { get; set; }
     }
 }

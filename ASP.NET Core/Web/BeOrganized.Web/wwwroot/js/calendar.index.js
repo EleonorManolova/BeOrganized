@@ -15,8 +15,12 @@ function EventChange(info) {
     const id = info.event.id;
     const startDateTime = info.event.start.toISOString();
     const endDateTime = info.event.end.toISOString();
-
-    connection.invoke("EventsChange", { id, startDateTime, endDateTime })
+    if (info.event.extendedProps.iscompleted != null) {
+        connection.invoke("HabitsChange", { id, startDateTime, endDateTime })
+    }
+    else {
+        connection.invoke("EventsChange", { id, startDateTime, endDateTime })
+    }
 }
 
 function callAjax(eventId, url, divId) {
@@ -38,7 +42,6 @@ function callAjax(eventId, url, divId) {
 }
 
 function ShowDetails(info) {
-    console.log(info);
     var elementFromWeb = info["event"];
     if (info.event.extendedProps.iscompleted != null) {
         // Is Habit

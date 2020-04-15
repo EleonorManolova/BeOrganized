@@ -32,6 +32,8 @@
         [Required]
         public DateTime StartDateTime { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int ColorId { get; set; }
 
         public virtual Color Color { get; set; }

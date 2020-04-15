@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Nest;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
@@ -13,6 +12,7 @@
     using BeOrganized.Services.Mapping;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
+    using Nest;
 
     public class EventService : IEventService
     {
@@ -235,27 +235,31 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var eventNew = new Event
+            if (string.IsNullOrEmpty(eventId))
             {
-                Id = eventId,
-                Title = model.Title,
-                Location = model.Location,
-                StartDateTime = model.StartDateTime,
-                EndDateTime = model.EndDateTime,
-                Description = model.Description,
-                CalendarId = model.CalendarId,
-                Coordinates = model.Coordinates != null ?
-                model.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString() :
-                model.Coordinates,
-                ColorId = model.ColorId,
-            };
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
 
-            return eventNew;
+            var eventFromDb = this.eventRepository.All().Where(x => x.Id == eventId).First();
+
+            eventFromDb.Id = eventId;
+            eventFromDb.Title = model.Title;
+            eventFromDb.Location = model.Location;
+            eventFromDb.StartDateTime = model.StartDateTime;
+            eventFromDb.EndDateTime = model.EndDateTime;
+            eventFromDb.Description = model.Description;
+            eventFromDb.CalendarId = model.CalendarId;
+            eventFromDb.Coordinates = model.Coordinates != null ?
+            model.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString() :
+            model.Coordinates;
+            eventFromDb.ColorId = model.ColorId;
+
+            return eventFromDb;
         }
 
         private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
         {
-            return this.calendarService.GetAllCalendarTitlesByUserId<T>(username);
+            return this.calendarService.GetAllCalendarTitlesByUserName<T>(username);
         }
     }
 }

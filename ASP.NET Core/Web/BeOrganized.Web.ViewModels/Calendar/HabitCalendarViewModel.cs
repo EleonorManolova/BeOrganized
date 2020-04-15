@@ -27,5 +27,8 @@
 
         [JsonPropertyName("color")]
         public string GoalColorHex { get; set; }
+
+        [JsonPropertyName("durationEditable")]
+        public bool DurationEditable => false;
     }
 }

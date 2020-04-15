@@ -15,9 +15,9 @@
         private readonly IGoalService goalService;
         private readonly IEnumParseService enumParseService;
 
-        public GoalsController(IGoalService habitService, IEnumParseService enumParseService)
+        public GoalsController(IGoalService goalService, IEnumParseService enumParseService)
         {
-            this.goalService = habitService;
+            this.goalService = goalService;
             this.enumParseService = enumParseService;
         }
 

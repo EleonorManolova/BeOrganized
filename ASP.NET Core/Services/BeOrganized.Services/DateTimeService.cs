@@ -38,7 +38,7 @@
             {
                 // 1, 2, 3, 4, 5, 6, 7 times a week
                 var frequencyForWeek = frequency % 10;
-                times = this.CreateTimeForMonthByWeekFrequency(duration, frequencyForWeek, hoursDaytime);
+                times = this.CreateTimeForMonthByWeekFrequency(duration, frequencyForWeek, hoursDaytime, currentDate);
             }
 
             return times;
@@ -81,7 +81,7 @@
 
         private DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
 
-        private List<StartEndDateTime> CreateTimeForMonthByWeekFrequency(int duration, int frequency, List<DateTime> hoursDaytime)
+        private List<StartEndDateTime> CreateTimeForMonthByWeekFrequency(int duration, int frequency, List<DateTime> hoursDaytime, DateTime currentDate)
         {
             // CreateTimeFor4WeeksAhead
             var datesFor4Week = new List<StartEndDateTime>();
@@ -90,11 +90,11 @@
             {
                 if (count == 0)
                 {
-                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, DateTime.Now.Date, this.firstMonday.AddDays(7 )));
+                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, currentDate.Date, this.firstMonday.AddDays(7)));
                 }
                 else
                 {
-                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, this.firstMonday.AddDays(7 * count), this.firstMonday.AddDays((7 * (count + 1)) )));
+                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, this.firstMonday.AddDays(7 * count), this.firstMonday.AddDays(7 * (count + 1))));
                 }
 
                 if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)

@@ -18,6 +18,7 @@
     public class GoalService : IGoalService
     {
         private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
+        private const string GoalErrorMessage = "Goal with Id {0} does not exist.";
 
         private readonly IEnumParseService enumParseService;
         private readonly IDeletableEntityRepository<Goal> goalRepository;
@@ -55,6 +56,7 @@
                 CalendarId = goalViewModel.CalendarId,
                 ColorId = goalViewModel.ColorId,
                 StartDateTime = DateTime.Now,
+                IsActive = true,
             };
             goal.DayTime = this.enumParseService.Parse<DayTime>(goalViewModel.DayTime);
             goal.Duration = this.enumParseService.Parse<Duration>(goalViewModel.Duration);
@@ -65,7 +67,7 @@
             await this.goalRepository.AddAsync(goal);
             var result = await this.goalRepository.SaveChangesAsync();
 
-            await this.habitService.GenerateHabitsInitialAsync(goal);
+            await this.habitService.GenerateHabitsAsync(goal, DateTime.Now);
 
             return result > 0 && response == Result.Created;
         }
@@ -116,18 +118,16 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var goal = new Goal
-            {
-                Id = goalId,
-                Title = model.Title,
-                DayTime = this.enumParseService.Parse<DayTime>(model.DayTime),
-                Frequency = this.enumParseService.Parse<Frequency>(model.Frequency),
-                Duration = this.enumParseService.Parse<Duration>(model.Duration),
-                CalendarId = model.CalendarId,
-                ColorId = model.ColorId,
-            };
+            var goalFromDb = this.goalRepository.All().Where(x => x.Id == goalId).First();
 
-            return goal;
+            goalFromDb.Title = model.Title;
+            goalFromDb.DayTime = this.enumParseService.Parse<DayTime>(model.DayTime);
+            goalFromDb.Frequency = this.enumParseService.Parse<Frequency>(model.Frequency);
+            goalFromDb.Duration = this.enumParseService.Parse<Duration>(model.Duration);
+            goalFromDb.CalendarId = model.CalendarId;
+            goalFromDb.ColorId = model.ColorId;
+
+            return goalFromDb;
         }
 
         public GoalChangeViewModel GetGoalChangeViewModelById(string goalId, string username)
@@ -166,6 +166,27 @@
             };
 
             return goalChangeViewModel;
+        }
+
+        public async Task<bool> DeleteAsync(string goalId)
+        {
+            if (string.IsNullOrEmpty(goalId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var goal = this.goalRepository.All().Where(x => x.Id == goalId).First();
+
+            if (goal == null)
+            {
+                throw new ArgumentException(string.Format(GoalErrorMessage, goalId));
+            }
+
+            goal.IsActive = false;
+            this.goalRepository.Update(goal);
+            var result = await this.goalRepository.SaveChangesAsync();
+
+            return result > 0;
         }
 
         public T GetEnum<T>(string description)

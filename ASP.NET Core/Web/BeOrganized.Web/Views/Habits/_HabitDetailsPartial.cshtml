@@ -15,5 +15,17 @@
     <h5>@Model.GoalCalendarTitle Calendar</h5>
 </div>
 <div>
-    <a asp-controller="Goals" asp-action="Edit" asp-route-goalId="@Model.GoalId" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+    <div>
+        <a asp-controller="Goals" asp-action="Edit" asp-route-goalId="@Model.GoalId" asp-route-habitId="@Model.Id" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+    </div>
+    <form method="post">
+        @if (!Model.IsCompleted)
+        {
+            <button asp-action="Complete" asp-route-id="@Model.Id" class="btn" title="Click to set to completed."><i class="far fa-check-circle"></i></button>
+        }
+        else
+        {
+            <button asp-action="NotComplete" asp-route-id="@Model.Id" title="Click to set to not completed."><i class="fas fa-check-circle"></i></button>
+        }
+    </form>
 </div>

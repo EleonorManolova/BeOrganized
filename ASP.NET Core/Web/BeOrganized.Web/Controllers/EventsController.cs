@@ -13,7 +13,7 @@
     public class EventsController : BaseController
     {
         private const string DeleteErrorMessage = "Failed to delete the event.";
-        private const string DeleteSuccessMessage = "You successfully deleted event {0} !";
+        private const string DeleteSuccessMessage = "You successfully deleted event {0}!";
 
         private readonly IEventService eventService;
         private readonly IHubContext<EventsHub> eventsHub;
@@ -108,8 +108,6 @@
             if (!await this.eventService.DeleteAsync(id))
             {
                 this.TempData["NotificationError"] = DeleteErrorMessage;
-
-                return this.Redirect($"/Events/Delete/{id}");
             }
 
             this.TempData["NotificationSuccess"] = string.Format(DeleteSuccessMessage, eventTitle);

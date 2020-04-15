@@ -18,5 +18,7 @@
         Goal MapGoalViewModelToGoal(GoalViewModel model, string id);
 
         Task<bool> UpdateAsync(Goal goalModel, string habitId);
+
+        Task<bool> DeleteAsync(string goalId);
     }
 }

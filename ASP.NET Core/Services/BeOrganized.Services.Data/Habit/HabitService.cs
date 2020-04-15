@@ -22,14 +22,12 @@
 
         private readonly IDeletableEntityRepository<Habit> habitRepository;
         private readonly IDateTimeService dateTimeService;
-        private readonly ISearchService searchService;
         private readonly IEnumParseService enumParseService;
 
-        public HabitService(IDeletableEntityRepository<Habit> habitRepository, IDateTimeService dateTimeService, ISearchService searchService, IEnumParseService enumParseService)
+        public HabitService(IDeletableEntityRepository<Habit> habitRepository, IDateTimeService dateTimeService, IEnumParseService enumParseService)
         {
             this.habitRepository = habitRepository;
             this.dateTimeService = dateTimeService;
-            this.searchService = searchService;
             this.enumParseService = enumParseService;
         }
 
@@ -49,14 +47,31 @@
             return habits;
         }
 
-        public async Task<bool> GenerateHabitsInitialAsync(Goal goal)
+        public async Task<Habit> GetByIdAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = await this.habitRepository.GetByIdWithDeletedAsync(id);
+
+            if (habit == null)
+            {
+                throw new ArgumentException(string.Format(InvalidHabitIdErrorMessage, id));
+            }
+
+            return habit;
+        }
+
+        public async Task<bool> GenerateHabitsAsync(Goal goal, DateTime currentDate)
         {
             if (goal == null)
             {
                 throw new ArgumentException(InvalidGoalModelErrorMessage);
             }
 
-            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString(), DateTime.Now);
+            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString(), currentDate);
 
             foreach (var time in startEndDateTimes)
             {
@@ -113,6 +128,7 @@
                     GoalDuration = x.Goal.Duration.ToString(),
                     GoalFrequency = x.Goal.Frequency.ToString(),
                     GoalId = x.GoalId,
+                    IsCompleted = x.IsCompleted,
                 })
                 .First();
 
@@ -142,15 +158,116 @@
 
             await this.DeleteFutureHabitsAsync(goal.Id, habit);
 
-            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString(), habit.StartDateTime);
+            await this.GenerateHabitsAsync(goal, habit.StartDateTime);
         }
 
-        private async Task DeleteFutureHabitsAsync(string goalId, Habit habit)
+        public async Task<bool> DeleteCurrentAsync(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = await this.habitRepository.GetByIdWithDeletedAsync(id);
+
+            if (habit == null)
+            {
+                throw new ArgumentException(string.Format(InvalidHabitIdErrorMessage, id));
+            }
+
+            this.habitRepository.Delete(habit);
+            var result = await this.habitRepository.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> DeleteFollowingAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = await this.habitRepository.GetByIdWithDeletedAsync(id);
+            if (habit == null)
+            {
+                throw new ArgumentException(string.Format(InvalidHabitIdErrorMessage, id));
+            }
+
+            var result = await this.DeleteFutureHabitsAsync(habit.GoalId, habit);
+
+            return result;
+        }
+
+        public async Task<bool> SetComplete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = this.habitRepository.All().Where(x => x.Id == id).First();
+            if (habit.IsCompleted)
+            {
+                return false;
+            }
+
+            habit.IsCompleted = true;
+            this.habitRepository.Update(habit);
+            var result = await this.habitRepository.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> SetNotComplete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var habit = this.habitRepository.All().Where(x => x.Id == id).First();
+            if (!habit.IsCompleted)
+            {
+                return false;
+            }
+
+            habit.IsCompleted = false;
+            this.habitRepository.Update(habit);
+            var result = await this.habitRepository.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        public async Task<bool> UpdateAsync(Habit model, string habitId)
+        {
+            if (model == null || string.IsNullOrEmpty(habitId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            this.habitRepository.Update(model);
+            var result = await this.habitRepository.SaveChangesAsync();
+
+            return result > 0;
+        }
+
+        private async Task<bool> DeleteFutureHabitsAsync(string goalId, Habit habit)
+        {
+            if (string.IsNullOrEmpty(goalId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (habit == null)
+            {
+                throw new ArgumentException(InvalidHabitIdErrorMessage, habit.Id);
+            }
+
             var habits = this.habitRepository
                  .All()
                  .Where(x => x.GoalId == goalId)
-                 .Where(x => x.StartDateTime > habit.StartDateTime)
+                 .Where(x => x.StartDateTime >= habit.StartDateTime)
                  .ToList();
 
             foreach (var futureHabit in habits)
@@ -158,7 +275,9 @@
                 this.habitRepository.Delete(futureHabit);
             }
 
-            await this.habitRepository.SaveChangesAsync();
+            var result = await this.habitRepository.SaveChangesAsync();
+
+            return result > 0;
         }
     }
 }

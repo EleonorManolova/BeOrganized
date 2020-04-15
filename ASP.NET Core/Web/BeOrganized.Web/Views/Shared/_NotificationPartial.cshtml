@@ -4,10 +4,16 @@
 
 @if (hasNotification)
 {
-    <div class="alert alert-info alert-dismissible fade show notification" role="alert">
-        @TempData["NotificationSuccess"]
-    </div>
-    <div  class="alert alert-danger alert-dismissible fade show notification" role="alert">
-        @TempData["NotificationError"]
-    </div>
+    if (@TempData["NotificationSuccess"] != null)
+    {
+        <div class="alert alert-info alert-dismissible fade show notification" role="alert">
+            @TempData["NotificationSuccess"]
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger alert-dismissible fade show notification" role="alert">
+            @TempData["NotificationError"]
+        </div>
+    }
 }
