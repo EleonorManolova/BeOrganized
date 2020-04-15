@@ -43,7 +43,7 @@
 
     <div class="form-group">
         <label asp-for="EventModel.Location" class="control-label"></label>
-        <input asp-for="EventModel.Location" class="form-control mb-2" id="autocomplete4" placeholder="Add Location"/>
+        <input asp-for="EventModel.Location" class="form-control mb-2 col-md-5" id="autocomplete4" placeholder="Add Location" />
         <span asp-validation-for="EventModel.Location" class="text-danger"></span>
         <input hidden id="coordinates" asp-for="EventModel.Coordinates" />
         <div id="mapWithCoordinates"></div>
@@ -52,18 +52,10 @@
 
     <div class="form-group">
         <label asp-for="EventModel.Description"></label>
-        <textarea asp-for="EventModel.Description" class="form-control min-vh-50" rows="3" placeholder="Add Description"></textarea>
+        <textarea asp-for="EventModel.Description" class="form-control min-vh-50 col-md-5" rows="3" placeholder="Add Description"></textarea>
         <span asp-validation-for="EventModel.Description" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="EventModel.CalendarId" class="control-label"></label>
-        <select asp-for="EventModel.CalendarId" class="form-control" asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
-
-            <option disabled>Choose Calendar</option>
-        </select>
-        <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
-    </div>
     <div class="form-group">
         <label asp-for="EventModel.CalendarId"></label>
         <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select col-md-2 "
@@ -77,10 +69,10 @@
             }
         </select>
         <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
-        <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
+        <span asp-validation-for="EventModel.ColorId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary btn-lg" />
-        <a class="btn btn-info btn-lg" asp-action="Index">Back to List</a>
+        <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
     </div>
 </form>

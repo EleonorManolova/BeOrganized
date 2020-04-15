@@ -1,17 +1,22 @@
 ﻿namespace BeOrganized.Services.Data.Goal
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using BeOrganized.Web.ViewModels.Calendar;
+    using BeOrganized.Data.Models;
     using BeOrganized.Web.ViewModels.Golas;
 
     public interface IGoalService
     {
-        Task<bool> CreateAsync(GoalInputViewModel habitViewModel);
+        Task<bool> CreateAsync(GoalViewModel habitViewModel);
 
         T GetEnum<T>(string description);
 
-        GoalCreateViewModel GetGoalViewModel(string username);
+        GoalChangeViewModel GetGoalViewModel(string username);
+
+        GoalChangeViewModel GetGoalChangeViewModelById(string goalId, string username);
+
+        Goal MapGoalViewModelToGoal(GoalViewModel model, string id);
+
+        Task<bool> UpdateAsync(Goal goalModel, string habitId);
     }
 }

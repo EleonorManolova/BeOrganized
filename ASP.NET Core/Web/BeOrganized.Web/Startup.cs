@@ -126,7 +126,7 @@
         {
             AutoMapperConfig.RegisterMappings(
                 typeof(ErrorViewModel).GetTypeInfo().Assembly,
-                typeof(GoalInputViewModel).GetTypeInfo().Assembly,
+                typeof(GoalViewModel).GetTypeInfo().Assembly,
                 typeof(EventViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup

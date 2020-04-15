@@ -4,7 +4,6 @@
 
     using BeOrganized.Data.Models.Enums;
     using BeOrganized.Services;
-    using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Goal;
     using BeOrganized.Web.ViewModels.Golas;
     using Microsoft.AspNetCore.Authorization;
@@ -34,19 +33,21 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAsync(GoalCreateViewModel model)
+        public async Task<IActionResult> CreateAsync(GoalChangeViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            if (!this.enumParseService.IsEnumValid<DayTime>(model.Input.DayTime) || !this.enumParseService.IsEnumValid<Frequency>(model.Input.Frequency) || !this.enumParseService.IsEnumValid<Duration>(model.Input.Duration))
+            if (!this.enumParseService.IsEnumValid<DayTime>(model.GoalModel.DayTime.ToString()) ||
+                !this.enumParseService.IsEnumValid<Frequency>(model.GoalModel.Frequency.ToString()) ||
+                !this.enumParseService.IsEnumValid<Duration>(model.GoalModel.Duration.ToString()))
             {
                 return this.View(model);
             }
 
-            await this.goalService.CreateAsync(model.Input);
+            await this.goalService.CreateAsync(model.GoalModel);
             return this.Redirect("/");
         }
 
@@ -58,27 +59,29 @@
                 return this.BadRequest();
             }
 
-            var goal = this.goalService.GetGoalCreateViewModelById(habitId, goalId);
+            var goal = this.goalService.GetGoalChangeViewModelById(goalId, this.User.Identity.Name);
             if (goal == null)
             {
                 return this.NotFound();
             }
 
+            this.TempData["GoalId"] = goalId;
             this.TempData["HabitId"] = habitId;
 
             return this.View(goal);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditAsync(GoalCreateViewModel model, string id)
+        public async Task<IActionResult> EditAsync(GoalChangeViewModel model, string id)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
             }
 
-            //var goalModel = this.goalService.MapEventViewModelToEvent(model, id);
-            //await this.goalService.UpdateAsync(goalModel, id);
+            var habitId = this.TempData["HabitId"].ToString();
+            var goalModel = this.goalService.MapGoalViewModelToGoal(model.GoalModel, id);
+            await this.goalService.UpdateAsync(goalModel, habitId);
             return this.Redirect("/Calendar");
         }
     }

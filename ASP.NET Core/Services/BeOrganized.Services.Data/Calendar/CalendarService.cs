@@ -21,7 +21,7 @@
             this.calendarRepository = calendarRepository;
         }
 
-        public ICollection<T> GetAllCalendarTitlesByUserId<T>(string username)
+        public ICollection<T> GetAllCalendarTitlesByUserName<T>(string username)
         {
             if (string.IsNullOrEmpty(username))
             {

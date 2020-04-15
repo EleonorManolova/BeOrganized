@@ -1,15 +1,73 @@
-﻿
+﻿@model BeOrganized.Web.ViewModels.Golas.GoalChangeViewModel
 @{
-    Layout = null;
+    ViewData["Title"] = "Goal Edit";
 }
 
-<!DOCTYPE html>
+<h1>@ViewData["Title"]</h1>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
-</head>
-<body>
-</body>
-</html>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form class="mb-3" asp-area="" asp-controller="Goals" asp-action="Edit" asp-route-id="@TempData["GoalId"]" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GoalModel.Title" class="control-label"></label>
+                <input asp-for="GoalModel.Title" class="form-control" placeholder="Add Title" />
+                <span asp-validation-for="GoalModel.Title" class="text-danger"></span>
+            </div>
+            <div class="select form-group">
+                <label asp-for="GoalModel.Duration" class="control-label"></label>
+                <select asp-for="GoalModel.Duration" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Duration</option>
+                    @foreach (var duration in Model.Durations)
+                    {
+                        <option value="@duration">@duration</option>
+                    }
+                </select>
+                <span asp-validation-for="GoalModel.Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoalModel.Frequency" class="control-label">How often?</label>
+                <select asp-for="GoalModel.Frequency" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Time</option>
+                    @foreach (var frequency in Model.Frequencies)
+                    {
+                        <option value="@frequency">@frequency</option>
+                    }
+                </select>
+                <span asp-validation-for="GoalModel.Frequency" class="text-danger"></span>
+            </div>
+            <div class="select form-group">
+                <label>Prefered Time</label>
+                <select asp-for="GoalModel.DayTime" class="chosen-select-no-single custom-select">
+                    <option value="" disabled selected>Choose Time</option>
+                    @foreach (var daytime in Model.DayTimes)
+                    {
+                        <option value="@daytime">@daytime</option>
+                    }
+                </select>
+                <span asp-validation-for="GoalModel.DayTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GoalModel.CalendarId"></label>
+                <select asp-for="GoalModel.CalendarId" class="chosen-select-no-single custom-select col-md-4 "
+                        asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
+                    <option disabled>Choose Calendar</option>
+                </select>
+                <select id="color_me" asp-for="GoalModel.ColorId" class="chosen-select-no-single custom-select col-md-4">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="GoalModel.CalendarId" class="text-danger"></span>
+                <span asp-validation-for="GoalModel.ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark btn-lg">Save</button>
+                <a asp-controller="Calendar" asp-action="Index" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

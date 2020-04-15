@@ -12,8 +12,6 @@
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Color;
     using BeOrganized.Services.Data.Habit;
-    using BeOrganized.Services.Mapping;
-    using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Golas;
     using Nest;
 
@@ -22,23 +20,28 @@
         private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
 
         private readonly IEnumParseService enumParseService;
-        private readonly IDeletableEntityRepository<Goal> goalsRepository;
+        private readonly IDeletableEntityRepository<Goal> goalRepository;
         private readonly ICalendarService calendarService;
         private readonly ISearchService searchService;
         private readonly IColorService colorService;
         private readonly IHabitService habitService;
+        private List<string> dayTimesDescriptions;
+        private List<string> frequenciesDescriptions;
+        private List<string> durationsDescriptions;
 
-        public GoalService(IEnumParseService enumParseService, IDeletableEntityRepository<Goal> goalsRepository, ICalendarService calendarService, ISearchService searchService, IColorService colorService, IHabitService habitService)
+        public GoalService(IEnumParseService enumParseService, IDeletableEntityRepository<Goal> goalRepository, ICalendarService calendarService, ISearchService searchService, IColorService colorService, IHabitService habitService)
         {
             this.enumParseService = enumParseService;
-            this.goalsRepository = goalsRepository;
+            this.goalRepository = goalRepository;
             this.calendarService = calendarService;
             this.searchService = searchService;
             this.colorService = colorService;
             this.habitService = habitService;
+
+            this.FillEnumDescriptions();
         }
 
-        public async Task<bool> CreateAsync(GoalInputViewModel goalViewModel)
+        public async Task<bool> CreateAsync(GoalViewModel goalViewModel)
         {
             if (string.IsNullOrEmpty(goalViewModel.Title) ||
                string.IsNullOrEmpty(goalViewModel.CalendarId))
@@ -59,56 +62,110 @@
 
             var response = await this.searchService.CreateIndexAsync(goal);
 
-            await this.goalsRepository.AddAsync(goal);
-            var result = await this.goalsRepository.SaveChangesAsync();
+            await this.goalRepository.AddAsync(goal);
+            var result = await this.goalRepository.SaveChangesAsync();
 
             await this.habitService.GenerateHabitsInitialAsync(goal);
 
             return result > 0 && response == Result.Created;
         }
 
-        public GoalCreateViewModel GetGoalViewModel(string username)
+        public GoalChangeViewModel GetGoalViewModel(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var dayTimes = Enum.GetNames(typeof(DayTime));
-            var frequencies = Enum.GetNames(typeof(Frequency));
-            var durations = Enum.GetNames(typeof(Duration));
-
-            var dayTimesDescriptions = new List<string>();
-            var frequenciesDescriptions = new List<string>();
-            var durationsDescriptions = new List<string>();
-            foreach (var dayTime in dayTimes)
+            var goalViewModel = new GoalChangeViewModel
             {
-                dayTimesDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(dayTime, typeof(DayTime)));
-            }
-
-            foreach (var frequency in frequencies)
-            {
-                frequenciesDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(frequency, typeof(Frequency)));
-            }
-
-            foreach (var duration in durations)
-            {
-                durationsDescriptions.Add(this.enumParseService
-                    .GetEnumDescription(duration, typeof(Duration)));
-            }
-
-            var goalViewModel = new GoalCreateViewModel
-            {
-                DayTimes = dayTimesDescriptions,
-                Frequencies = frequenciesDescriptions,
-                Durations = durationsDescriptions,
-                Calendars = this.calendarService.GetAllCalendarTitlesByUserId<CalendarHabitViewModel>(username),
+                DayTimes = this.dayTimesDescriptions,
+                Frequencies = this.frequenciesDescriptions,
+                Durations = this.durationsDescriptions,
+                Calendars = this.calendarService.GetAllCalendarTitlesByUserName<CalendarHabitViewModel>(username),
                 Colors = this.colorService.GetAllColors(),
             };
 
             return goalViewModel;
+        }
+
+        public async Task<bool> UpdateAsync(Goal model, string habitId)
+        {
+            if (model == null || string.IsNullOrEmpty(habitId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            this.goalRepository.Update(model);
+            var result = await this.goalRepository.SaveChangesAsync();
+
+            await this.habitService.UpdateHabitsAsync(model, habitId);
+
+            return result > 0;
+        }
+
+        public Goal MapGoalViewModelToGoal(GoalViewModel model, string goalId)
+        {
+            if (model == null)
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (string.IsNullOrEmpty(goalId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var goal = new Goal
+            {
+                Id = goalId,
+                Title = model.Title,
+                DayTime = this.enumParseService.Parse<DayTime>(model.DayTime),
+                Frequency = this.enumParseService.Parse<Frequency>(model.Frequency),
+                Duration = this.enumParseService.Parse<Duration>(model.Duration),
+                CalendarId = model.CalendarId,
+                ColorId = model.ColorId,
+            };
+
+            return goal;
+        }
+
+        public GoalChangeViewModel GetGoalChangeViewModelById(string goalId, string username)
+        {
+            if (string.IsNullOrEmpty(goalId) ||
+             string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (this.goalRepository.All().Count() <= 0)
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var goalModel = this.goalRepository.All().Where(x => x.Id == goalId).First();
+
+            var goalViewModel = new GoalViewModel
+            {
+                Title = goalModel.Title,
+                Frequency = this.enumParseService.GetEnumDescription(goalModel.Frequency.ToString(), typeof(Frequency)),
+                DayTime = this.enumParseService.GetEnumDescription(goalModel.DayTime.ToString(), typeof(DayTime)),
+                Duration = this.enumParseService.GetEnumDescription(goalModel.Duration.ToString(), typeof(Duration)),
+                CalendarId = goalModel.CalendarId,
+                ColorId = goalModel.ColorId,
+            };
+
+            var goalChangeViewModel = new GoalChangeViewModel
+            {
+                GoalModel = goalViewModel,
+                DayTimes = this.dayTimesDescriptions,
+                Frequencies = this.frequenciesDescriptions,
+                Durations = this.durationsDescriptions,
+                Calendars = this.calendarService.GetAllCalendarTitlesByUserName<CalendarHabitViewModel>(username),
+                Colors = this.colorService.GetAllColors(),
+            };
+
+            return goalChangeViewModel;
         }
 
         public T GetEnum<T>(string description)
@@ -119,6 +176,35 @@
             }
 
             return this.enumParseService.Parse<T>(description);
+        }
+
+        private void FillEnumDescriptions()
+        {
+            this.dayTimesDescriptions = new List<string>();
+            this.frequenciesDescriptions = new List<string>();
+            this.durationsDescriptions = new List<string>();
+
+            var dayTimes = Enum.GetNames(typeof(DayTime));
+            var frequencies = Enum.GetNames(typeof(Frequency));
+            var durations = Enum.GetNames(typeof(Duration));
+
+            foreach (var dayTime in dayTimes)
+            {
+                this.dayTimesDescriptions.Add(this.enumParseService
+                    .GetEnumDescription(dayTime, typeof(DayTime)));
+            }
+
+            foreach (var frequency in frequencies)
+            {
+                this.frequenciesDescriptions.Add(this.enumParseService
+                    .GetEnumDescription(frequency, typeof(Frequency)));
+            }
+
+            foreach (var duration in durations)
+            {
+                this.durationsDescriptions.Add(this.enumParseService
+                    .GetEnumDescription(duration, typeof(Duration)));
+            }
         }
     }
 }

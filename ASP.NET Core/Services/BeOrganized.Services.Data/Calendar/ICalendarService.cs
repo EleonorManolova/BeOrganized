@@ -4,7 +4,7 @@
 
     public interface ICalendarService
     {
-        ICollection<T> GetAllCalendarTitlesByUserId<T>(string username);
+        ICollection<T> GetAllCalendarTitlesByUserName<T>(string username);
 
         string GetDefaultCalendarId(string username);
 

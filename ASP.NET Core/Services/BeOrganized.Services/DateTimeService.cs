@@ -2,23 +2,28 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     public class DateTimeService : IDateTimeService
     {
         private static Dictionary<string, List<DateTime>> dictionary;
+        // Monday of the given date
         private DateTime firstMonday;
+        // Monday after month of current date
+        private DateTime firstMondayAftherMonth;
         private Random random;
 
         public DateTimeService()
         {
             this.random = new Random();
             GetTimesByDayTime();
-            this.firstMonday = FirstDayOfWeek(DateTime.Now);
+            this.firstMondayAftherMonth = this.FirstDayOfWeekAfhterMonth(DateTime.Now);
         }
 
-        public List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime)
+        public List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime, DateTime currentDate)
         {
+            this.firstMonday = this.FirstDayOfWeek(currentDate);
             var daytimeLower = dayTime.ToLower();
 
             var hoursDaytime = dictionary[daytimeLower];
@@ -27,7 +32,7 @@
             if (frequency / 10 < 1)
             {
                 // 1 or 2 times a month
-                times = this.CreateTime(duration, frequency, hoursDaytime, DateTime.Now, this.firstMonday.AddMonths(1));
+                times = this.CreateTime(duration, frequency, hoursDaytime, currentDate, this.firstMonday.AddMonths(1));
             }
             else if (frequency / 10 < 10)
             {
@@ -37,27 +42,6 @@
             }
 
             return times;
-        }
-
-        private static void GetTimesByDayTime()
-        {
-            dictionary = new Dictionary<string, List<DateTime>>();
-            dictionary.Add("morning", GetTimesBetween("09:00", "12:00"));
-            dictionary.Add("afternoon", GetTimesBetween("12:00", "17:00"));
-            dictionary.Add("evening", GetTimesBetween("17:00", "21:00"));
-            dictionary.Add("anytime", GetTimesBetween("17:00", "21:00"));
-        }
-
-        private static DateTime FirstDayOfWeek(DateTime dt)
-        {
-            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
-            if (diff < 0)
-            {
-                diff += 7;
-            }
-
-            return dt.AddDays(-diff).Date;
         }
 
         private static List<DateTime> GetTimesBetween(string startTime, string endTime)
@@ -74,21 +58,51 @@
             return listOfTimes;
         }
 
+        private static void GetTimesByDayTime()
+        {
+            dictionary = new Dictionary<string, List<DateTime>>();
+            dictionary.Add("morning", GetTimesBetween("09:00", "12:00"));
+            dictionary.Add("afternoon", GetTimesBetween("12:00", "17:00"));
+            dictionary.Add("evening", GetTimesBetween("17:00", "21:00"));
+            dictionary.Add("anytime", GetTimesBetween("09:00", "21:00"));
+        }
+
+        private DateTime FirstDayOfWeek(DateTime dt)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+
+            return dt.AddDays(-diff).Date;
+        }
+
+        private DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
+
         private List<StartEndDateTime> CreateTimeForMonthByWeekFrequency(int duration, int frequency, List<DateTime> hoursDaytime)
         {
             // CreateTimeFor4WeeksAhead
             var datesFor4Week = new List<StartEndDateTime>();
-
-            for (int i = 0; i < 4; i++)
+            var count = 0;
+            while (true)
             {
-                if (i == 0)
+                if (count == 0)
                 {
-                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, DateTime.Now.Date, this.firstMonday.AddDays(7)));
+                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, DateTime.Now.Date, this.firstMonday.AddDays(7 )));
                 }
                 else
                 {
-                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, this.firstMonday.AddDays((7 * i) + 1), this.firstMonday.AddDays(7 * (i + 1))));
+                    datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, this.firstMonday.AddDays(7 * count), this.firstMonday.AddDays((7 * (count + 1)) )));
                 }
+
+                if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)
+                {
+                    break;
+                }
+
+                count++;
             }
 
             return datesFor4Week;
@@ -98,10 +112,11 @@
         {
             // CreateTimeAhead
             var datesForWeek = new List<StartEndDateTime>();
+            var days = this.RandomDays(firstDay, lastDate, frequency);
 
-            for (int i = 0; i < frequency; i++)
+            for (int i = 0; i < days.Count; i++)
             {
-                var startDateTime = this.RandomDay(firstDay, lastDate);
+                var startDateTime = days[i];
                 var time = hoursDaytime[this.random.Next(hoursDaytime.Count)].TimeOfDay.Ticks;
                 startDateTime = startDateTime.AddTicks(time);
                 datesForWeek.Add(new StartEndDateTime { Start = startDateTime, End = startDateTime.AddMinutes(duration) });
@@ -110,10 +125,15 @@
             return datesForWeek;
         }
 
-        private DateTime RandomDay(DateTime startDate, DateTime endDate)
+        private List<DateTime> RandomDays(DateTime startDate, DateTime endDate, int count)
         {
-            int range = (endDate - startDate).Days;
-            return startDate.AddDays(this.random.Next(range));
+            var randomDays = Enumerable
+                .Range(0, (endDate - startDate).Days)
+                .OrderBy(x => this.random.Next())
+                .Take(count)
+                .Select(x => startDate.AddDays(x))
+                .ToList();
+            return randomDays;
         }
     }
 

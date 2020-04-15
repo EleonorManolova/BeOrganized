@@ -1,11 +1,10 @@
 ﻿namespace BeOrganized.Web.Controllers
 {
     using System.Text.Json;
-    using System.Threading.Tasks;
+
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Events;
-    using BeOrganized.Services.Data.Goal;
     using BeOrganized.Services.Data.Habit;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -43,9 +42,9 @@
             var habits = this.habitService.GetAllByCalendarId(calendarId);
 
             var eventsJson = JsonSerializer.Serialize(events);
-             var habitsJson = JsonSerializer.Serialize(habits);
+            var habitsJson = JsonSerializer.Serialize(habits);
             this.ViewBag.EventsJson = eventsJson;
-             this.ViewBag.HabitsJson = habitsJson;
+            this.ViewBag.HabitsJson = habitsJson;
             return this.View();
         }
     }

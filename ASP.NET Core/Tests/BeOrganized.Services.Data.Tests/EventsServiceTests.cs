@@ -6,8 +6,6 @@
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Moq;
-    using Nest;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
@@ -16,6 +14,8 @@
     using BeOrganized.Services.Mapping;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
+    using Moq;
+    using Nest;
     using Xunit;
 
     using Calendar = BeOrganized.Data.Models.Calendar;

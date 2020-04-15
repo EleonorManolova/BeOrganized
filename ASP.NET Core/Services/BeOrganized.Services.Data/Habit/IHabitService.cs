@@ -14,6 +14,9 @@
         void GenerateMoreHabits(string calendarId);
 
         Task<bool> GenerateHabitsInitialAsync(Goal goal);
+
         ICollection<HabitCalendarViewModel> GetAllByCalendarId(string calendarId);
+
+        Task UpdateHabitsAsync(Goal model, string habitId);
     }
 }

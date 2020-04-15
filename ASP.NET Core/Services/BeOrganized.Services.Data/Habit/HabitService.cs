@@ -15,7 +15,8 @@
 
     public class HabitService : IHabitService
     {
-        private const string InvaliHabitIdErrorMessage = "Habit with Id: {0} does not exist.";
+        private const string InvalidHabitIdErrorMessage = "Habit with Id: {0} does not exist.";
+        private const string InvaliCalendarIdErrorMessage = "Calendar with Id: {0} does not exist.";
         private const string InvalidGoalModelErrorMessage = "Goal does not exist.";
         private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
 
@@ -36,11 +37,10 @@
         {
             if (string.IsNullOrEmpty(calendarId))
             {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
+                throw new ArgumentException(string.Format(InvaliCalendarIdErrorMessage, calendarId));
             }
 
-            var habits = this
-                .habitRepository
+            var habits = this.habitRepository
                 .All()
                 .Where(x => x.Goal.CalendarId == calendarId)
                 .To<HabitCalendarViewModel>()
@@ -56,7 +56,7 @@
                 throw new ArgumentException(InvalidGoalModelErrorMessage);
             }
 
-            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString());
+            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString(), DateTime.Now);
 
             foreach (var time in startEndDateTimes)
             {
@@ -80,7 +80,7 @@
         {
             if (string.IsNullOrEmpty(calendarId))
             {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
+                throw new ArgumentException(string.Format(InvaliCalendarIdErrorMessage, calendarId));
             }
 
             var goals = this.habitRepository.All().Where(x => x.Goal.Calendar.Id == calendarId);
@@ -90,9 +90,8 @@
         {
             if (string.IsNullOrEmpty(id))
             {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
+                throw new ArgumentException(string.Format(InvalidHabitIdErrorMessage, id));
             }
-
 
             if (this.habitRepository.All().Count() <= 0)
             {
@@ -117,12 +116,49 @@
                 })
                 .First();
 
-
             habit.GoalFrequency = this.enumParseService.GetEnumDescription(habit.GoalFrequency, typeof(Frequency));
             habit.GoalDuration = this.enumParseService.GetEnumDescription(habit.GoalDuration, typeof(Duration));
             habit.GoalDayTime = this.enumParseService.GetEnumDescription(habit.GoalDayTime, typeof(DayTime));
 
             return habit;
+        }
+
+        public async Task UpdateHabitsAsync(Goal goal, string habitId)
+        {
+            if (string.IsNullOrEmpty(habitId))
+            {
+                throw new ArgumentException(string.Format(InvalidHabitIdErrorMessage, habitId));
+            }
+
+            if (goal == null)
+            {
+                throw new ArgumentException(InvalidGoalModelErrorMessage);
+            }
+
+            var habit = this.habitRepository
+                .All()
+                .Where(x => x.Id == habitId)
+                .First();
+
+            await this.DeleteFutureHabitsAsync(goal.Id, habit);
+
+            var startEndDateTimes = this.dateTimeService.GenerateDatesForMonthAhead((int)goal.Duration, (int)goal.Frequency, goal.DayTime.ToString(), habit.StartDateTime);
+        }
+
+        private async Task DeleteFutureHabitsAsync(string goalId, Habit habit)
+        {
+            var habits = this.habitRepository
+                 .All()
+                 .Where(x => x.GoalId == goalId)
+                 .Where(x => x.StartDateTime > habit.StartDateTime)
+                 .ToList();
+
+            foreach (var futureHabit in habits)
+            {
+                this.habitRepository.Delete(futureHabit);
+            }
+
+            await this.habitRepository.SaveChangesAsync();
         }
     }
 }

@@ -5,9 +5,9 @@
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Mapping;
 
-    public class GoalCreateViewModel : IMapFrom<Goal>
+    public class GoalChangeViewModel : IMapFrom<Goal>
     {
-        public GoalInputViewModel Input { get; set; }
+        public GoalViewModel GoalModel { get; set; }
 
         public ICollection<string> DayTimes { get; set; }
 

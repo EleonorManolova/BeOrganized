@@ -15,5 +15,5 @@
     <h5>@Model.GoalCalendarTitle Calendar</h5>
 </div>
 <div>
-    <a asp-controller="Goals" asp-action="Edit" asp-route-habitId="@Model.Id" asp-route-goalId="@Model.GoalId" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+    <a asp-controller="Goals" asp-action="Edit" asp-route-goalId="@Model.GoalId" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
 </div>
