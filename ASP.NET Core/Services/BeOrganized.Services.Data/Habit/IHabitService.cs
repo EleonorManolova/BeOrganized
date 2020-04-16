@@ -12,7 +12,7 @@
     {
         HabitDetailsViewModel GetDetailsViewModelById(string id);
 
-        void GenerateMoreHabits(string calendarId);
+        Task GenerateMoreHabitsAsync(string calendarId);
 
         Task<bool> GenerateHabitsAsync(Goal goal, DateTime currentDate);
 
@@ -26,9 +26,9 @@
 
         Task<bool> DeleteFollowingAsync(string id);
 
-        Task<bool> SetComplete(string id);
+        Task<bool> SetCompleteAsync(string id);
 
-        Task<bool> SetNotComplete(string id);
+        Task<bool> SetNotCompleteAsync(string id);
 
         Task<bool> UpdateAsync(Habit model, string id);
     }

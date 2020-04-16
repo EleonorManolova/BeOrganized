@@ -19,26 +19,23 @@
 </head>
 
 <body>
-    <div id="buttons">
+    <div id="calendarAndButtons" >
         <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
         <a asp-controller="Goals" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Goal</a>
+        <div id='calendar' class="removeContainer"></div>
     </div>
-    <div id='calendar' class="removeContainer"></div>
+
     <script>
             var eventsJson = @Html.Raw(ViewBag.EventsJson);
             var habitsJson = @Html.Raw(ViewBag.HabitsJson);
     </script>
     <environment names="Development">
-        @*<script src="~/lib/rrule/dist/es5/rrule.min.js"></script>*@
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
         <script src='~/lib/fullcalendar/core/main.js'></script>
         <script src='~/lib/fullcalendar/daygrid/main.js'></script>
         <script src='~/lib/fullcalendar/timegrid//main.js'></script>
         <script src='~/lib/fullcalendar/interaction/main.js'></script>
-        @*<script src='~/lib/fullcalendar/rrule/main.js'></script>*@
         <script src='~/lib/fullcalendar/resource-common/main.js'></script>
-        @*<script src='~/lib/fullcalendar/resource-timegrid/main.js'></script>*@
-        @*<script src='~/lib/fullcalendar/resource-daygrid/main.js'></script>*@
         <script src="~/lib/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
 
         <script src="~/js/calendar.index.js" asp-append-version="true"></script>
@@ -49,12 +46,9 @@
         <script src='~/lib/fullcalendar/daygrid/main.min.js'></script>
         <script src='~/lib/fullcalendar/timegrid/main.min.js'></script>
         <script src='~/lib/fullcalendar/interaction/main.min.js'></script>
-        @*<script src='~/lib/fullcalendar/rrule/main.min.js'></script>*@
         <script src='~/lib/fullcalendar/resource-common/main.min.js'></script>
-        @*<script src='~/lib/fullcalendar/resource-timegrid/main.min.js'></script>*@
-        @*<script src='~/lib/fullcalendar/resource-daygrid/main.min.js'></script>*@
         <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
-        
-        <script src="~/js/calendar.index.min.js" asp-append-version="true"></script>
+
+        <script src="~/js/calendar.index.js" asp-append-version="true"></script>
     </environment>
 </body>

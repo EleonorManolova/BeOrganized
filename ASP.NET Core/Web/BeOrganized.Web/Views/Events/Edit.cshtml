@@ -58,11 +58,11 @@
 
     <div class="form-group">
         <label asp-for="EventModel.CalendarId"></label>
-        <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select col-md-2 "
+        <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select col-md-2 m-1"
                 asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
             <option disabled>Choose Calendar</option>
         </select>
-        <select id="color_me" asp-for="EventModel.ColorId" class="chosen-select-no-single custom-select col-md-2">
+        <select id="color_me" asp-for="EventModel.ColorId" class="chosen-select-no-single custom-select col-md-2 m-1">
             @foreach (var color in Model.Colors)
             {
                 <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>

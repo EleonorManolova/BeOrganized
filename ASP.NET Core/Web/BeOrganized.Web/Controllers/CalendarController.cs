@@ -1,7 +1,7 @@
 ﻿namespace BeOrganized.Web.Controllers
 {
     using System.Text.Json;
-
+    using System.Threading.Tasks;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Events;
@@ -26,7 +26,7 @@
             this.signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (string.IsNullOrEmpty(this.signInManager.GetUserId(this.User)))
             {
@@ -36,7 +36,7 @@
             var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
 
             // Generate Habit for month ahead
-            this.habitService.GenerateMoreHabits(calendarId);
+            await this.habitService.GenerateMoreHabitsAsync(calendarId);
 
             var events = this.eventService.GetAllByCalendarId(calendarId);
             var habits = this.habitService.GetAllByCalendarId(calendarId);

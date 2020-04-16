@@ -1,12 +1,11 @@
 ﻿namespace BeOrganized.Data.Models.Enums
 {
     using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
 
     public enum Duration
     {
-        [Description("15 Minutes")]
-        FifteenMinutes = 15,
+        //[Description("15 Minutes")]
+        //FifteenMinutes = 15,
 
         [Description("30 Minutes")]
         ThirtyMinutes = 30,

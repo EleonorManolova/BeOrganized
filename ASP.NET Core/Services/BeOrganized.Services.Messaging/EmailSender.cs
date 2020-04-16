@@ -21,7 +21,7 @@
         {
             if (emailReciever == this.Options.SupportEmail)
             {
-                this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, "contactForm@BeOrganized.com", subject, message, emailReciever);
+                this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, "contactForm@beorganized.com", subject, message, emailReciever);
             }
 
             return this.Execute(this.Options.Key, this.Options.Host, this.Options.SupportName, this.Options.SupportEmail, subject, message, emailReciever);

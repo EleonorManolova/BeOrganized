@@ -21,7 +21,7 @@
     <form method="post">
         @if (!Model.IsCompleted)
         {
-            <button asp-action="Complete" asp-route-id="@Model.Id" class="btn" title="Click to set to completed."><i class="far fa-check-circle"></i></button>
+            <button asp-action="Complete" asp-route-id="@Model.Id" title="Click to set to completed."><i class="far fa-check-circle"></i></button>
         }
         else
         {

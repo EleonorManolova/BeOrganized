@@ -20,7 +20,6 @@
     using BeOrganized.Web.Extentions;
     using BeOrganized.Web.Hubs;
     using BeOrganized.Web.ViewModels;
-    using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
     using BeOrganized.Web.ViewModels.Golas;
     using Microsoft.AspNetCore.Builder;
@@ -146,9 +145,11 @@
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?statusCode={0}");
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                //app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?statusCode={0}");
+                //app.UseExceptionHandler("/Home/Error");
+                //app.UseHsts();
             }
 
             app.UseResponseCompression();

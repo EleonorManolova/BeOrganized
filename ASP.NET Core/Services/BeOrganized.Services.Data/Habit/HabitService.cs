@@ -91,14 +91,24 @@
             return result > 0;
         }
 
-        public void GenerateMoreHabits(string calendarId)
+        public async Task GenerateMoreHabitsAsync(string calendarId)
         {
             if (string.IsNullOrEmpty(calendarId))
             {
                 throw new ArgumentException(string.Format(InvaliCalendarIdErrorMessage, calendarId));
             }
 
-            var goals = this.habitRepository.All().Where(x => x.Goal.Calendar.Id == calendarId);
+            //var goals = this.habitRepository
+            //    .All()
+            //    .Select(x => new { x.Goal })
+            //    .Where(x => x.Goal.CalendarId == calendarId && x.Goal.IsActive == true)
+            //    .Distinct()
+            //    // .Select(x => new { x.Goal.Habits.Select(x => x.StartDateTime).OrderBy(x => x.StartDateTime).Take(1), x.Goal })
+            //    .ToList();
+            //foreach (var goal in goals)
+            //{
+            //    await this.GenerateHabitsAsync(goal.Goal, goal.StartDateTime);
+            // }
         }
 
         public HabitDetailsViewModel GetDetailsViewModelById(string id)
@@ -199,7 +209,7 @@
             return result;
         }
 
-        public async Task<bool> SetComplete(string id)
+        public async Task<bool> SetCompleteAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -219,7 +229,7 @@
             return result > 0;
         }
 
-        public async Task<bool> SetNotComplete(string id)
+        public async Task<bool> SetNotCompleteAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
             {

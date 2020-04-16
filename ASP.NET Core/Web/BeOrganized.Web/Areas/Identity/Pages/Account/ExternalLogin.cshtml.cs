@@ -159,7 +159,14 @@
 
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.UserName, Email = this.Input.Email };
+                var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email };
+                var calendar = new Calendar
+                {
+                    Title = GlobalConstants.DefaultCalendarTitle,
+                    User = user,
+                    DefaultCalendarColorId = 1,
+                };
+                user.Calendar = calendar;
                 var result = await this.userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

@@ -7,5 +7,7 @@
     public interface IColorService
     {
         ICollection<Color> GetAllColors();
+
+        string GetColorHex(int colorId);
     }
 }

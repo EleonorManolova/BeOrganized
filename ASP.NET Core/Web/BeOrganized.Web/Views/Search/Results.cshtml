@@ -1,0 +1,28 @@
+﻿@using BeOrganized.Web.ViewModels.Search;
+@model IEnumerable<EventSearchViewModel>
+@{
+    ViewData["Title"] = "Search results";
+}
+
+<h1>@ViewData["Title"] for @ViewContext.HttpContext.Request.Query["query"]</h1>
+<hr />
+
+@if (!Model.Any())
+{
+    <p>Nothing found for: <em>@ViewContext.HttpContext.Request.Query["query"]</em></p>
+}
+
+<table class="table w-auto">
+    <tbody>
+        @foreach (var eventModel in Model)
+        {
+            <tr class="h4">
+                <th>@eventModel.StartDateTime.ToString("dd MMM yyyy")</th>
+                <td>@eventModel.StartDateTime.ToShortTimeString() - @eventModel.EndDateTime.ToShortTimeString()</td>
+                <td> <a id="detailsButton" onclick="ShowDetailsResult()" data-id="@eventModel.Id" class="text-info"> <span class="dot mt-1" style="background-color:@eventModel.ColorHex"></span> @eventModel.Title </a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/js/calendar.index.js" asp-append-version="true"></script>

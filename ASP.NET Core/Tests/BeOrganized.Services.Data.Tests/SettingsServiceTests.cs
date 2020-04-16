@@ -4,12 +4,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.EntityFrameworkCore;
-    using Moq;
     using BeOrganized.Data;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Data.Repositories;
+    using Microsoft.EntityFrameworkCore;
+    using Moq;
     using Xunit;
 
     public class SettingsServiceTests

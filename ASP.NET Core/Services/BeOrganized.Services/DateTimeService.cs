@@ -17,12 +17,12 @@
         public DateTimeService()
         {
             this.random = new Random();
-            GetTimesByDayTime();
             this.firstMondayAftherMonth = this.FirstDayOfWeekAfhterMonth(DateTime.Now);
         }
 
         public List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime, DateTime currentDate)
         {
+            GetTimesByDayTime();
             this.firstMonday = this.FirstDayOfWeek(currentDate);
             var daytimeLower = dayTime.ToLower();
 

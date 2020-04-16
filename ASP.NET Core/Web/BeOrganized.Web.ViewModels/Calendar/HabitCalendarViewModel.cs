@@ -3,10 +3,11 @@
     using System;
     using System.Text.Json.Serialization;
 
+    using AutoMapper;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Mapping;
 
-    public class HabitCalendarViewModel : IMapFrom<Habit>
+    public class HabitCalendarViewModel : IHaveCustomMappings
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -30,5 +31,11 @@
 
         [JsonPropertyName("durationEditable")]
         public bool DurationEditable => false;
+
+        public void CreateMappings(IProfileExpression configuration)
+        {
+            configuration.CreateMap<Habit, HabitCalendarViewModel>()
+                .ForMember(x => x.GoalColorHex, y => y.MapFrom(x => x.IsCompleted == true ? x.Goal.Color.Hex + "8C" : x.Goal.Color.Hex));
+        }
     }
 }

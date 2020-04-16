@@ -53,7 +53,7 @@
         {
             var habitTitle = (await this.habitService.GetByIdAsync(id)).Title;
 
-            if (!await this.habitService.SetComplete(id))
+            if (!await this.habitService.SetCompleteAsync(id))
             {
                 this.TempData["NotificationError"] = DeleteErrorMessage;
             }
@@ -86,7 +86,7 @@
         {
             var habitTitle = (await this.habitService.GetByIdAsync(id)).Title;
 
-            if (!await this.habitService.SetComplete(id))
+            if (!await this.habitService.SetCompleteAsync(id))
             {
                 this.TempData["NotificationError"] = UpdateErrorMessage;
             }
@@ -101,7 +101,7 @@
         {
             var habitTitle = (await this.habitService.GetByIdAsync(id)).Title;
 
-            if (!await this.habitService.SetNotComplete(id))
+            if (!await this.habitService.SetNotCompleteAsync(id))
             {
                 this.TempData["NotificationError"] = UpdateErrorMessage;
             }
