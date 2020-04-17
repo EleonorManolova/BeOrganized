@@ -1,11 +1,16 @@
 body {
-    overflow: auto;
+    /*overflow: auto;*/
 }
 
-#buttons{
-    margin-top:5rem;
+#bottom {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 
+#calendarAndButtons {
+    margin-left: 1%;
+    max-width: 98%;
+}
 
 /*.fc-scroller, .fc-time-grid-container {
     overflow: auto;

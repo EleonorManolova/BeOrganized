@@ -87,12 +87,15 @@ document.addEventListener('DOMContentLoaded', function () {
             day: 'numeric'
         },
         firstDay: 1,
-        plugins: ['interaction', 'dayGrid', 'rrule', 'timeGrid', 'dayGrid'],
+        plugins: ['interaction', 'dayGrid', 'timeGrid', 'dayGrid'],
         defaultView: 'timeGridWeek',
         locale: 'en-gb',
         navLinks: true, // can click day/week names to navigate views
         editable: true,
-        height: "auto",
+        allDaySlot: false,
+        nowIndicator: true,
+        height: 660,
+        //height: 'parent',
         views: {
             dayGridMonth: { // name of view
                 titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }

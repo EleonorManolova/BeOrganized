@@ -95,7 +95,6 @@
     </footer>
     }
     <div id="preloader"></div>
-    <!-- Template Main Javascript File -->
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
@@ -111,9 +110,8 @@
         <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
         <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-        @*<script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>*@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
-        @*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@googleApi&libraries=places&callback=initAutocomplete" async defer></script>*@
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@googleApi&libraries=places&callback=initAutocomplete" async defer></script>
     </environment>
 
     @this.RenderSection("Scripts", required: false)

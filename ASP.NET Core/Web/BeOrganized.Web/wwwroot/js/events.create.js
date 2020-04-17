@@ -7,10 +7,17 @@ function showCalendarLeft() {
     }
 }
 
+//// Set time to local
+//let dateTimeNow = new Date();
+//var diference = dateTimeNow.getTimezoneOffset();
+//dateTimeNow.setDate(dateTimeNow.getDate() + diference)
+//$('#startTime').val = dateTimeNow.getTime();
+//$('#endTime').val = dateTimeNow.setDate(dateTimeNow.getDate() + 30).getTime();
+
+// Color selected CalendarColor
 var selected = $("#color_me").css("background-color", function () {
     var color = $("option:selected", this).attr("class"); return color;
 });
-
 $("#color_me").change(function () {
     var color = $("option:selected", this).attr("class");
     $("#color_me").css("background-color", color);
@@ -118,8 +125,14 @@ function showCalendarRight() {
         calendarStart.style.display = "block";
     }
 }
+
 (function ($) {
     let dateNow = new Date();
+
+    var diference = dateNow.getTimezoneOffset();
+    dateNow.setDate(dateNow.getDate() + diference)
+    console.log(dateNow);
+
     let themonth = dateNow.getMonth(); // get this month
     let theyear = dateNow.getFullYear(); // get this year
     renderCal(themonth, theyear);
