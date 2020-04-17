@@ -91,24 +91,24 @@
             return result > 0;
         }
 
-        public async Task GenerateMoreHabitsAsync(string calendarId)
+        public async Task GenerateMoreHabitsAsync(Goal goal, DateTime currentDate)
         {
-            if (string.IsNullOrEmpty(calendarId))
+            if (goal == null)
             {
-                throw new ArgumentException(string.Format(InvaliCalendarIdErrorMessage, calendarId));
+                throw new ArgumentException(InvalidGoalModelErrorMessage);
             }
 
-            //var goals = this.habitRepository
-            //    .All()
-            //    .Select(x => new { x.Goal })
-            //    .Where(x => x.Goal.CalendarId == calendarId && x.Goal.IsActive == true)
-            //    .Distinct()
-            //    // .Select(x => new { x.Goal.Habits.Select(x => x.StartDateTime).OrderBy(x => x.StartDateTime).Take(1), x.Goal })
-            //    .ToList();
-            //foreach (var goal in goals)
-            //{
-            //    await this.GenerateHabitsAsync(goal.Goal, goal.StartDateTime);
-            // }
+            var lastGeneratedWeek = this.dateTimeService.FirstDayOfWeekAfhterMonth(DateTime.Now);
+
+            // Add days to start from new week, not from given date
+            var firstDayOfWeek = this.dateTimeService.FirstDayOfWeek(currentDate);
+            if (lastGeneratedWeek == firstDayOfWeek)
+            {
+                return;
+            }
+
+            var firstDayOfNextWeek = firstDayOfWeek.AddDays(7);
+            await this.GenerateHabitsAsync(goal, firstDayOfNextWeek);
         }
 
         public HabitDetailsViewModel GetDetailsViewModelById(string id)

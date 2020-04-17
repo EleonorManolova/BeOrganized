@@ -147,9 +147,9 @@
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?statusCode={0}");
-                //app.UseExceptionHandler("/Home/Error");
-                //app.UseHsts();
+                // app.UseStatusCodePagesWithReExecute("/Home/HttpError", "?statusCode={0}");
+                // app.UseExceptionHandler("/Home/Error");
+                // app.UseHsts();
             }
 
             app.UseResponseCompression();

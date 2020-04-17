@@ -44,6 +44,20 @@
             return times;
         }
 
+        public DateTime FirstDayOfWeek(DateTime dt)
+        {
+            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+
+            return dt.AddDays(-diff).Date;
+        }
+
+        public DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
+
         private static List<DateTime> GetTimesBetween(string startTime, string endTime)
         {
             DateTime dt1 = DateTime.ParseExact(startTime, "HH:mm", null);
@@ -66,20 +80,6 @@
             dictionary.Add("evening", GetTimesBetween("17:00", "21:00"));
             dictionary.Add("anytime", GetTimesBetween("09:00", "21:00"));
         }
-
-        private DateTime FirstDayOfWeek(DateTime dt)
-        {
-            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
-            if (diff < 0)
-            {
-                diff += 7;
-            }
-
-            return dt.AddDays(-diff).Date;
-        }
-
-        private DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
 
         private List<StartEndDateTime> CreateTimeForMonthByWeekFrequency(int duration, int frequency, List<DateTime> hoursDaytime, DateTime currentDate)
         {

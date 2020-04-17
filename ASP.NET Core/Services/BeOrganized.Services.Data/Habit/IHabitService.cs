@@ -12,7 +12,7 @@
     {
         HabitDetailsViewModel GetDetailsViewModelById(string id);
 
-        Task GenerateMoreHabitsAsync(string calendarId);
+        Task GenerateMoreHabitsAsync(Goal goal, DateTime currentDate);
 
         Task<bool> GenerateHabitsAsync(Goal goal, DateTime currentDate);
 

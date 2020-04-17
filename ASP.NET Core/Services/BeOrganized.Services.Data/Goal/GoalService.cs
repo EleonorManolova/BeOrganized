@@ -189,6 +189,34 @@
             return result > 0;
         }
 
+        public async Task CreateMoreHabitsAsync(string calendarId)
+        {
+            if (string.IsNullOrEmpty(calendarId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var goals = this.goalRepository
+                  .All()
+                  .Where(x => x.CalendarId == calendarId && x.IsActive)
+                  .Distinct()
+                  .ToList();
+
+            var habits = this.goalRepository
+            .All()
+            .Select(x => new
+            {
+                StartDate = x.Habits.OrderByDescending(y => y.StartDateTime).First().StartDateTime,
+                x.Habits.OrderByDescending(y => y.StartDateTime).First().GoalId,
+            })
+            .ToDictionary(x => x.GoalId, x => x.StartDate);
+
+            foreach (var goal in goals)
+            {
+                await this.habitService.GenerateMoreHabitsAsync(goal, habits[goal.Id]);
+            }
+        }
+
         public T GetEnum<T>(string description)
         {
             if (string.IsNullOrEmpty(description))

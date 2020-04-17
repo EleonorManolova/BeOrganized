@@ -20,5 +20,7 @@
         Task<bool> UpdateAsync(Goal goalModel, string habitId);
 
         Task<bool> DeleteAsync(string goalId);
+
+        Task CreateMoreHabitsAsync(string calendarId);
     }
 }

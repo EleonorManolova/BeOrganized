@@ -5,6 +5,10 @@
 
     public interface IDateTimeService
     {
+        DateTime FirstDayOfWeek(DateTime dt);
+
+        DateTime FirstDayOfWeekAfhterMonth(DateTime dt);
+
         List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime, DateTime currentDate);
     }
 }
