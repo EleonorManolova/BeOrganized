@@ -1,4 +1,4 @@
-﻿namespace OrganizeMe.Data.Migrations
+﻿namespace BeOrganized.Data.Migrations
 {
     using System;
 
@@ -55,6 +55,20 @@
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Colors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Hex = table.Column<string>(nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Colors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,18 +199,24 @@
                 name: "Calendars",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
+                    DefaultCalendarColorId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Calendars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Calendars_Colors_DefaultCalendarColorId",
+                        column: x => x.DefaultCalendarColorId,
+                        principalTable: "Colors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Calendars_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -214,23 +234,62 @@
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(nullable: false),
-                    StartDate = table.Column<DateTime>(nullable: false),
-                    StartTime = table.Column<DateTime>(nullable: false),
-                    EndDate = table.Column<DateTime>(nullable: false),
-                    EndTime = table.Column<DateTime>(nullable: false),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
+                    StartDateTime = table.Column<DateTime>(nullable: false),
+                    EndDateTime = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: true),
+                    Coordinates = table.Column<string>(nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
-                    CalendarId = table.Column<string>(nullable: true),
-                    CalendarId1 = table.Column<int>(nullable: true),
+                    ColorId = table.Column<int>(nullable: false),
+                    CalendarId = table.Column<string>(nullable: false),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Calendars_CalendarId1",
-                        column: x => x.CalendarId1,
+                        name: "FK_Events_Calendars_CalendarId",
+                        column: x => x.CalendarId,
                         principalTable: "Calendars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Colors_ColorId",
+                        column: x => x.ColorId,
+                        principalTable: "Colors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Goals",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
+                    Duration = table.Column<int>(nullable: false),
+                    Frequency = table.Column<int>(nullable: false),
+                    DayTime = table.Column<int>(nullable: false),
+                    StartDateTime = table.Column<DateTime>(nullable: false),
+                    ColorId = table.Column<int>(nullable: false),
+                    CalendarId = table.Column<string>(nullable: false),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Goals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Goals_Calendars_CalendarId",
+                        column: x => x.CalendarId,
+                        principalTable: "Calendars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Goals_Colors_ColorId",
+                        column: x => x.ColorId,
+                        principalTable: "Colors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -244,21 +303,26 @@
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
-                    Title = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(maxLength: 50, nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
-                    Duration = table.Column<int>(nullable: false),
-                    Frequency = table.Column<int>(nullable: false),
-                    DayTime = table.Column<int>(nullable: false),
+                    StartDateTime = table.Column<DateTime>(nullable: false),
+                    EndDateTime = table.Column<DateTime>(nullable: false),
+                    GoalId = table.Column<string>(nullable: true),
                     CalendarId = table.Column<string>(nullable: true),
-                    CalendarId1 = table.Column<int>(nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Habits", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Habits_Calendars_CalendarId1",
-                        column: x => x.CalendarId1,
+                        name: "FK_Habits_Calendars_CalendarId",
+                        column: x => x.CalendarId,
                         principalTable: "Calendars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Habits_Goals_GoalId",
+                        column: x => x.GoalId,
+                        principalTable: "Goals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -313,6 +377,11 @@
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Calendars_DefaultCalendarColorId",
+                table: "Calendars",
+                column: "DefaultCalendarColorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Calendars_IsDeleted",
                 table: "Calendars",
                 column: "IsDeleted");
@@ -321,13 +390,17 @@
                 name: "IX_Calendars_UserId",
                 table: "Calendars",
                 column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_CalendarId1",
+                name: "IX_Events_CalendarId",
                 table: "Events",
-                column: "CalendarId1");
+                column: "CalendarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_ColorId",
+                table: "Events",
+                column: "ColorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_IsDeleted",
@@ -335,9 +408,29 @@
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Habits_CalendarId1",
+                name: "IX_Goals_CalendarId",
+                table: "Goals",
+                column: "CalendarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Goals_ColorId",
+                table: "Goals",
+                column: "ColorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Goals_IsDeleted",
+                table: "Goals",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Habits_CalendarId",
                 table: "Habits",
-                column: "CalendarId1");
+                column: "CalendarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Habits_GoalId",
+                table: "Habits",
+                column: "GoalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Habits_IsDeleted",
@@ -380,7 +473,13 @@
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Goals");
+
+            migrationBuilder.DropTable(
                 name: "Calendars");
+
+            migrationBuilder.DropTable(
+                name: "Colors");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
