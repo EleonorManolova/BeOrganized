@@ -1,4 +1,9 @@
 ﻿@model BeOrganized.Web.ViewModels.Habits.HabitDetailsViewModel
+@{
+    var hex = Model.GoalColorHex;
+    var counter = 0;
+    var name = string.Empty;
+}
 <div>
     <h3><span class="dot mt-1" style="background-color:@Model.GoalColorHex"></span> @Model.Title</h3>
     @if (Model.StartDateTime.Date == Model.EndDateTime.Date)
@@ -15,8 +20,21 @@
     <h5>@Model.GoalCalendarTitle Calendar</h5>
 </div>
 <div>
+    @foreach (var habit in Model.CompletedHabitsForWeeks)
+    {
+        {
+            counter++;
+            name = "week" + (counter).ToString();
+        }
+        <div class="d-inline-block m-1">
+            <div id="@name" class="circleBar"></div>
+            <span class="d-flex habit" data-done="@habit.Value">@habit.Key </span>
+        </div>
+    }
+</div>
+<div>
     <div>
-        <a asp-controller="Goals" asp-action="Edit" asp-route-goalId="@Model.GoalId" asp-route-habitId="@Model.Id" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-id="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
+        <a asp-controller="Goals" asp-action="Edit" asp-route-goalId="@Model.GoalId" asp-route-habitId="@Model.Id" title="Edit Goal"><i class="fas fa-edit m-1"></i></a>| <a id="deleteButton" onclick="DeleteButtonHabit()" data-count="@(Model.Id)" title="DeleteEvent"><i class="fas fa-trash-alt m-1"></i></a>
     </div>
     <form method="post">
         @if (!Model.IsCompleted)
@@ -29,3 +47,39 @@
         }
     </form>
 </div>
+<script asp-append-version="true">
+    $(document).ready(function () {
+        var elem = $("span")[0];
+        var count = @Model.CompletedHabitsForWeeks.Count();
+        if (typeof elem !== "undefined") {
+            function Load(el, done) {
+              // el.removeAttribute("hidden");
+                el.style.display = "inline-block";
+                var bar = new ProgressBar.Circle(el, {
+                    strokeWidth: 15,
+                    easing: 'easeInOut',
+                    duration: 1400,
+                    color: '@hex',
+                    trailColor: '#eee',
+                    trailWidth: 15,
+                    svgStyle: null,
+                    text: {
+                        autoStyleContainer: true
+                    },
+                    step: function (state, circle) {
+                        circle.setText(`${done}/${@Model.GoalFrequencyInt}`);
+                    }
+                });
+
+                bar.animate(done /@Model.GoalFrequencyInt);
+            };
+
+           // var elements = { 1: week1, 2: week2, 3: week3, 4: week4 };
+            for (var i = 1; i <= count; i++) {
+                var element = document.getElementById("week" + i);
+                let doneHabits = document.getElementsByClassName("habit")[i - 1].getAttribute("data-done");
+                Load(element, doneHabits);
+            }
+        };
+    });
+</script>

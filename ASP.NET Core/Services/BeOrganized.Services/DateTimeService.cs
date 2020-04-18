@@ -7,6 +7,8 @@
 
     public class DateTimeService : IDateTimeService
     {
+        private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
+
         private static Dictionary<string, List<DateTime>> dictionary;
         // Monday of the given date
         private DateTime firstMonday;
@@ -57,6 +59,28 @@
         }
 
         public DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
+
+        public int FindFrequency(int frequency)
+        {
+            if (frequency < 0)
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (frequency / 10 < 1)
+            {
+                // 1 or 2 times a month
+                return frequency;
+            }
+            else if (frequency / 10 < 10)
+            {
+                // 1, 2, 3, 4, 5, 6, 7 times a week
+                var frequencyForWeek = frequency % 10;
+                return frequencyForWeek;
+            }
+
+            return 0;
+        }
 
         private static List<DateTime> GetTimesBetween(string startTime, string endTime)
         {

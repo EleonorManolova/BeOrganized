@@ -40,3 +40,9 @@ body {
 .fc td.fc-today {
     background-color: white;
 }
+
+.circleBar {
+    margin: 15%;
+    width: 70%;
+    height: 70%;
+}

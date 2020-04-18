@@ -5,6 +5,7 @@
 
     public interface IDateTimeService
     {
+        int FindFrequency(int frequency);
         DateTime FirstDayOfWeek(DateTime dt);
 
         DateTime FirstDayOfWeekAfhterMonth(DateTime dt);

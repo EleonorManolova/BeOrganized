@@ -123,6 +123,9 @@
                 return new HabitDetailsViewModel();
             }
 
+            var goalAndStartDate = this.habitRepository.All().Where(x => x.Id == id).Select(x => new { x.StartDateTime, x.GoalId }).First();
+            var completedHabitsForWeeks = this.FindCompletedHabitsForWeeks(goalAndStartDate.StartDateTime, goalAndStartDate.GoalId);
+
             var habit = this.habitRepository
                 .All()
                 .Where(x => x.Id == id)
@@ -137,8 +140,10 @@
                     GoalDayTime = x.Goal.DayTime.ToString(),
                     GoalDuration = x.Goal.Duration.ToString(),
                     GoalFrequency = x.Goal.Frequency.ToString(),
+                    GoalFrequencyInt = this.dateTimeService.FindFrequency((int)x.Goal.Frequency),
                     GoalId = x.GoalId,
                     IsCompleted = x.IsCompleted,
+                    CompletedHabitsForWeeks = completedHabitsForWeeks,
                 })
                 .First();
 
@@ -260,6 +265,39 @@
             var result = await this.habitRepository.SaveChangesAsync();
 
             return result > 0;
+        }
+
+        private Dictionary<string, int> FindCompletedHabitsForWeeks(DateTime dateTime, string goalId)
+        {
+            // Current Monday
+            var currentMonday = this.dateTimeService.FirstDayOfWeek(dateTime);
+
+            var habits = this.habitRepository
+                .All()
+                .Where(x => x.GoalId == goalId && x.StartDateTime < currentMonday && x.StartDateTime >= currentMonday.AddDays((-7) * 4) && x.IsCompleted)
+                .ToList();
+            var goalStartDateTime = this.habitRepository
+                .All()
+                .Where(x => x.GoalId == goalId)
+               .Select(x => x.Goal.StartDateTime)
+               .First();
+
+            var result = new Dictionary<string, int>();
+            for (int i = 0; i < 4; i++)
+            {
+                var monday = currentMonday.AddDays((-7) * (1 + i));
+                var sunday = currentMonday.AddDays((-1) * (1 + (7 * i)));
+                var doneHabitsCount = habits.Where(x => x.StartDateTime.Date >= monday.Date && x.StartDateTime.Date <= sunday.Date).Count();
+
+                var rangeString = $"{monday:dd.MM}-{sunday:dd.MM}";
+                result.Add(rangeString, doneHabitsCount);
+                if (goalStartDateTime.Date >= monday.Date && goalStartDateTime <= sunday.Date)
+                {
+                    break;
+                }
+            }
+
+            return result.Reverse().ToDictionary(x => x.Key, y => y.Value);
         }
 
         private async Task<bool> DeleteFutureHabitsAsync(string goalId, Habit habit)

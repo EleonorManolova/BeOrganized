@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <div id="calendarAndButtons" >
+    <div id="calendarAndButtons">
         <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
         <a asp-controller="Goals" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Goal</a>
         <div id='calendar' class="removeContainer"></div>
@@ -37,6 +37,7 @@
         <script src='~/lib/fullcalendar/interaction/main.js'></script>
         <script src='~/lib/fullcalendar/resource-common/main.js'></script>
         <script src="~/lib/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+        <script src="~/lib/progressbar/dist/progressbar.js"></script>
 
         <script src="~/js/calendar.index.js" asp-append-version="true"></script>
     </environment>
@@ -48,6 +49,7 @@
         <script src='~/lib/fullcalendar/interaction/main.min.js'></script>
         <script src='~/lib/fullcalendar/resource-common/main.min.js'></script>
         <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+        <script src="~/lib/progressbar/dist/progressbar.js"></script>
 
         <script src="~/js/calendar.index.js" asp-append-version="true"></script>
     </environment>

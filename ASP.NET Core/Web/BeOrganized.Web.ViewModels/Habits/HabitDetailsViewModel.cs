@@ -1,6 +1,7 @@
 ﻿namespace BeOrganized.Web.ViewModels.Habits
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class HabitDetailsViewModel
@@ -33,6 +34,10 @@
         [Display(Name = "Goal Id")]
         public string GoalId { get; set; }
 
+        public int GoalFrequencyInt { get; set; }
+
         public bool IsCompleted { get; set; }
+
+        public Dictionary<string, int> CompletedHabitsForWeeks { get; set; } = new Dictionary<string, int>();
     }
 }

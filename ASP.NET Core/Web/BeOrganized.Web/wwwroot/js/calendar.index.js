@@ -1,3 +1,4 @@
+// SignalR
 let connection = null;
 
 setupConnection = () => {
@@ -41,6 +42,8 @@ function callAjax(eventId, url, divId) {
     });
 }
 
+
+
 function ShowDetails(info) {
     var elementFromWeb = info["event"];
     if (info.event.extendedProps.iscompleted != null) {
@@ -52,6 +55,7 @@ function ShowDetails(info) {
         callAjax(elementFromWeb.id, "/Events/Details", "#elementDetails")
     }
     $('#hoverDetails').show();
+
 };
 
 function DeleteButton() {
