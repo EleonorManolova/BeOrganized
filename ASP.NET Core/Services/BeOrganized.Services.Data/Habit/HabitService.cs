@@ -123,8 +123,22 @@
                 return new HabitDetailsViewModel();
             }
 
-            var goalAndStartDate = this.habitRepository.All().Where(x => x.Id == id).Select(x => new { x.StartDateTime, x.GoalId }).First();
-            var completedHabitsForWeeks = this.FindCompletedHabitsForWeeks(goalAndStartDate.StartDateTime, goalAndStartDate.GoalId);
+            var goalAndStartDate = this.habitRepository.All()
+                .Where(x => x.Id == id)
+                .Select(x => new
+                {
+                    x.StartDateTime,
+                    x.GoalId,
+                    GoalTime = x.Goal.StartDateTime,
+                })
+                .First();
+            var currentMonday = this.dateTimeService.FirstDayOfWeek(goalAndStartDate.StartDateTime);
+
+            var completedHabitsForWeeks = new Dictionary<string, int>();
+            if (this.dateTimeService.FirstDayOfWeek(goalAndStartDate.GoalTime).Date != currentMonday.Date)
+            {
+                completedHabitsForWeeks = this.FindCompletedHabitsForWeeks(goalAndStartDate.StartDateTime, goalAndStartDate.GoalId);
+            }
 
             var habit = this.habitRepository
                 .All()
@@ -271,7 +285,6 @@
         {
             // Current Monday
             var currentMonday = this.dateTimeService.FirstDayOfWeek(dateTime);
-
             var habits = this.habitRepository
                 .All()
                 .Where(x => x.GoalId == goalId && x.StartDateTime < currentMonday && x.StartDateTime >= currentMonday.AddDays((-7) * 4) && x.IsCompleted)

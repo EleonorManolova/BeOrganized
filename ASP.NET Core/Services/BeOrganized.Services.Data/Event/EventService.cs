@@ -214,7 +214,7 @@
             return result > 0 && response == Result.Deleted;
         }
 
-        public ICollection<Event> GetAll(string username)
+        public ICollection<Event> GetAllByUsername(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -224,6 +224,14 @@
             var all = this.eventRepository
                 .All()
                 .Where(x => x.Calendar.User.UserName == username)
+                .ToList();
+            return all;
+        }
+
+        public ICollection<Event> GetAll()
+        {
+            var all = this.eventRepository
+                .All()
                 .ToList();
             return all;
         }

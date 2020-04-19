@@ -18,10 +18,17 @@
         [AcceptVerbs("GET", "POST")]
         public IActionResult VerifyEmail([FromQuery(Name = "Input.Email")] string email)
         {
-            var user = this.userManager.FindByEmailAsync(email);
-            if (user.Result != null)
+            try
             {
-                return this.Json(string.Format(ErrorMessages.InvalidEmailErrorMessage, email));
+                var user = this.userManager.FindByEmailAsync(email);
+
+                if (user.Result != null)
+                {
+                    return this.Json(string.Format(ErrorMessages.InvalidEmailErrorMessage, email));
+                }
+            }
+            catch
+            {
             }
 
             return this.Json(true);

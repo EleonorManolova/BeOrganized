@@ -26,6 +26,10 @@
             {
                 return this.RedirectToAction(nameof(this.IndexLoggedIn));
             }
+            else if (this.User.Identity.IsAuthenticated && this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+            {
+                return this.Redirect("/Administration/Dashboard");
+            }
 
             return this.View();
         }

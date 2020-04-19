@@ -32,7 +32,7 @@
         {
             await this.elasticClient.DeleteByQueryAsync<Event>(q => q.MatchAll());
 
-            var allEvents = this.eventService.GetAll(this.User.Identity.Name).ToArray();
+            var allEvents = this.eventService.GetAllByUsername(this.User.Identity.Name).ToArray();
 
             foreach (var eventFromDb in allEvents)
             {

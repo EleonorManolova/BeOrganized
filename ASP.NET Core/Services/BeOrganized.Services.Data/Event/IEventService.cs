@@ -23,10 +23,11 @@
 
         Task<bool> DeleteAsync(string id);
 
-        ICollection<Event> GetAll(string username);
+        ICollection<Event> GetAllByUsername(string username);
 
         Task<Event> GetByIdAsync(string id);
 
         Event MapEventViewModelToEvent(EventViewModel eventViewModel, string eventId);
+        ICollection<Event> GetAll();
     }
 }

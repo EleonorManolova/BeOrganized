@@ -24,6 +24,7 @@
         <link href="~/lib/ionicons/css/ionicons.min.css" rel="stylesheet" asp-append-version="true">
         <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" asp-append-version="true">
         <link href="~/lib/lightbox/css/lightbox.min.css" rel="stylesheet" asp-append-version="true">
+        <link rel="stylesheet" href="~/lib/adminlte/dist/css/adminlte.css">
     </environment>
     <environment names="Staging,Production">
         <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
@@ -41,9 +42,9 @@
                 <a class="navbar-brand nav-link d-inline scrollto" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
                 @if (this.SignInManager.IsSignedIn(this.User))
                 {
-                <form class="form-inline d-inline" asp-action="Find" asp-controller="Search" method="get">
-                    <input id="searchInput" class="form-control d-inline col-md-5 col-4 mt-2" type="search" name="query" placeholder="Search..." value="@ViewContext.HttpContext.Request.Query["query"]">
-                </form>
+                    <form class="form-inline d-inline" asp-action="Find" asp-controller="Search" method="get">
+                        <input id="searchInput" class="form-control d-inline col-md-5 col-4 mt-2" type="search" name="query" placeholder="Search..." value="@ViewContext.HttpContext.Request.Query["query"]">
+                    </form>
                 }
                 <button class="navbar-toggler toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -81,18 +82,18 @@
     </div>
     @if (ViewData["Title"].ToString() != "Calendar")
     {
-    <footer class="border-top footer text-muted">
-        <div class="container mt-1">
-            <div class="row">
-                <div class="col-md-6 col-6">
-                    &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                </div>
-                <div class="col-md-6 col-6">
-                    <p class="text-right"><a href="https://github.com/EleonorManolova/BeOrganized" target="_blank"><i class="fab fa-github"></i> Open Source</a></p>
+        <footer class="border-top footer text-muted">
+            <div class="container mt-1">
+                <div class="row">
+                    <div class="col-md-6 col-6">
+                        &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </div>
+                    <div class="col-md-6 col-6">
+                        <p class="text-right"><a href="https://github.com/EleonorManolova/BeOrganized" target="_blank"><i class="fab fa-github"></i> Open Source</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
     }
     <div id="preloader"></div>
 
