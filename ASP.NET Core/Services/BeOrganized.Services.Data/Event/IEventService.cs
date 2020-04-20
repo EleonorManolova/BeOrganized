@@ -28,6 +28,7 @@
         Task<Event> GetByIdAsync(string id);
 
         Event MapEventViewModelToEvent(EventViewModel eventViewModel, string eventId);
+
         ICollection<Event> GetAll();
     }
 }

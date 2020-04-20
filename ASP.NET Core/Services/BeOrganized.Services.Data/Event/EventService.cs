@@ -95,11 +95,6 @@
                 })
                 .First();
 
-            if (eventFromDb == null)
-            {
-                throw new ArgumentException(string.Format(InvalidEventIdErrorMessage, id));
-            }
-
             return eventFromDb;
         }
 
@@ -238,17 +233,15 @@
 
         public Event MapEventViewModelToEvent(EventViewModel model, string eventId)
         {
-            if (model == null)
+            if (string.IsNullOrEmpty(eventId) || model == null)
             {
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            if (string.IsNullOrEmpty(eventId))
-            {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
-            }
-
-            var eventFromDb = this.eventRepository.All().Where(x => x.Id == eventId).First();
+            var eventFromDb = this.eventRepository
+                .All()
+                .Where(x => x.Id == eventId)
+                .First();
 
             eventFromDb.Id = eventId;
             eventFromDb.Title = model.Title;
@@ -265,9 +258,6 @@
             return eventFromDb;
         }
 
-        private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username)
-        {
-            return this.calendarService.GetAllCalendarTitlesByUserName<T>(username);
-        }
+        private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username) => this.calendarService.GetAllCalendarTitlesByUserName<T>(username);
     }
 }
