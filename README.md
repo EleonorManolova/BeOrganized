@@ -1,17 +1,27 @@
-# ASP.NET-MVC-Template
-A ready-to-use templates for ASP.NET MVC 5, ASP.NET Core and ASP.NET Core with Angular with repositories, services, models mapping and DI and StyleCop warnings fixed.
+# BeOrganized
+App for events, tracking habits and calendar.
+
+https://beorganized.azurewebsites.net
 
 ## Build status
 
-| ASP.NET MVC 5 | ASP.NET Core  | ASP.NET Core with Angular|
-|:--------------|:--------------|:-------------------------|
-[![Build status](https://ci.appveyor.com/api/projects/status/8dskbn908e27vevx/branch/master?svg=true)](https://ci.appveyor.com/project/NikolayIT/asp-net-mvc-template/branch/master) |[![Build Status](https://nikolayit.visualstudio.com/AspNetCoreTemplate/_apis/build/status/AspNetCoreTemplate?branchName=master)](https://nikolayit.visualstudio.com/AspNetCoreTemplate/_build/latest?definitionId=2&branchName=master) | [![Build status](https://ci.appveyor.com/api/projects/status/ikl57x1doo7oxvox/branch/master?svg=true)](https://ci.appveyor.com/project/NikolayIT/asp-net-mvc-template-vg02a/branch/master)
+[![Build Status](https://dev.azure.com/BeOrganized/BeOrganized/_apis/build/status/BeOrganized-Azure%20Web%20App%20for%20ASP.NET-CI?branchName=master)](https://dev.azure.com/BeOrganized/BeOrganized/_build/latest?definitionId=2&branchName=master
 
-## Video
+## Build with
+* ASP.NET Core
+* EF Core 3.1
+* SignalR
+* Sendgrid
+* Elasticsearch
+* Google Places
+* reCaptcha v3
+* FullCalendar
+* Moq
 
-Video with ASP.NET MVC 5 template creation (in Bulgarian) can be seen on YouTube: [https://www.youtube.com/watch?v=xhoBt9MscrY](https://www.youtube.com/watch?v=xhoBt9MscrY)
+## Hosted on
+* Azure
+* Heroku
 
 ## Authors
 
-- [Nikolay Kostov](https://github.com/NikolayIT)
-- [Vladislav Karamfilov](https://github.com/vladislav-karamfilov)
+- [Eleonor Manolova](https://github.com/EleonorManolova)
