@@ -9,9 +9,7 @@
     {
         Task<bool> CreateAsync(GoalViewModel habitViewModel);
 
-        T GetEnum<T>(string description);
-
-        GoalChangeViewModel GetGoalViewModel(string username);
+        GoalChangeViewModel GetGoalChangeViewModel(string username);
 
         GoalChangeViewModel GetGoalChangeViewModelById(string goalId, string username);
 

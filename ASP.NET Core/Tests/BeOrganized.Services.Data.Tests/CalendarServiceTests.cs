@@ -19,7 +19,6 @@
         private Mock<IDeletableEntityRepository<Calendar>> calendarRepository;
         private CalendarService calendarService;
 
-
         public CalendarServiceTests()
         {
             this.calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();

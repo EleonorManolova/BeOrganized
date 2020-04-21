@@ -51,16 +51,7 @@
                             .Query(query.ToLower())
                             .Fields(ff => ff
                                 .Field(f => f.Title, boost: 15)
-                                .Field(f => f.Location, boost: 10)))
-                    ));
-
-            // var response = await this.elasticClient.SearchAsync<Event>(s => s
-            //    .Query(q => q
-            //    .QueryString(d => d.Query(query))
-            //    )
-            //    .From((page - 1) * pageSize)
-            //    .Size(pageSize)
-            //    );
+                                .Field(f => f.Location, boost: 10)))));
 
             if (!response.IsValid)
             {

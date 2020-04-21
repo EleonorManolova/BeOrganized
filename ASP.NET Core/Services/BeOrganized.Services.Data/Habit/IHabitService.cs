@@ -12,13 +12,13 @@
     {
         HabitDetailsViewModel GetDetailsViewModelById(string id);
 
-        Task GenerateMoreHabitsAsync(Goal goal, DateTime currentDate);
+        Task<bool> GenerateMoreHabitsAsync(Goal goal, DateTime currentDate);
 
         Task<bool> GenerateHabitsAsync(Goal goal, DateTime currentDate);
 
         ICollection<HabitCalendarViewModel> GetAllByCalendarId(string calendarId);
 
-        Task UpdateHabitsAsync(Goal model, string habitId);
+        Task<bool> UpdateHabitsAsync(Goal model, string habitId);
 
         Task<Habit> GetByIdAsync(string id);
 

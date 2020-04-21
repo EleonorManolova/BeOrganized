@@ -112,6 +112,12 @@
             var count = 0;
             while (true)
             {
+
+                if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)
+                {
+                    break;
+                }
+
                 if (count == 0)
                 {
                     datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, currentDate.Date, this.firstMonday.AddDays(7)));
@@ -119,11 +125,6 @@
                 else
                 {
                     datesFor4Week.AddRange(this.CreateTime(duration, frequency, hoursDaytime, this.firstMonday.AddDays(7 * count), this.firstMonday.AddDays(7 * (count + 1))));
-                }
-
-                if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)
-                {
-                    break;
                 }
 
                 count++;

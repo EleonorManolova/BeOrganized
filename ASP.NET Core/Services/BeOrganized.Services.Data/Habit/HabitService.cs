@@ -91,7 +91,7 @@
             return result > 0;
         }
 
-        public async Task GenerateMoreHabitsAsync(Goal goal, DateTime currentDate)
+        public async Task<bool> GenerateMoreHabitsAsync(Goal goal, DateTime currentDate)
         {
             if (goal == null)
             {
@@ -104,11 +104,13 @@
             var firstDayOfWeek = this.dateTimeService.FirstDayOfWeek(currentDate);
             if (lastGeneratedWeek == firstDayOfWeek)
             {
-                return;
+                return false;
             }
 
             var firstDayOfNextWeek = firstDayOfWeek.AddDays(7);
-            await this.GenerateHabitsAsync(goal, firstDayOfNextWeek);
+            var result = await this.GenerateHabitsAsync(goal, firstDayOfNextWeek);
+
+            return result;
         }
 
         public HabitDetailsViewModel GetDetailsViewModelById(string id)
@@ -168,7 +170,7 @@
             return habit;
         }
 
-        public async Task UpdateHabitsAsync(Goal goal, string habitId)
+        public async Task<bool> UpdateHabitsAsync(Goal goal, string habitId)
         {
             if (string.IsNullOrEmpty(habitId))
             {
@@ -185,9 +187,11 @@
                 .Where(x => x.Id == habitId)
                 .First();
 
-            await this.DeleteFutureHabitsAsync(goal.Id, habit);
+            var isDeletedFuture = await this.DeleteFutureHabitsAsync(goal.Id, habit);
 
-            await this.GenerateHabitsAsync(goal, habit.StartDateTime);
+            var isGenerated = await this.GenerateHabitsAsync(goal, habit.StartDateTime);
+
+            return isDeletedFuture == false ? isDeletedFuture : isGenerated;
         }
 
         public async Task<bool> DeleteCurrentAsync(string id)

@@ -643,7 +643,7 @@
             this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(model);
             var result = await this.eventService.DeleteAsync(model.Id);
 
-            this.eventsRepository.Verify(x => x.Delete(model), Times.Once);
+            this.eventsRepository.Verify(x => x.Delete(It.IsAny<Event>()), Times.Once);
             this.eventsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
 
@@ -663,7 +663,7 @@
         [Fact]
         public async Task DeleteAsync_WithNotExistingModel_ShouldThrowAnArgumentException()
         {
-            //  InitializeAutomapper<EventViewModel>();
+            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {

@@ -28,7 +28,7 @@
 
         public IActionResult Create()
         {
-            var model = this.goalService.GetGoalViewModel(this.User.Identity.Name);
+            var model = this.goalService.GetGoalChangeViewModel(this.User.Identity.Name);
             return this.View(model);
         }
 

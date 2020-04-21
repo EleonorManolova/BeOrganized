@@ -18,24 +18,22 @@
     public class GoalService : IGoalService
     {
         private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
-        private const string GoalErrorMessage = "Goal with Id {0} does not exist.";
+        private const string GoalErrorMessage = "Goal with Id: {0} does not exist.";
 
         private readonly IEnumParseService enumParseService;
         private readonly IDeletableEntityRepository<Goal> goalRepository;
         private readonly ICalendarService calendarService;
-        private readonly ISearchService searchService;
         private readonly IColorService colorService;
         private readonly IHabitService habitService;
         private List<string> dayTimesDescriptions;
         private List<string> frequenciesDescriptions;
         private List<string> durationsDescriptions;
 
-        public GoalService(IEnumParseService enumParseService, IDeletableEntityRepository<Goal> goalRepository, ICalendarService calendarService, ISearchService searchService, IColorService colorService, IHabitService habitService)
+        public GoalService(IDeletableEntityRepository<Goal> goalRepository, IEnumParseService enumParseService, ICalendarService calendarService, IColorService colorService, IHabitService habitService)
         {
             this.enumParseService = enumParseService;
             this.goalRepository = goalRepository;
             this.calendarService = calendarService;
-            this.searchService = searchService;
             this.colorService = colorService;
             this.habitService = habitService;
 
@@ -62,17 +60,15 @@
             goal.Duration = this.enumParseService.Parse<Duration>(goalViewModel.Duration);
             goal.Frequency = this.enumParseService.Parse<Frequency>(goalViewModel.Frequency);
 
-            var response = await this.searchService.CreateIndexAsync(goal);
-
             await this.goalRepository.AddAsync(goal);
             var result = await this.goalRepository.SaveChangesAsync();
 
             await this.habitService.GenerateHabitsAsync(goal, DateTime.Now);
 
-            return result > 0 && response == Result.Created;
+            return result > 0;
         }
 
-        public GoalChangeViewModel GetGoalViewModel(string username)
+        public GoalChangeViewModel GetGoalChangeViewModel(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -175,7 +171,7 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var goal = this.goalRepository.All().Where(x => x.Id == goalId).First();
+            var goal = this.goalRepository.All().Where(x => x.Id == goalId).FirstOrDefault();
 
             if (goal == null)
             {
@@ -215,16 +211,6 @@
             {
                 await this.habitService.GenerateMoreHabitsAsync(goal, habits[goal.Id]);
             }
-        }
-
-        public T GetEnum<T>(string description)
-        {
-            if (string.IsNullOrEmpty(description))
-            {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
-            }
-
-            return this.enumParseService.Parse<T>(description);
         }
 
         private void FillEnumDescriptions()
