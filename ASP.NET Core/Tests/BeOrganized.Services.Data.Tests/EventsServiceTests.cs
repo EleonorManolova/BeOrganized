@@ -38,6 +38,10 @@
             var calendarService = new CalendarService(this.calendarRepository.Object);
             var colorService = new ColorService(this.colorRepository.Object);
             this.eventService = new EventService(this.eventsRepository.Object, calendarService, this.searchService.Object, colorService);
+
+            InitializeAutomapper<EventViewModel>();
+            InitializeAutomapper<EventCalendarViewModel>();
+            InitializeAutomapper<CalendarEventViewModel>();
         }
 
         [Fact]
@@ -164,8 +168,6 @@
         [Fact]
         public void GetEditChangeViewModelById_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventViewModel>();
-
             var user = new ApplicationUser
             {
                 Id = "User1",
@@ -178,7 +180,6 @@
                 Name = "Test",
                 Hex = "TestHex",
             };
-
 
             var calendar = new Calendar
             {
@@ -259,7 +260,7 @@
         [Fact]
         public void GetCreateChangeViewModel_WithCorrectData_ShouldReturnCorrectly()
         {
-            InitializeAutomapper<CalendarEventViewModel>();
+            // InitializeAutomapper<CalendarEventViewModel>();
             var user = new ApplicationUser
             {
                 Id = "User1",
@@ -401,7 +402,7 @@
         [Fact]
         public async Task GetByIdAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventViewModel>();
+            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -416,7 +417,7 @@
                 Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
             };
 
-            this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(model.Id)).ReturnsAsync(model);
+            this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(model);
             var actualResult = await this.eventService.GetByIdAsync(model.Id);
             var expectedResult = model;
 
@@ -449,7 +450,7 @@
         public async Task GetByIdAsync_WithIncorrectUsername_ShouldThrowAnArgumentNullException()
         {
             var exeptionErrorMessage = "Event with Id: {0} does not exist.";
-            InitializeAutomapper<EventViewModel>();
+            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -472,12 +473,19 @@
         [Fact]
         public void GetAllByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventCalendarViewModel>();
+            // InitializeAutomapper<EventCalendarViewModel>();
 
             var calendar = new Calendar
             {
                 Id = "Test1",
                 Title = "Default",
+            };
+
+            var color = new Color
+            {
+                Id = 1,
+                Name = "Test",
+                Hex = "TestHex",
             };
 
             var model = new Event
@@ -491,14 +499,20 @@
                 Coordinates = "42.99, 32.99",
                 Calendar = calendar,
                 CalendarId = calendar.Id,
-                Color = new Color { Id = 1, Name = "First", Hex = "#000000" },
+                Color = color,
             };
 
             var eventCalendarViewModel = new EventCalendarViewModel
             {
+                Id = "Test1",
                 Title = "Test",
                 StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
                 EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                CalendarId = "Test1",
+                Description = "test description",
+                Location = "Hotel Test",
+                Coordinates = "42.99, 32.99",
+                ColorHex = color.Hex,
             };
 
             this.eventsRepository.Setup(x => x.All()).Returns(new List<Event> { model }.AsQueryable());
@@ -530,7 +544,7 @@
         [Fact]
         public async Task UpdateAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventViewModel>();
+            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -545,7 +559,7 @@
                 ColorId = 1,
             };
 
-            this.searchService.Setup(x => x.UpdateIndexAsync<Event>(model)).ReturnsAsync(Result.Updated);
+            this.searchService.Setup(x => x.UpdateIndexAsync<Event>(It.IsAny<Event>())).ReturnsAsync(Result.Updated);
             var result = await this.eventService.UpdateAsync(model, model.Id);
 
             this.eventsRepository.Verify(x => x.Update(It.IsAny<Event>()), Times.Once);
@@ -591,7 +605,7 @@
         [Fact]
         public async Task DeleteAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            InitializeAutomapper<EventViewModel>();
+            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -625,8 +639,8 @@
                 EventModel = eventViewModel,
             };
 
-            this.searchService.Setup(x => x.DeleteIndexAsync<Event>(model)).ReturnsAsync(Result.Deleted);
-            this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(model.Id)).ReturnsAsync(model);
+            this.searchService.Setup(x => x.DeleteIndexAsync<Event>(It.IsAny<Event>())).ReturnsAsync(Result.Deleted);
+            this.eventsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(model);
             var result = await this.eventService.DeleteAsync(model.Id);
 
             this.eventsRepository.Verify(x => x.Delete(model), Times.Once);
@@ -649,7 +663,7 @@
         [Fact]
         public async Task DeleteAsync_WithNotExistingModel_ShouldThrowAnArgumentException()
         {
-            InitializeAutomapper<EventViewModel>();
+            //  InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {

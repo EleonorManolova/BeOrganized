@@ -130,7 +130,7 @@ function showCalendarRight() {
     let dateNow = new Date();
 
     var diference = dateNow.getTimezoneOffset();
-    dateNow.setDate(dateNow.getDate() + diference)
+    dateNow.setTime(dateNow.getTime() + diference)
     console.log(dateNow);
 
     let themonth = dateNow.getMonth(); // get this month

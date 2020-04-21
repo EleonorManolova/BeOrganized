@@ -39,6 +39,11 @@
 
         public int GetDefaultCalendarColorId(string username)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
             var result = this.calendarRepository
                 .All()
                 .Select(x => new
