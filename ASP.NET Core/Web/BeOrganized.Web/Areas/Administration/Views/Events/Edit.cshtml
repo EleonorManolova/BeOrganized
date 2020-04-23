@@ -1,0 +1,64 @@
+﻿@model BeOrganized.Web.ViewModels.Events.EventChangeViewModel
+@{
+    this.ViewData["Title"] = "Edit";
+}
+
+<div class="content row">
+    <h4>Event Edit</h4>
+    <hr />
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-route-id="@TempData["EventId"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.EventModel.Title" class="control-label"></label>
+                <input asp-for="@Model.EventModel.Title" class="form-control" />
+                <span asp-validation-for="@Model.EventModel.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">StartDateTime</label>
+                <input id="startDate" asp-for="EventModel.StartDate" type="text" class="inputDate input-group-text form-control d-inline-block ">
+                <input asp-for="EventModel.StartTime" class="inputTime form-control  d-inline-block" />
+                <span asp-validation-for="EventModel.StartDate" class="text-danger"></span>
+                <span asp-validation-for="EventModel.StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">EndDateTime</label>
+
+                <input id="endDate" asp-for="EventModel.EndDate" type="text" class="inputDate input-group-text form-control d-inline-block">
+                <input asp-for="EventModel.EndTime" class="inputTime form-control d-inline-block" /><br />
+
+                <span asp-validation-for="EventModel.EndDate" class="text-danger"></span>
+                <span asp-validation-for="EventModel.EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EventModel.Location" class="control-label"></label>
+                <input asp-for="@Model.EventModel.Location" class="form-control" />
+                <span asp-validation-for="@Model.EventModel.Location" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.EventModel.Description" class="control-label"></label>
+                <input asp-for="@Model.EventModel.Description" class="form-control" />
+                <span asp-validation-for="@Model.EventModel.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EventModel.CalendarId"></label>
+                <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select col-md-4 m-1"
+                        asp-items="@(new SelectList(Model.Calendars, "Id", "Title"))">
+                    <option disabled>Choose Calendar</option>
+                </select>
+                <select id="color_me" asp-for="EventModel.ColorId" class="chosen-select-no-single custom-select col-md-4 m-1">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
+                <span asp-validation-for="EventModel.ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary btn-lg" />
+                <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@model BeOrganized.Data.Models.Event
+@{
+    this.ViewData["Title"] = "Delete Event";
+}
+
+<div class="content row">
+    <h4>Event Delete</h4>
+    <hr />
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Coordinates)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Coordinates)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Color.Id)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Calendar.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+    </dl>
+    <div class="form-group">
+        <form asp-action="Delete" class="d-inline" method="post">
+            <input type="submit" value="Delete" class="btn btn-danger btn-lg" />
+        </form>
+        <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+    </div>
+
+</div>

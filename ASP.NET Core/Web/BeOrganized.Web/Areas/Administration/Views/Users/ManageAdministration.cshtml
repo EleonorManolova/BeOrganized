@@ -1,0 +1,61 @@
+﻿@using BeOrganized.Common;
+@using BeOrganized.Data.Models
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration
+@inject UserManager<ApplicationUser> userManager;
+@model IEnumerable<BeOrganized.Data.Models.ApplicationUser>
+<section class="content-header">
+    <h1>
+        Users
+    </h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">Users</li>
+    </ol>
+</section>
+<form id="antiForgeryForm" method="post"></form>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Manage Users</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>FullName</th>
+                                <th>UserName</th>
+                                <th>Email</th>
+                                <th>IsDeleted</th>
+                                <th>Change Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Id</td>
+                                    <td>@user.FullName</td>
+                                    <td>@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    <td>@user.IsDeleted</td>
+                                    @if (userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRoleName).Result == true)
+                                    {
+                                        <td><a asp-area="Administration" asp-controller="Users" asp-action="RemoveAdmin" asp-route-id="@user.Id">Remove Admin</a></td>
+                                    }
+                                    else
+                                    {
+                                        <td><a asp-area="Administration" asp-controller="Users" asp-action="MakeAdmin" asp-route-userId="@user.Id">Make Admin</a> </td>
+                                    }
+                                </tr>
+                            }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
