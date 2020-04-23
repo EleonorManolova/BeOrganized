@@ -1,9 +1,8 @@
-namespace BeOrganized.Services.Tests
+﻿namespace BeOrganized.Services
 {
     using System;
 
     using BeOrganized.Data.Models.Enums;
-    using BeOrganized.Services;
     using Xunit;
 
     public class EnumParseServiceTests

@@ -21,6 +21,7 @@
             {
                 var user = new ApplicationUser
                 {
+                    FullName = "Admin",
                     UserName = configuration["Root:AdminName"],
                     Email = configuration["Root:AdminEmail"],
                     EmailConfirmed = true,

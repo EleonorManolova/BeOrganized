@@ -7,11 +7,13 @@
 
     public class DateTimeService : IDateTimeService
     {
-        private const string InvalidPropertyErrorMessage = "One or more required properties are null.";
+        private const string InvalidEnumErrorMessage = "Enum does not exist.";
 
         private static Dictionary<string, List<DateTime>> dictionary;
+
         // Monday of the given date
         private DateTime firstMonday;
+
         // Monday after month of current date
         private DateTime firstMondayAftherMonth;
         private Random random;
@@ -36,7 +38,7 @@
                 // 1 or 2 times a month
                 times = this.CreateTime(duration, frequency, hoursDaytime, currentDate, this.firstMonday.AddMonths(1));
             }
-            else if (frequency / 10 < 10)
+            else if (frequency / 10 < 2)
             {
                 // 1, 2, 3, 4, 5, 6, 7 times a week
                 var frequencyForWeek = frequency % 10;
@@ -64,7 +66,7 @@
         {
             if (frequency < 0)
             {
-                throw new ArgumentException(InvalidPropertyErrorMessage);
+                throw new ArgumentException(InvalidEnumErrorMessage);
             }
 
             if (frequency / 10 < 1)
@@ -72,14 +74,14 @@
                 // 1 or 2 times a month
                 return frequency;
             }
-            else if (frequency / 10 < 10)
+            else if (frequency / 10 < 2)
             {
                 // 1, 2, 3, 4, 5, 6, 7 times a week
                 var frequencyForWeek = frequency % 10;
                 return frequencyForWeek;
             }
 
-            return 0;
+            throw new ArgumentException(InvalidEnumErrorMessage);
         }
 
         private static List<DateTime> GetTimesBetween(string startTime, string endTime)
@@ -112,7 +114,6 @@
             var count = 0;
             while (true)
             {
-
                 if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)
                 {
                     break;

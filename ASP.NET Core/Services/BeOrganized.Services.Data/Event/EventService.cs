@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Globalization;
 
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
@@ -155,14 +156,16 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
+            var dateNow = DateTime.Now;
+            var dateNowAfter30Min = DateTime.Now.AddMinutes(30);
             var model = new EventChangeViewModel
             {
                 EventModel = new EventViewModel
                 {
-                    StartDate = DateTime.Now,
-                    StartTime = DateTime.Now,
-                    EndDate = DateTime.Now,
-                    EndTime = DateTime.Now.AddMinutes(30),
+                    StartDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
+                    StartTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
+                    EndDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
+                    EndTime = new DateTime(dateNowAfter30Min.Year, dateNowAfter30Min.Month, dateNowAfter30Min.Day, dateNowAfter30Min.Hour, dateNowAfter30Min.Minute, dateNowAfter30Min.Second, CultureInfo.CurrentUICulture.Calendar),
                     ColorId = this.calendarService.GetDefaultCalendarColorId(username),
                 },
                 Calendars = this.GetAllCalendarTitlesByUsername<CalendarEventViewModel>(username),

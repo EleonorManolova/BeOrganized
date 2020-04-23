@@ -368,6 +368,7 @@
                 Description = "test description",
                 Location = "Hotel Test",
                 ColorHex = color.Hex,
+                CalendarId = calendar.Id,
             };
 
             this.eventsRepository.Setup(x => x.AllAsNoTracking()).Returns(new List<Event> { model }.AsQueryable());

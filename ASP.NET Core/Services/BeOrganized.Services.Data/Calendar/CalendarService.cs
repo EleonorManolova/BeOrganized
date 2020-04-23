@@ -77,5 +77,21 @@
                 .First();
             return result;
         }
+
+        public string GetUserNameByCalendarId(string calendarId)
+        {
+            if (string.IsNullOrEmpty(calendarId))
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            var username = this.calendarRepository
+                .All()
+                .Where(x => x.Id == calendarId)
+                .Select(x => x.User.UserName)
+                .First();
+
+            return username;
+        }
     }
 }

@@ -1,13 +1,8 @@
 ﻿namespace BeOrganized.Services.Tests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
-    using BeOrganized.Data.Models;
+
     using BeOrganized.Services;
-    using Moq;
-    using Nest;
     using Xunit;
 
     public class DateTimeServiceTests
@@ -47,6 +42,63 @@
             Assert.True(actualResult[0].Start.Hour >= eveningStartDate);
             Assert.True(actualResult[0].Start.Hour <= eveningEndDate);
             Assert.True(actualResult[0].Start.Hour + durationInHour == actualResult[0].End.Hour);
+        }
+
+        [Fact]
+        public void FirstDayOfWeekAfhterMonth_WithCorrectData_ShouldReturnCorrectResults()
+        {
+            var date = DateTime.Parse("04/02/2020");
+            var mondayOfWeek = DateTime.Parse("03/02/2020");
+            var actualResult = this.datetimeService.FirstDayOfWeekAfhterMonth(date);
+            Assert.Equal(mondayOfWeek.AddDays(7 * 4), actualResult);
+        }
+
+        [Fact]
+        public void FindFrequencyByWeek_WithCorrectData_ShouldReturnCorrectResults()
+        {
+            var currentDate = DateTime.Now;
+            var freqency = 17;
+            var expected = 7;
+
+            var actualResult = this.datetimeService.FindFrequency(freqency);
+            Assert.Equal(expected, actualResult);
+        }
+
+        [Fact]
+        public void FindFrequencyByMonth_WithCorrectData_ShouldReturnCorrectResults()
+        {
+            var currentDate = DateTime.Now;
+            var freqency = 2;
+            var expected = 2;
+
+            var actualResult = this.datetimeService.FindFrequency(freqency);
+            Assert.Equal(expected, actualResult);
+        }
+
+        [Fact]
+        public void FindFrequency_WithInvalidEnum_ShouldThrowAnArgumentException()
+        {
+            var currentDate = DateTime.Now;
+            var freqency = -1;
+            var exeptionErrorMessage = "Enum does not exist.";
+
+            var exeption = Assert.Throws<ArgumentException>(() =>
+              this.datetimeService.FindFrequency(freqency));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public void FindFrequency_WithNotExistingEnum_ShouldThrowAnArgumentException()
+        {
+            var currentDate = DateTime.Now;
+            var freqency = 20;
+            var exeptionErrorMessage = "Enum does not exist.";
+
+            var exeption = Assert.Throws<ArgumentException>(() =>
+              this.datetimeService.FindFrequency(freqency));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
     }
 }

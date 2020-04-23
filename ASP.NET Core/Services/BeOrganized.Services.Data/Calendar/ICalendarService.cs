@@ -9,5 +9,7 @@
         string GetDefaultCalendarId(string username);
 
         int GetDefaultCalendarColorId(string username);
+
+        string GetUserNameByCalendarId(string calendarId);
     }
 }

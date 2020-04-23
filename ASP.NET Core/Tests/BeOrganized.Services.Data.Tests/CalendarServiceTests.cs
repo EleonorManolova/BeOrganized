@@ -165,6 +165,51 @@
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
+        [Fact]
+        public void GetUserNameByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            var user = new ApplicationUser
+            {
+                Id = "User1",
+                UserName = "Username",
+            };
+
+            var color = new Color
+            {
+                Id = 1,
+                Name = "Test",
+                Hex = "TestHex",
+            };
+
+            var calendar = new Calendar
+            {
+                Id = "1",
+                Title = "Default",
+                DefaultCalendarColorId = color.Id,
+                DefaultCalendarColor = color,
+                User = user,
+            };
+
+            this.calendarRepository.Setup(x => x.All()).Returns(new List<Calendar> { calendar }.AsQueryable);
+            var result = this.calendarService.GetUserNameByCalendarId(calendar.Id);
+
+            this.calendarRepository.Verify(m => m.All(), Times.Once);
+            Assert.Equal(user.UserName, result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void GetUserNameByCalendarId__WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string username)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = Assert.Throws<ArgumentException>(() =>
+              this.calendarService.GetUserNameByCalendarId(username));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
         private static void InitializeAutomapper<T>()
         {
             AutoMapperConfig.RegisterMappings(

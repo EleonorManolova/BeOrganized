@@ -13,6 +13,10 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200417130348_Enums.cs" />
     <Compile Remove="Migrations\20200417130348_Enums.Designer.cs" />
+    <Compile Remove="Migrations\20200422133528_New.cs" />
+    <Compile Remove="Migrations\20200422133528_New.Designer.cs" />
+    <Compile Remove="Migrations\20200423141644_CalendarIdToUser.cs" />
+    <Compile Remove="Migrations\20200423141644_CalendarIdToUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

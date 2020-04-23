@@ -4,9 +4,6 @@
 
     public enum Duration
     {
-        // [Description("15 Minutes")]
-        // FifteenMinutes = 15,
-
         [Description("30 Minutes")]
         ThirtyMinutes = 30,
 
