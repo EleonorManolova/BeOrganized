@@ -10,14 +10,34 @@
 </section>
 <section class="content container-fluid">
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
+        <div class="small-box bg-info">
             <div class="inner">
-                <h3>5</h3>
+                <h3>@Model.NewUsersToday</h3>
 
-                <p>Unique Visitors</p>
+                <p>New Visitors Today</p>
             </div>
             <div class="icon">
                 <i class="ion ion-pie-graph"></i>
+            </div>
+        </div>
+        <div class="small-box bg-blue">
+            <div class="inner">
+                <h3>@Model.NewUsersThisMonth</h3>
+
+                <p>New Visitors This Month</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+            </div>
+        </div>
+        <div class="small-box bg-aqua-gradient">
+            <div class="inner">
+                <h3>@Model.NewEventsToday</h3>
+
+                <p>New Events Created Today</p>
+            </div>
+            <div class="icon">
+                <i class="far fa-calendar-check"></i>
             </div>
         </div>
     </div>
