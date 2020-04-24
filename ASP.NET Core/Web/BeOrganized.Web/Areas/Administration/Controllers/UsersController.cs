@@ -25,7 +25,6 @@
 
         public IActionResult All()
         {
-            var users = this.userManager.FindByEmailAsync("eleonor.manolova@mail.bg");
             return this.View(this.userManager.Users);
         }
 
