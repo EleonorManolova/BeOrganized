@@ -65,7 +65,7 @@ function DeleteButton() {
 };
 
 function DeleteButtonHabit() {
-    let id = $('#deleteButton').data("id");
+    let id = $('#deleteButton').data("count");
     callAjax(id, '/Habits/Delete', "#elementDelete");
     $('#hoverDelete').show();
 };

@@ -1,4 +1,4 @@
-﻿    @using BeOrganized.Common
+﻿@using BeOrganized.Common
 @using BeOrganized.Data.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
@@ -20,6 +20,9 @@
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
                 <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
+        </li>
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
         </li>
 
         @if (ViewData["Title"].ToString() == "Calendar")

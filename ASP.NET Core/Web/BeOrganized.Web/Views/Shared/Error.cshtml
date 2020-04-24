@@ -10,10 +10,10 @@
 
     @if (this.Model.ShowRequestId)
     {
-        <p>
-            <strong>Request ID:</strong> <code>@this.Model.RequestId</code>
-        </p>
+    <p>
+        <strong>Request ID:</strong> <code>@this.Model.RequestId</code>
+    </p>
     }
 
-    <a class="btn btn-info mt-5" href="/Home/Index">Go to Home Page</a>
+    <a class="btn btn-info mt-5" asp-area="" asp-controller="Home" asp-action="Index">Go to Home Page</a>
 </div>

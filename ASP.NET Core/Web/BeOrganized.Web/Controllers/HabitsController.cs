@@ -53,12 +53,12 @@
         {
             var habitTitle = (await this.habitService.GetByIdAsync(id)).Title;
 
-            if (!await this.habitService.SetCompleteAsync(id))
+            if (!await this.habitService.DeleteCurrentAsync(id))
             {
                 this.TempData["NotificationError"] = DeleteErrorMessage;
             }
 
-            this.TempData["NotificationSuccess"] = string.Format(CompleteSuccessMessage, habitTitle);
+            this.TempData["NotificationSuccess"] = string.Format(DeleteSuccessMessage, habitTitle);
 
             return this.Redirect("/Calendar");
         }
