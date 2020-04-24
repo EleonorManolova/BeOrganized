@@ -30,6 +30,6 @@
 
         Task<bool> SetNotCompleteAsync(string id);
 
-        Task<bool> UpdateAsync(Habit model, string id);
+        Task<bool> UpdateAsync(Habit model);
     }
 }

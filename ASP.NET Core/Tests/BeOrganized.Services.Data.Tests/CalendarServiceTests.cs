@@ -21,10 +21,9 @@
 
         public CalendarServiceTests()
         {
+            this.InitializeMapper();
             this.calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
             this.calendarService = new CalendarService(this.calendarRepository.Object);
-
-            InitializeAutomapper<CalendarHabitViewModel>();
         }
 
         [Fact]
@@ -210,11 +209,7 @@
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
-        private static void InitializeAutomapper<T>()
-        {
-            AutoMapperConfig.RegisterMappings(
-                            typeof(T).GetTypeInfo().Assembly,
-                            typeof(Calendar).GetTypeInfo().Assembly);
-        }
+        private void InitializeMapper() => AutoMapperConfig.
+           RegisterMappings(Assembly.Load("BeOrganized.Web.ViewModels"));
     }
 }

@@ -30,6 +30,7 @@
 
         public EventsServiceTests()
         {
+            this.InitializeMapper();
             this.searchService = new Mock<ISearchService>();
             this.colorRepository = new Mock<BeOrganized.Data.Common.Repositories.IRepository<Color>>();
             this.calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
@@ -38,10 +39,6 @@
             var calendarService = new CalendarService(this.calendarRepository.Object);
             var colorService = new ColorService(this.colorRepository.Object);
             this.eventService = new EventService(this.eventsRepository.Object, calendarService, this.searchService.Object, colorService);
-
-            InitializeAutomapper<EventViewModel>();
-            InitializeAutomapper<EventCalendarViewModel>();
-            InitializeAutomapper<CalendarEventViewModel>();
         }
 
         [Fact]
@@ -260,7 +257,6 @@
         [Fact]
         public void GetCreateChangeViewModel_WithCorrectData_ShouldReturnCorrectly()
         {
-            // InitializeAutomapper<CalendarEventViewModel>();
             var user = new ApplicationUser
             {
                 Id = "User1",
@@ -403,7 +399,6 @@
         [Fact]
         public async Task GetByIdAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -451,7 +446,6 @@
         public async Task GetByIdAsync_WithIncorrectUsername_ShouldThrowAnArgumentNullException()
         {
             var exeptionErrorMessage = "Event with Id: {0} does not exist.";
-            // InitializeAutomapper<EventViewModel>();
 
             var model = new Event
             {
@@ -474,8 +468,6 @@
         [Fact]
         public void GetAllByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
         {
-            // InitializeAutomapper<EventCalendarViewModel>();
-
             var calendar = new Calendar
             {
                 Id = "Test1",
@@ -545,8 +537,6 @@
         [Fact]
         public async Task UpdateAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            // InitializeAutomapper<EventViewModel>();
-
             var model = new Event
             {
                 Id = "Test1",
@@ -606,8 +596,6 @@
         [Fact]
         public async Task DeleteAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            // InitializeAutomapper<EventViewModel>();
-
             var model = new Event
             {
                 Id = "Test1",
@@ -664,8 +652,6 @@
         [Fact]
         public async Task DeleteAsync_WithNotExistingModel_ShouldThrowAnArgumentException()
         {
-            // InitializeAutomapper<EventViewModel>();
-
             var model = new Event
             {
                 Id = "Test1",
@@ -833,11 +819,7 @@
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
-        private static void InitializeAutomapper<T>()
-        {
-            AutoMapperConfig.RegisterMappings(
-                            typeof(T).GetTypeInfo().Assembly,
-                            typeof(Event).GetTypeInfo().Assembly);
-        }
+        private void InitializeMapper() => AutoMapperConfig.
+           RegisterMappings(Assembly.Load("BeOrganized.Web.ViewModels"));
     }
 }

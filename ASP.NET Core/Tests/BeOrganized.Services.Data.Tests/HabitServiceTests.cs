@@ -25,6 +25,7 @@
 
         public HabitServiceTests()
         {
+            this.InitializeMapper();
             this.habitsRepository = new Mock<IDeletableEntityRepository<Habit>>();
 
             var enumParseService = new EnumParseService();
@@ -35,9 +36,6 @@
         [Fact]
         public void GetAllByCalendarId_WithCorrectData_ShouldReturnCorrectResult()
         {
-            AutoMapperConfig.RegisterMappings(
-                             typeof(HabitCalendarViewModel).GetTypeInfo().Assembly,
-                             typeof(Habit).GetTypeInfo().Assembly);
             var color = new Color
             {
                 Id = 1,
@@ -475,7 +473,6 @@
             Assert.Equal(expectedResult.IsCompleted, result.IsCompleted);
         }
 
-        //REMOVE
         [Fact]
         public void GetDetailsViewModelById_WithSameStartAndLastWeek_ShouldReturnCorrectResult()
         {
@@ -498,6 +495,7 @@
             {
                 Id = "TestId",
                 Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 04, 12, 0, 0),
                 Calendar = calendar,
                 CalendarId = calendar.Id,
                 IsActive = true,
@@ -507,7 +505,7 @@
 
             var habit = new Habit
             {
-                Id = "TestId",
+                Id = "Test1",
                 Title = "Test",
                 StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
                 EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
@@ -516,8 +514,19 @@
                 IsCompleted = false,
             };
 
-            var currentDate = DateTime.Parse("03/02/2020");
-            var lastGeneratedWeek = DateTime.Parse("03/02/2020");
+            var habitCompleted = new Habit
+            {
+                Id = "Test2",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = goal.Id,
+                Goal = goal,
+                IsCompleted = true,
+            };
+
+            var mondayHabit = DateTime.Parse("03/02/2020");
+            var mondayGoal = DateTime.Parse("27/01/2020");
             var firstDate = DateTime.Parse("02/02/2020");
             var startEndDatetime = new StartEndDateTime
             {
@@ -525,17 +534,21 @@
                 End = new DateTime(2020, 02, 02, 12, 30, 0),
             };
 
+            this.habitsRepository
+               .Setup(x => x.All())
+               .Returns(new List<Habit> { habit, habitCompleted }.AsQueryable());
             this.dateTimeService
-               .Setup(x => x.FirstDayOfWeekAfhterMonth(It.IsAny<DateTime>()))
-               .Returns(lastGeneratedWeek);
+               .Setup(x => x.FirstDayOfWeek(habit.StartDateTime))
+               .Returns(mondayHabit);
             this.dateTimeService
-               .Setup(x => x.FirstDayOfWeek(It.IsAny<DateTime>()))
-               .Returns(firstDate);
+              .Setup(x => x.FirstDayOfWeek(goal.StartDateTime))
+              .Returns(mondayGoal);
             this.dateTimeService
                 .Setup(x => x.GenerateDatesForMonthAhead(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<DateTime>()))
                 .Returns(new List<StartEndDateTime> { startEndDatetime });
 
             var result = this.habitService.GetDetailsViewModelById(habit.Id);
+            Assert.Equal(4, result.CompletedHabitsForWeeks.Count);
         }
 
         [Fact]
@@ -633,11 +646,307 @@
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }
 
-        private void InitializeAutomapper<TTo, TFrom>()
+        [Fact]
+        public async Task DeleteCurrentAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-            AutoMapperConfig.RegisterMappings(
-                            typeof(TTo).GetTypeInfo().Assembly,
-                            typeof(TFrom).GetTypeInfo().Assembly);
+            var color = new Color
+            {
+                Id = 1,
+                Name = "Test",
+                Hex = "TestHex",
+            };
+
+            var calendar = new Calendar
+            {
+                Id = "CalendarId",
+                Title = "Default",
+                DefaultCalendarColor = color,
+                DefaultCalendarColorId = color.Id,
+            };
+
+            var goal = new Goal
+            {
+                Id = "TestId",
+                Title = "Test",
+                Calendar = calendar,
+                CalendarId = calendar.Id,
+                IsActive = true,
+                Color = color,
+                ColorId = color.Id,
+            };
+
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = goal.Id,
+                Goal = goal,
+                IsCompleted = false,
+            };
+
+            this.habitsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(habit);
+            var result = await this.habitService.DeleteCurrentAsync(habit.Id);
+
+            this.habitsRepository.Verify(x => x.Delete(It.IsAny<Habit>()), Times.Once);
+            this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task DeleteCurrentAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.DeleteCurrentAsync(id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task DeleteCurrentAsync_WithNotExistingModel_ShouldThrowAnArgumentException()
+        {
+            var exeptionErrorMessage = $"Habit with Id: IncorrectId does not exist.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.DeleteCurrentAsync("IncorrectId"));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task DeleteFollowingAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            var color = new Color
+            {
+                Id = 1,
+                Name = "Test",
+                Hex = "TestHex",
+            };
+
+            var calendar = new Calendar
+            {
+                Id = "CalendarId",
+                Title = "Default",
+                DefaultCalendarColor = color,
+                DefaultCalendarColorId = color.Id,
+            };
+
+            var goal = new Goal
+            {
+                Id = "TestId",
+                Title = "Test",
+                Calendar = calendar,
+                CalendarId = calendar.Id,
+                IsActive = true,
+                Color = color,
+                ColorId = color.Id,
+            };
+
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = goal.Id,
+                Goal = goal,
+                IsCompleted = false,
+            };
+
+            this.habitsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(habit);
+            this.habitsRepository.Setup(x => x.All()).Returns(new List<Habit> { habit }.AsQueryable());
+            var result = await this.habitService.DeleteFollowingAsync(habit.Id);
+
+            this.habitsRepository.Verify(x => x.Delete(It.IsAny<Habit>()), Times.Once);
+            this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task DeleteFollowingAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.DeleteFollowingAsync(id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task DeleteFollowingAsync_WithNotExistingModel_ShouldThrowAnArgumentException()
+        {
+            var exeptionErrorMessage = $"Habit with Id: IncorrectId does not exist.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.DeleteFollowingAsync("IncorrectId"));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task DeleteFollowingAsync_WithNullGoalId_ShouldThrowAnArgumentException()
+        {
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                IsCompleted = false,
+            };
+
+            var exeptionErrorMessage = "One or more required properties are null.";
+            this.habitsRepository.Setup(x => x.GetByIdWithDeletedAsync(It.IsAny<string>())).ReturnsAsync(habit);
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.DeleteFollowingAsync(habit.Id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task SetCompleteAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = "GoalId",
+                IsCompleted = false,
+            };
+
+            this.habitsRepository.Setup(x => x.All()).Returns(new List<Habit> { habit }.AsQueryable());
+            var result = await this.habitService.SetCompleteAsync(habit.Id);
+
+            this.habitsRepository.Verify(x => x.Update(It.IsAny<Habit>()), Times.Once);
+            this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task SetCompleteAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.SetCompleteAsync(id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task SetCompleteAsync_WithCompletedHabit_ShouldReturnCorrectResult()
+        {
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = "GoalId",
+                IsCompleted = true,
+            };
+
+            this.habitsRepository.Setup(x => x.All()).Returns(new List<Habit> { habit }.AsQueryable());
+            var result = await this.habitService.SetCompleteAsync(habit.Id);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task SetNotCompleteAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = "GoalId",
+                IsCompleted = true,
+            };
+
+            this.habitsRepository.Setup(x => x.All()).Returns(new List<Habit> { habit }.AsQueryable());
+            var result = await this.habitService.SetNotCompleteAsync(habit.Id);
+
+            this.habitsRepository.Verify(x => x.Update(It.IsAny<Habit>()), Times.Once);
+            this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task SetNotCompleteAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.SetNotCompleteAsync(id));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        [Fact]
+        public async Task SetNotCompleteAsync_WithNotCompletedHabit_ShouldReturnCorrectResult()
+        {
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = "GoalId",
+                IsCompleted = false,
+            };
+
+            this.habitsRepository.Setup(x => x.All()).Returns(new List<Habit> { habit }.AsQueryable());
+            var result = await this.habitService.SetNotCompleteAsync(habit.Id);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_WithCorrectData_ShouldReturnCorrectResult()
+        {
+
+            var habit = new Habit
+            {
+                Id = "TestId",
+                Title = "Test",
+                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
+                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                GoalId = "GoalId",
+                IsCompleted = false,
+            };
+
+            var result = await this.habitService.UpdateAsync(habit);
+
+            this.habitsRepository.Verify(x => x.Update(It.IsAny<Habit>()), Times.Once);
+            this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public async Task UpdateAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        {
+            var exeptionErrorMessage = "One or more required properties are null.";
+
+            var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
+                this.habitService.UpdateAsync(It.IsAny<Habit>()));
+
+            Assert.Equal(exeptionErrorMessage, exeption.Message);
+        }
+
+        private void InitializeMapper() => AutoMapperConfig.
+           RegisterMappings(Assembly.Load("BeOrganized.Web.ViewModels"));
     }
 }

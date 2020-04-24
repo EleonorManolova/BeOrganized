@@ -272,9 +272,9 @@
             return result > 0;
         }
 
-        public async Task<bool> UpdateAsync(Habit model, string habitId)
+        public async Task<bool> UpdateAsync(Habit model)
         {
-            if (model == null || string.IsNullOrEmpty(habitId))
+            if (model == null)
             {
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
@@ -322,11 +322,6 @@
             if (string.IsNullOrEmpty(goalId))
             {
                 throw new ArgumentException(InvalidPropertyErrorMessage);
-            }
-
-            if (habit == null)
-            {
-                throw new ArgumentException(InvalidHabitIdErrorMessage, habit.Id);
             }
 
             var habits = this.habitRepository
