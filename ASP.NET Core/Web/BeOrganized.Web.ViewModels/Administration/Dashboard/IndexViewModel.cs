@@ -2,10 +2,10 @@
 {
     public class IndexViewModel
     {
-        public string UserName { get; set; }
+        public int NewUsersThisMonth { get; set; }
 
-        public int UniqueVisitorsCount { get; set; }
+        public int NewUsersToday { get; set; }
 
-        public int SettingsCount { get; set; }
+        public int NewEventsToday { get; set; }
     }
 }

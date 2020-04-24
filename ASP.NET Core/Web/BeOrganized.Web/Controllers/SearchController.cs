@@ -1,15 +1,14 @@
 ﻿namespace BeOrganized.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using BeOrganized.Common;
     using BeOrganized.Data.Models;
-    using BeOrganized.Services;
+    using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Color;
     using BeOrganized.Services.Data.Events;
     using BeOrganized.Web.ViewModels.Search;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Nest;
 
@@ -18,12 +17,14 @@
         private readonly IEventService eventService;
         private readonly IElasticClient elasticClient;
         private readonly IColorService colorService;
+        private readonly ICalendarService calendarService;
 
-        public SearchController(IEventService eventService, IElasticClient elasticClient, IColorService colorService)
+        public SearchController(IEventService eventService, IElasticClient elasticClient, IColorService colorService, ICalendarService calendarService)
         {
             this.eventService = eventService;
             this.elasticClient = elasticClient;
             this.colorService = colorService;
+            this.calendarService = calendarService;
         }
 
         // [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
@@ -46,14 +47,38 @@
         [Route("/Search")]
         public async Task<IActionResult> Find(string query)
         {
-            var response = await this.elasticClient.SearchAsync<Event>(s => s
-                .Query(qx => qx
-                    .MultiMatch(m => m
-                            .Query(query.ToLower())
-                            .Fields(ff => ff
-                                .Field(f => f.Title, boost: 15)
-                                .Field(f => f.Location, boost: 10)))));
+            if (string.IsNullOrEmpty(query))
+            {
+                var model = new List<EventSearchViewModel>();
+                return this.View("Results", model);
+            }
 
+            //var response = await this.elasticClient.SearchAsync<Event>(s => s
+            //    .Query(qx => qx
+            //        .MultiMatch(m => m
+            //                .Query(query.ToLower())
+            //                .Fields(ff => ff
+            //                    .Field(f => f.Title, boost: 15)
+            //                    .Field(f => f.Location, boost: 10)))));
+            var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
+
+            var response = await this.elasticClient.SearchAsync<Event>(s => s
+          .Query(q => q
+               .Bool(x => x
+                   .Should(sh => sh
+
+                        .Match(t => t.Field(f => f.Title.ToLower()).Query(query.ToLower())))
+                   .Should(sh => sh
+                   .Match(t => t.Field(f => f.CalendarId).Query(calendarId))))));
+
+           // var response = await this.elasticClient.SearchAsync<Event>(s => s
+           //.Query(q => q
+           //     .Bool(x => x
+           //         .Should(sh => new QueryContainer
+           //         {
+           //             sh.Match(t => t.Field(f => f.Title.ToLower()).Query(query.ToLower())),
+           //             sh.Match(t => t.Field(f => f.CalendarId).Query(calendarId)),
+           //         }))));
             if (!response.IsValid)
             {
                 // We could handle errors here by checking response.OriginalException or response.ServerError properties
