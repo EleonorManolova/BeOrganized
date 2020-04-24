@@ -16,6 +16,8 @@
 
         public string Description { get; set; }
 
+        public string CalendarId { get; set; }
+
         public string CalendarTitle { get; set; }
 
         public string ColorHex { get; set; }

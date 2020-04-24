@@ -399,7 +399,6 @@
         [Fact]
         public async Task GetByIdAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-
             var model = new Event
             {
                 Id = "Test1",

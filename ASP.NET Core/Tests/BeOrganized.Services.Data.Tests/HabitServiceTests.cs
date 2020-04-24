@@ -916,7 +916,6 @@
         [Fact]
         public async Task UpdateAsync_WithCorrectData_ShouldReturnCorrectResult()
         {
-
             var habit = new Habit
             {
                 Id = "TestId",
@@ -933,15 +932,14 @@
             this.habitsRepository.Verify(x => x.SaveChangesAsync(), Times.Once);
         }
 
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public async Task UpdateAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException(string id)
+        [Fact]
+        public async Task UpdateAsync_WithNullOrEmptyArgument_ShouldThrowAnArgumentException()
         {
+            Habit habit = null;
             var exeptionErrorMessage = "One or more required properties are null.";
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
-                this.habitService.UpdateAsync(It.IsAny<Habit>()));
+                this.habitService.UpdateAsync(habit));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }

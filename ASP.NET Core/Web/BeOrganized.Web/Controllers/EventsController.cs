@@ -1,5 +1,6 @@
 ﻿namespace BeOrganized.Web.Controllers
 {
+    using System;
     using System.Threading.Tasks;
 
     using BeOrganized.Services.Data.Events;
@@ -37,6 +38,11 @@
             if (!this.ModelState.IsValid)
             {
                 return this.View(model);
+            }
+
+            if (model == null)
+            {
+                throw new ArgumentException("No event view model");
             }
 
             await this.eventService.CreateAsync(model.EventModel);

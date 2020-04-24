@@ -1,5 +1,6 @@
 ﻿namespace BeOrganized.Web
 {
+    using System.Globalization;
     using System.Reflection;
 
     using BeOrganized.Data;
@@ -25,6 +26,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Localization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -151,6 +153,18 @@
             }
 
             app.UseResponseCompression();
+
+            var supportedCultures = new[]
+            {
+                new CultureInfo("en-GB"),
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-GB"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+            });
 
             // Azure
             // app.UseApplicationInsights();

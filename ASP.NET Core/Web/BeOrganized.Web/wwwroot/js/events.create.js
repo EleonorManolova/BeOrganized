@@ -7,12 +7,15 @@ function showCalendarLeft() {
     }
 }
 
-//// Set time to local
-//let dateTimeNow = new Date();
-//var diference = dateTimeNow.getTimezoneOffset();
-//dateTimeNow.setDate(dateTimeNow.getDate() + diference)
-//$('#startTime').val = dateTimeNow.getTime();
-//$('#endTime').val = dateTimeNow.setDate(dateTimeNow.getDate() + 30).getTime();
+let dateNow = new Date();
+var diference = dateNow.getTimezoneOffset();
+dateNow.setTime(dateNow.getTime() + diference)
+var currentStartTime = dateNow.getHours() + ':' + dateNow.getMinutes();
+$('#startTime').val(currentStartTime);
+let dateAfter30 = new Date(dateNow.getTime() + 30 * 60000);
+console.log(dateAfter30);
+var currentEndTime = dateAfter30.getHours() + ':' + dateAfter30.getMinutes();
+$('#endTime').val(currentEndTime);
 
 // Color selected CalendarColor
 var selected = $("#color_me").css("background-color", function () {

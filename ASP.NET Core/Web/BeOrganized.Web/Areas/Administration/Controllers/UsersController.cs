@@ -43,29 +43,6 @@
             return this.View(admins);
         }
 
-        public ActionResult Details(string id)
-        {
-            return this.View();
-        }
-
-        public ActionResult Create()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch
-            {
-                return this.View();
-            }
-        }
-
         public async Task<IActionResult> Edit(string userId)
         {
             if (string.IsNullOrEmpty(userId))
@@ -126,34 +103,6 @@
 
                 user.IsDeleted = true;
                 await this.userManager.UpdateAsync(user);
-                return this.RedirectToAction(nameof(this.All));
-            }
-            catch
-            {
-                return this.RedirectToAction(nameof(this.All));
-            }
-        }
-
-        public IActionResult HardDelete(string id)
-        {
-            var users = this.userManager.Users.Where(x => x.IsDeleted == false);
-            return this.View(users);
-        }
-
-        [HttpPost]
-        [Route("/Administration/Users/HardDelete/{userId}")]
-        public async Task<IActionResult> HardDeleteConfirm(string userId)
-        {
-            try
-            {
-                var user = await this.userManager.FindByIdAsync(userId);
-                if (user == null)
-                {
-                    this.ViewBag.ErrorMessage = string.Format(InvalidUserIdErrorMessage, userId);
-                    return this.BadRequest();
-                }
-
-                await this.userManager.DeleteAsync(user);
                 return this.RedirectToAction(nameof(this.All));
             }
             catch

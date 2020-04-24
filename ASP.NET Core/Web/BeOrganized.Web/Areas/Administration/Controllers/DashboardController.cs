@@ -23,15 +23,5 @@
             };
             return this.View();
         }
-
-        public IActionResult BackUp()
-        {
-            return this.View();
-        }
-
-        public IActionResult BackUpDownload()
-        {
-            return this.View();
-        }
     }
 }

@@ -32,10 +32,10 @@
 
         public async Task HabitsChange(HabitHubViewModel model)
         {
-            var habitsViewModel = await this.habitService.GetByIdAsync(model.Id);
-            habitsViewModel.StartDateTime = DateTime.Parse(model.StartDateTime);
-            habitsViewModel.EndDateTime = DateTime.Parse(model.EndDateTime);
-            await this.habitService.UpdateAsync(habitsViewModel, model.Id);
+            var habit = await this.habitService.GetByIdAsync(model.Id);
+            habit.StartDateTime = DateTime.Parse(model.StartDateTime);
+            habit.EndDateTime = DateTime.Parse(model.EndDateTime);
+            await this.habitService.UpdateAsync(habit);
         }
     }
 }

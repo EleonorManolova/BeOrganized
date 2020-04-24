@@ -37,7 +37,7 @@ function callAjax(eventId, url, divId) {
             $(divId).html(data);
         },
         error: function (xhr) {
-            alert('error');
+            alert("An error has occured! Please try again later or contact the support.");
         }
     });
 }

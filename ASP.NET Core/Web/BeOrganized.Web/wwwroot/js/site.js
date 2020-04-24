@@ -1,5 +1,6 @@
 ﻿(function ($) {
     "use strict";
+  
 
     if ($('section').is('.removeContainer') || $('div').is('.removeContainer')) {
         $('main').removeClass('container');

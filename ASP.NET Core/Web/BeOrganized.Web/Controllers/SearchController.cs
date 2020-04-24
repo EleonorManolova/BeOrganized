@@ -26,8 +26,9 @@
             this.colorService = colorService;
         }
 
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        [Route("/Search/Reindex")]
+        // [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [HttpPost]
+        [Route("/Search/ReIndex")]
         public async Task<IActionResult> ReIndex()
         {
             await this.elasticClient.DeleteByQueryAsync<Event>(q => q.MatchAll());
