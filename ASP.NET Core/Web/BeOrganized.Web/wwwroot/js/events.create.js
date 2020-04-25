@@ -7,14 +7,24 @@ function showCalendarLeft() {
     }
 }
 
+function makeNumber2Digit(number) {
+    if (number.toString().length == 1) {
+        number = `0${number}`;
+        return number;
+    }
+
+    return number;
+}
+
 let dateNow = new Date();
 var diference = dateNow.getTimezoneOffset();
 dateNow.setTime(dateNow.getTime() + diference)
-var currentStartTime = dateNow.getHours() + ':' + dateNow.getMinutes();
+var hours = makeNumber2Digit(dateNow.getHours());
+var minutes = makeNumber2Digit(dateNow.getMinutes());
+var currentStartTime = hours + ':' + minutes;
 $('#startTime').val(currentStartTime);
 let dateAfter30 = new Date(dateNow.getTime() + 30 * 60000);
-console.log(dateAfter30);
-var currentEndTime = dateAfter30.getHours() + ':' + dateAfter30.getMinutes();
+var currentEndTime = makeNumber2Digit(dateAfter30.getHours()) + ':' + makeNumber2Digit(dateAfter30.getMinutes());
 $('#endTime').val(currentEndTime);
 
 // Color selected CalendarColor

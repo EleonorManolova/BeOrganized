@@ -15,6 +15,16 @@
         }
     });
 
+    $(window).on("load", function () {
+        //$('#deleteButton').click(function (e) { e.stopPropagation() });
+        $('#hoverDetails').click(function () {
+            $('#hoverDetails').hide();
+        });
+        $('#closeButtonDetails').click(function () {
+            $('#hoverDetails').hide();
+        });
+    });
+
     // Notification alert Fade out
     $(".notification").delay(4000).fadeOut('slow');
 

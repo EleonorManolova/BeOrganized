@@ -27,23 +27,6 @@
             this.calendarService = calendarService;
         }
 
-        // [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        [HttpPost]
-        [Route("/Search/ReIndex")]
-        public async Task<IActionResult> ReIndex()
-        {
-            await this.elasticClient.DeleteByQueryAsync<Event>(q => q.MatchAll());
-
-            var allEvents = this.eventService.GetAllByUsername(this.User.Identity.Name).ToArray();
-
-            foreach (var eventFromDb in allEvents)
-            {
-                await this.elasticClient.IndexDocumentAsync(eventFromDb);
-            }
-
-            return this.Ok($"{allEvents.Length} post(s) reindexed");
-        }
-
         [Route("/Search")]
         public async Task<IActionResult> Find(string query)
         {
@@ -53,13 +36,6 @@
                 return this.View("Results", model);
             }
 
-            //var response = await this.elasticClient.SearchAsync<Event>(s => s
-            //    .Query(qx => qx
-            //        .MultiMatch(m => m
-            //                .Query(query.ToLower())
-            //                .Fields(ff => ff
-            //                    .Field(f => f.Title, boost: 15)
-            //                    .Field(f => f.Location, boost: 10)))));
             var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
 
             var response = await this.elasticClient.SearchAsync<Event>(s => s
@@ -71,17 +47,8 @@
                    .Should(sh => sh
                    .Match(t => t.Field(f => f.CalendarId).Query(calendarId))))));
 
-           // var response = await this.elasticClient.SearchAsync<Event>(s => s
-           //.Query(q => q
-           //     .Bool(x => x
-           //         .Should(sh => new QueryContainer
-           //         {
-           //             sh.Match(t => t.Field(f => f.Title.ToLower()).Query(query.ToLower())),
-           //             sh.Match(t => t.Field(f => f.CalendarId).Query(calendarId)),
-           //         }))));
             if (!response.IsValid)
             {
-                // We could handle errors here by checking response.OriginalException or response.ServerError properties
                 return this.View("Results", new EventSearchViewModel[] { });
             }
 
