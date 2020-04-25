@@ -26,7 +26,7 @@
 <body class="hold-transition skin-black-light sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
-            <a href="index2.html" class="logo">
+            <a asp-controller="Dashboard" asp-action="Index" class="logo">
                 <span class="logo-mini"><img src="~/img/Logo/favicon.png" alt="Logo" /></span>
                 <span class="logo-lg">@GlobalConstants.SystemName</span>
             </a>
@@ -51,6 +51,7 @@
             </section>
         </aside>
         <div class="content-wrapper">
+            <partial name="_NotificationPartial" />
             @this.RenderBody()
         </div>
         <footer class="main-footer">
@@ -62,7 +63,8 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
     <script src="~/adminlte/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/adminlte/dist/js/adminlte.js"></script>
-    @*<script src="~/js/admin.site.js" asp-append-version="true"></script>*@
+    <script src="~/adminlte/dist/js/adminlte.js" asp-append-version="true"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+
 </body>
 </html>

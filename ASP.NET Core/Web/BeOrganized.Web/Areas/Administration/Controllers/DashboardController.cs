@@ -23,7 +23,7 @@
         public IActionResult Index()
         {
             var newUsers = this.userManager.Users.Where(x => x.CreatedOn.Date == DateTime.Now.Date).Count();
-            var newUsersForMonth = this.userManager.Users.Where(x => x.CreatedOn.Date == DateTime.Now.AddMonths(-1).Date).Count();
+            var newUsersForMonth = this.userManager.Users.Where(x => x.CreatedOn.Date > DateTime.Now.AddMonths(-1).Date).Count();
             var eventsCreatedToday = this.eventService.GetAll().Where(x => x.CreatedOn.Date == DateTime.Now.Date).Count();
             var viewModel = new IndexViewModel
             {

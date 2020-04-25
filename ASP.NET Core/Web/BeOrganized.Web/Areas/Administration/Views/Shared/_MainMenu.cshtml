@@ -1,5 +1,5 @@
 ﻿<ul class="sidebar-menu" data-widget="tree">
-        <li><a asp-controller="Events" asp-action="Index"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></li>
+    <li><a asp-controller="Events" asp-action="Index"><i class="fas fa-calendar-alt"></i> <span>Events</span></a></li>
     <li class="treeview">
         <a href="#">
             <i class="fas fa-user-cog"></i> <span>Users</span>
@@ -12,19 +12,7 @@
             <li><a asp-area="Administration" asp-controller="Users" asp-action="All">All</a></li>
         </ul>
     </li>
-    <li class="treeview">
-        <a href="#">
-            <i class="fas fa-download"></i> <span>Backup</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
-        </a>
-        <ul class="treeview-menu">
-            <li><a href="#">BackUp Now</a></li>
-            <li><a href="#">Download Backup</a></li>
-            <li><a asp-controller="BackUp" asp-action="ReIndex">Reindex ElasticSearch</a></li>
-        </ul>
-    </li>
+    <li><a asp-controller="BackUp" asp-action="BackUp"><i class="fas fa-download"></i> <span>Backup</span></a></li>
     <li class="header">PROFILE</li>
     <li>   <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><span>Profile</span></a></li>
     <li>
