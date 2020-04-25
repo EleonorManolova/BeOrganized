@@ -21,7 +21,6 @@
 
         public BackUpController(IConfiguration configuraiton)
         {
-
             this.configuration = configuraiton;
         }
 

@@ -45,8 +45,7 @@
                                     <td>@item.Description</td>
                                     <td>@item.Location</td>
                                     <td>@item.ColorId</td>
-                                    <td><a asp-area="Administration" asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.Id" asp-route-calendarId="@item.CalendarId">Edit</a> | <a asp-area="Administration" asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.Id">Delete</a></td>
-                                    @*<td><a asp-area="Administration" asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.Id" asp-route-calendarId="@item.CalendarId">Edit</a> | <a onclick="Delete('@item.Id', 'Events/Delete')">Delete</a></td>*@
+                                    <td><a asp-area="Administration" asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.Id" asp-route-calendarId="@item.CalendarId">Edit</a> | <a asp-area="Administration" asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.Id">Delete</a></td>                                 
                                 </tr>
                             }
                         </tbody>

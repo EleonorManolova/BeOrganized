@@ -163,7 +163,9 @@
         }
     }
 
+#pragma warning disable SA1402 // File may only contain a single type
     public class StartEndDateTime
+#pragma warning restore SA1402 // File may only contain a single type
     {
         public DateTime Start { get; set; }
 

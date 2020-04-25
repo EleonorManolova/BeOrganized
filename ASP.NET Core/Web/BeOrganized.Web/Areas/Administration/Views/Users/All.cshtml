@@ -1,10 +1,8 @@
 ﻿@using BeOrganized.Common;
 @using BeOrganized.Data.Models
 @using Microsoft.AspNetCore.Identity
-@using Microsoft.Extensions.Configuration;
-@inject IConfiguration configuration
 @inject UserManager<ApplicationUser> userManager;
-@model IEnumerable<BeOrganized.Data.Models.ApplicationUser>
+@model IEnumerable<ApplicationUser>
 <section class="content-header">
     <h1>
         Users
