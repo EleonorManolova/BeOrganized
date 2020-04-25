@@ -1,0 +1,32 @@
+﻿@model List<string>
+<section class="content-header">
+    <h1>
+        BackUp DataBase
+    </h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li class="active">BackUp</li>
+    </ol>
+</section>
+<div class="content">
+    <form style="align-content: center" asp-controller="BackUp" asp-action="BackUp" method="post">
+        <input type="submit" value="Create Backup" class="btn btn-primary" />
+        <a href="/Administration/Dashboard/Index" class="btn btn-info">Cancel</a>
+    </form>
+    <div class="mt-4">
+        @if (Model.Count != 0)
+        {
+            @foreach (var file in Model)
+            {
+                <table class="table table-bordered h4">
+                    <tr>
+                        <td>@file</td>
+                        <form asp-area="Administration" asp-controller="BackUp" asp-action="Download" asp-route-fileName="@file"  method="post">
+                            <td><button class="btn btn-default" type="submit" >Dowload</button></td>
+                        </form>
+                    </tr>
+                </table>
+            }
+        }
+    </div>
+</div>
