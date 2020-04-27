@@ -2,10 +2,15 @@
 @{
     this.ViewData["Title"] = "Delete User";
 }
-
+<section class="content-header">
+    <h1>Delete User</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Users" asp-action="All"><i class="fa fa-dashboard"></i>All</a></li>
+        <li class="active">Delete User</li>
+    </ol>
+</section>
 <div class="content row">
-    <h4>Delete User</h4>
-    <hr />
     <dl>
         <dt>
             @Html.DisplayNameFor(model => model.Id)

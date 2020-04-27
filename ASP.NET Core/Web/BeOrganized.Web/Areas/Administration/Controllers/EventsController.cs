@@ -26,6 +26,11 @@
             return this.View(this.eventService.GetAll());
         }
 
+        public IActionResult Create()
+        {
+            return this.View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateAsync(EventChangeViewModel model)
         {

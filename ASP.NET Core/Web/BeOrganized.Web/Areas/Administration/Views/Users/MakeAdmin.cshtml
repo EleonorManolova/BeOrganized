@@ -2,10 +2,17 @@
 @{
     this.ViewData["Title"] = "Edit";
 }
-
+<section class="content-header">
+    <h1>
+        Make User Admin
+    </h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Users" asp-action="ManageAdministration"><i class="fa fa-dashboard"></i>Manage Administration</a></li>
+        <li class="active">Make User Admin</li>
+    </ol>
+</section>
 <div class="content row">
-    <h4>Make User Admin</h4>
-    <hr />
     <dl>
         <dt>
             @Html.DisplayNameFor(model => model.Id)
@@ -35,8 +42,8 @@
     <div class="form-group">
         <form asp-action="MakeAdmin" class="d-inline" method="post">
             <input type="submit" value="Make Admin" class="btn btn-danger btn-lg" />
+            <a class="btn btn-info btn-lg d-inline" asp-action="ManageAdministration">Cancel</a>
         </form>
-        <a class="btn btn-info btn-lg d-inline" asp-action="ManageAdministration">Cancel</a>
     </div>
 
 </div>

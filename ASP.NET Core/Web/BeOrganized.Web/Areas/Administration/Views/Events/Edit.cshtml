@@ -3,9 +3,16 @@
     this.ViewData["Title"] = "Edit";
 }
 
+<section class="content-header">
+    <h1>Event Edit</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Events" asp-action="Index"><i class="fa"></i> Events</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+
 <div class="content row">
-    <h4>Event Edit</h4>
-    <hr />
     <div class="col-md-4">
         <form asp-action="Edit" asp-route-id="@TempData["EventId"]">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

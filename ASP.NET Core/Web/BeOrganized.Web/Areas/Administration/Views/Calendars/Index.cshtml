@@ -1,12 +1,12 @@
 ﻿@using BeOrganized.Common;
-@model IEnumerable<BeOrganized.Data.Models.Event>
+@model IEnumerable<BeOrganized.Data.Models.Calendar>
 <section class="content-header">
     <h1>
-        Events
+        Calendars
     </h1>
     <ol class="breadcrumb">
         <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Events</li>
+        <li class="active">Calendars</li>
     </ol>
 </section>
 <section class="content">
@@ -14,38 +14,27 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Manage Events</h3>
-                    <a class="btn ml-5" asp-action="Create">Create</a>
+                    <h3 class="box-title">Manage Calendars</h3>
                 </div>
                 <div class="box-body">
                     <table id="table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>CalendarId</th>
                                 <th>Title</th>
-                                <th>Start Date Time</th>
-                                <th>End Date Time</th>
+                                <th>UserId</th>
                                 <th>Created On</th>
-                                <th>Description</th>
-                                <th>Location</th>
-                                <th>ColorId</th>
-                            </tr>
+                                <th>Events Count</th>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>@item.Id</td>
-                                    <td>@item.CalendarId</td>
                                     <td>@item.Title</td>
-                                    <td>@item.StartDateTime</td>
-                                    <td>@item.EndDateTime</td>
+                                    <td>@item.UserId</td>
                                     <td>@item.CreatedOn</td>
-                                    <td>@item.Description</td>
-                                    <td>@item.Location</td>
-                                    <td>@item.ColorId</td>
-                                    <td><a asp-area="Administration" asp-controller="Events" asp-action="Edit" asp-route-eventId="@item.Id" asp-route-calendarId="@item.CalendarId">Edit</a> | <a asp-area="Administration" asp-controller="Events" asp-action="Delete" asp-route-eventId="@item.Id">Delete</a></td>                                 
+                                    <td><a asp-area="Administration" asp-controller="Calendars" asp-action="Edit" asp-route-calendarId="@item.Id">Edit</a> | <a asp-area="Administration" asp-controller="Calendars" asp-action="Delete" asp-route-calendarId="@item.Id">Delete</a></td>
                                 </tr>
                             }
                         </tbody>

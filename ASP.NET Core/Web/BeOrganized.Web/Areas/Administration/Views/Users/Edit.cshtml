@@ -2,10 +2,15 @@
 @{
     this.ViewData["Title"] = "Edit User";
 }
-
+<section class="content-header">
+    <h1>Edit User</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Users" asp-action="All"><i class="fa fa-dashboard"></i>All</a></li>
+        <li class="active">Edit User</li>
+    </ol>
+</section>
 <div class="content row">
-    <h4>Edit User</h4>
-    <hr />
     <div class="col-md-4">
         <form asp-action="Edit" asp-route-userId="@TempData["UserId"]">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

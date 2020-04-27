@@ -30,7 +30,7 @@
                                 <th>FullName</th>
                                 <th>UserName</th>
                                 <th>Email</th>
-                                <th>IsDeleted</th>
+                                <th>Created On</th>
                                 <th>Change Role</th>
                             </tr>
                         </thead>
@@ -42,7 +42,7 @@
                                     <td>@user.FullName</td>
                                     <td>@user.UserName</td>
                                     <td>@user.Email</td>
-                                    <td>@user.IsDeleted</td>
+                                    <td>@user.CreatedOn</td>
                                     @if (userManager.IsInRoleAsync(user, GlobalConstants.AdministratorRoleName).Result == true)
                                     {
                                         <td><a asp-area="Administration" asp-controller="Users" asp-action="RemoveAdmin" asp-route-id="@user.Id">Remove Admin</a></td>

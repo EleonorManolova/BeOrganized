@@ -43,8 +43,8 @@
         [Route("/Administration/BackUp/BackUp")]
         public IActionResult BackUpPost()
         {
-            SqlConnection sqlconn = new SqlConnection(this.configuration.GetConnectionString("DefaultConnection"));
-            SqlCommand sqlcmd = new SqlCommand();
+            var sqlconn = new SqlConnection(this.configuration.GetConnectionString("DefaultConnection"));
+            var sqlcmd = new SqlCommand();
 
             var currentDirectory = Directory.GetCurrentDirectory();
             var currentDirectoryRoot = Directory.GetParent(currentDirectory).Parent.ToString();

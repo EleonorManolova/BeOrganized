@@ -2,10 +2,15 @@
 @{
     this.ViewData["Title"] = "Delete Event";
 }
-
+<section class="content-header">
+    <h1>Event Delete</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Events" asp-action="Index"><i class="fa"></i> Events</a></li>
+        <li class="active">Delete</li>
+    </ol>
+</section>
 <div class="content row">
-    <h4>Event Delete</h4>
-    <hr />
     <dl>
         <dt>
             @Html.DisplayNameFor(model => model.Title)
