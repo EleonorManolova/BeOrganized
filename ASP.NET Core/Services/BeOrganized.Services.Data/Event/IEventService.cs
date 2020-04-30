@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using BeOrganized.Data.Models;
+    using BeOrganized.Web.ViewModels.Administration.Events;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
 
@@ -30,5 +31,9 @@
         Event MapEventViewModelToEvent(EventViewModel eventViewModel, string eventId);
 
         ICollection<Event> GetAll();
+
+        EventCreateModel GetCreateViewModel();
+
+        Task<bool> CreateFromAdminAsync(EventModel eventModel);
     }
 }

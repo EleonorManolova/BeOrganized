@@ -1,5 +1,5 @@
-﻿@model BeOrganized.Data.Models.Event
-
+﻿@model BeOrganized.Web.ViewModels.Administration.Events.EventCreateModel
+<link rel="stylesheet" href="~/css/events.create.min.css" asp-append-version="true">
 <section class="content-header">
     <h1>Event Create</h1>
     <ol class="breadcrumb">
@@ -11,61 +11,61 @@
 <div class="content row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="EventModel.Title"></label>
+                <input asp-for="EventModel.Title" class="form-control col-md-5" placeholder="Enter title">
+                <span asp-validation-for="EventModel.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartDateTime" class="control-label"></label>
-                <input asp-for="StartDateTime" class="form-control" />
-                <span asp-validation-for="StartDateTime" class="text-danger"></span>
+                <label asp-for="EventModel.StartDateTime"></label>
+                <input asp-for="EventModel.StartDateTime" class="form-control col-md-5">
+                <span asp-validation-for="EventModel.StartDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDateTime" class="control-label"></label>
-                <input asp-for="EndDateTime" class="form-control" />
-                <span asp-validation-for="EndDateTime" class="text-danger"></span>
+                <label asp-for="EventModel.EndDateTime"></label>
+                <input asp-for="EventModel.EndDateTime" class="form-control col-md-5">
+                <span asp-validation-for="EventModel.EndDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                <label asp-for="EventModel.Location"></label>
+                <input asp-for="EventModel.Location" class="form-control mb-2 col-md-5" id="autocomplete4" value="" placeholder="Add location" />
+                <span asp-validation-for="EventModel.Location" class="text-danger"></span>
+                <div id="map"></div>
+                <input hidden id="coordinates" asp-for="EventModel.Coordinates" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EventModel.Description"></label>
+                <textarea asp-for="EventModel.Description" class="form-control min-vh-50 col-md-5" rows="3" placeholder="Add Description"></textarea>
+                <span asp-validation-for="EventModel.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Coordinates" class="control-label"></label>
-                <input asp-for="Coordinates" class="form-control" />
-                <span asp-validation-for="Coordinates" class="text-danger"></span>
+                <label asp-for="EventModel.CalendarId"></label>
+                <select asp-for="EventModel.CalendarId" class="chosen-select-no-single custom-select ">
+                    @foreach (var user in Model.Users)
+                    {
+                        <option disabled value="@user.Id">@user.UserName</option>
+                        foreach (var calendar in Model.Calendars.Where(x => x.UserId == user.Id))
+                        {
+                            <option value="@calendar.Id">@calendar.Title</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="EventModel.CalendarId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="EventModel.ColorId"></label>
+                <select id="color_me" asp-for="EventModel.ColorId" class="chosen-select-no-single custom-select ">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="EventModel.ColorId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ColorId" class="control-label"></label>
-                <select asp-for="ColorId" class="form-control" asp-items="ViewBag.ColorId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="CalendarId" class="control-label"></label>
-                <select asp-for="CalendarId" class="form-control" asp-items="ViewBag.CalendarId"></select>
-            </div>
-            <div class="form-group">
-                <div class="checkbox">
-                    <label>
-                        <input asp-for="IsDeleted" /> @Html.DisplayNameFor(model => model.IsDeleted)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeletedOn" class="control-label"></label>
-                <input asp-for="DeletedOn" class="form-control" />
-                <span asp-validation-for="DeletedOn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default btn-lg" />
-                <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
-            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+            <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
         </form>
     </div>
 </div>

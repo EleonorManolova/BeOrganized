@@ -11,6 +11,7 @@
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Color;
     using BeOrganized.Services.Mapping;
+    using BeOrganized.Web.ViewModels.Administration.Events;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Events;
     using Nest;
@@ -164,7 +165,7 @@
                 {
                     StartDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
                     StartTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
-                    EndDate = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
+                    EndDate = new DateTime(dateNowAfter30Min.Year, dateNowAfter30Min.Month, dateNowAfter30Min.Day, dateNowAfter30Min.Hour, dateNowAfter30Min.Minute, dateNowAfter30Min.Second, CultureInfo.CurrentUICulture.Calendar),
                     EndTime = new DateTime(dateNowAfter30Min.Year, dateNowAfter30Min.Month, dateNowAfter30Min.Day, dateNowAfter30Min.Hour, dateNowAfter30Min.Minute, dateNowAfter30Min.Second, CultureInfo.CurrentUICulture.Calendar),
                     ColorId = this.calendarService.GetDefaultCalendarColorId(username),
                 },
@@ -261,6 +262,61 @@
             return eventFromDb;
         }
 
+        public EventCreateModel GetCreateViewModel()
+        {
+            var dateNow = DateTime.Now;
+            var dateNowAfter30Min = dateNow.AddMinutes(30);
+            var model = new EventCreateModel
+            {
+                EventModel = new EventModel
+                {
+                    StartDateTime = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, dateNow.Hour, dateNow.Minute, dateNow.Second, CultureInfo.CurrentUICulture.Calendar),
+                    EndDateTime = new DateTime(dateNowAfter30Min.Year, dateNowAfter30Min.Month, dateNowAfter30Min.Day, dateNowAfter30Min.Hour, dateNowAfter30Min.Minute, dateNowAfter30Min.Second, CultureInfo.CurrentUICulture.Calendar),
+                },
+                Calendars = this.calendarService.GetAll(),
+                Colors = this.colorService.GetAllColors(),
+            };
+            return model;
+        }
+
+        public async Task<bool> CreateFromAdminAsync(EventModel eventModel)
+        {
+            if (string.IsNullOrEmpty(eventModel.Title) ||
+               string.IsNullOrEmpty(eventModel.CalendarId) ||
+               eventModel.StartDateTime == null ||
+               eventModel.EndDateTime == null)
+            {
+                throw new ArgumentException(InvalidPropertyErrorMessage);
+            }
+
+            if (eventModel.StartDateTime > eventModel.EndDateTime)
+            {
+                throw new ArgumentException(InvalidDateTimeErrorMessage);
+            }
+
+            Event eventFromForm = new Event
+            {
+                Title = eventModel.Title,
+                Location = eventModel.Location,
+                StartDateTime = eventModel.StartDateTime,
+                EndDateTime = eventModel.EndDateTime,
+                Description = eventModel.Description,
+                CalendarId = eventModel.CalendarId,
+                Coordinates = string.IsNullOrEmpty(eventModel.Coordinates) ?
+                string.Empty :
+                eventModel.Coordinates.Replace("(", string.Empty).Replace(")", string.Empty).Trim().ToString(),
+                ColorId = eventModel.ColorId,
+            };
+
+            var response = await this.searchService.CreateIndexAsync<Event>(eventFromForm);
+
+            await this.eventRepository.AddAsync(eventFromForm);
+            var result = await this.eventRepository.SaveChangesAsync();
+
+            return result > 0 && response == Result.Created;
+        }
+
         private ICollection<T> GetAllCalendarTitlesByUsername<T>(string username) => this.calendarService.GetAllCalendarTitlesByUserName<T>(username);
+
     }
 }

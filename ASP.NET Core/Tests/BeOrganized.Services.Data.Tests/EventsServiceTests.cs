@@ -36,8 +36,8 @@
             this.calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
             this.eventsRepository = new Mock<IDeletableEntityRepository<Event>>();
 
-            var calendarService = new CalendarService(this.calendarRepository.Object);
             var colorService = new ColorService(this.colorRepository.Object);
+            var calendarService = new CalendarService(this.calendarRepository.Object, colorService);
             this.eventService = new EventService(this.eventsRepository.Object, calendarService, this.searchService.Object, colorService);
         }
 

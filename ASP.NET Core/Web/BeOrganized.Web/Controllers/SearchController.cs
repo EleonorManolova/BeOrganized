@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using BeOrganized.Common;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Color;
@@ -36,7 +36,7 @@
                 return this.View("Results", model);
             }
 
-            var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
+            var calendarId = this.calendarService.GetCalendarId(this.User.Identity.Name, GlobalConstants.DefaultCalendarTitle);
 
             var response = await this.elasticClient.SearchAsync<Event>(s => s
           .Query(q => q
