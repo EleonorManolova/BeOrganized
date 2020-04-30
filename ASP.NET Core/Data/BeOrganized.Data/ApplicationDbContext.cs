@@ -105,11 +105,6 @@
                 .HasForeignKey(e => e.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Calendar>()
-                .HasOne(c => c.User)
-                .WithOne(u => u.Calendar)
-                .HasForeignKey<Calendar>(c => c.UserId);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

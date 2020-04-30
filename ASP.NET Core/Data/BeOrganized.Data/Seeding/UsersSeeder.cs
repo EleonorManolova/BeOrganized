@@ -27,6 +27,14 @@
                     EmailConfirmed = true,
                 };
 
+                var calendar = new Calendar
+                {
+                    Title = GlobalConstants.DefaultCalendarTitle,
+                    UserId = user.Id,
+                    DefaultCalendarColorId = 1,
+                };
+
+                user.Calendars.Add(calendar);
                 IdentityResult result = await userManager.CreateAsync(user, configuration["Root:AdminPassword"]);
 
                 if (result.Succeeded)

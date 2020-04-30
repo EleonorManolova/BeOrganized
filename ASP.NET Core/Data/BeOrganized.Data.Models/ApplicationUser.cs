@@ -19,9 +19,7 @@ namespace BeOrganized.Data.Models
 
         public string FullName { get; set; }
 
-        public string CalendarId { get; set; }
-
-        public virtual Calendar Calendar { get; set; }
+        public virtual ICollection<Calendar> Calendars { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
