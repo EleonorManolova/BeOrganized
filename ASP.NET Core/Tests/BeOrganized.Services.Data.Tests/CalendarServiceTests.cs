@@ -5,10 +5,11 @@
     using System.Linq;
     using System.Reflection;
     using System.Text;
-
+    using BeOrganized.Common;
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
+    using BeOrganized.Services.Data.Color;
     using BeOrganized.Services.Mapping;
     using BeOrganized.Web.ViewModels.Golas;
     using Moq;
@@ -22,8 +23,9 @@
         public CalendarServiceTests()
         {
             this.InitializeMapper();
+            var colorService = new Mock<IColorService>();
             this.calendarRepository = new Mock<IDeletableEntityRepository<Calendar>>();
-            this.calendarService = new CalendarService(this.calendarRepository.Object);
+            this.calendarService = new CalendarService(this.calendarRepository.Object, colorService.Object);
         }
 
         [Fact]
@@ -145,7 +147,7 @@
             };
 
             this.calendarRepository.Setup(x => x.All()).Returns(new List<Calendar> { calendar }.AsQueryable);
-            var result = this.calendarService.GetDefaultCalendarId(user.UserName);
+            var result = this.calendarService.GetCalendarId(user.UserName, calendar.Title);
 
             this.calendarRepository.Verify(m => m.All(), Times.Once);
             Assert.Equal(calendar.Id, result);
@@ -159,7 +161,7 @@
             var exeptionErrorMessage = "One or more required properties are null.";
 
             var exeption = Assert.Throws<ArgumentException>(() =>
-              this.calendarService.GetDefaultCalendarId(username));
+              this.calendarService.GetCalendarId(username, GlobalConstants.DefaultCalendarTitle));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }

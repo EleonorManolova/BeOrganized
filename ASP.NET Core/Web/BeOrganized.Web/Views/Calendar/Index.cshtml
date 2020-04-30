@@ -1,56 +1,61 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration
+
+@{
     ViewData["Title"] = "Calendar";
+    var googleCalendarApi = this.configuration["GoogleCalendar:ApiKey"];
 }
+    <head>
+        <environment names="Development">
+            <link href='~/lib/fullcalendar/core/main.min.css' rel='stylesheet' />
+            <link href='~/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
+            <link href='~/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
+            <link href="~/css/calendar.index.css" rel="stylesheet" asp-append-version="true" />
+        </environment>
+        <environment names="Staging,Production">
+            <link href='~/lib/fullcalendar/core/main.min.css' rel='stylesheet' />
+            <link href='~/lib/fullcalendar/daygrid/main.min.css' rel='stylesheet' />
+            <link href='~/lib/fullcalendar/timegrid/main.min.css' rel='stylesheet' />
+            <link rel="stylesheet" href="~/css/calendar.index.min.css" asp-append-version="true">
+        </environment>
+    </head>
 
-<head>
-    <environment names="Development">
-        @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">*@
-        <link href='~/lib/fullcalendar/core/main.min.css' rel='stylesheet' />
-        <link href='~/lib/fullcalendar/daygrid/main.css' rel='stylesheet' />
-        <link href='~/lib/fullcalendar/timegrid/main.css' rel='stylesheet' />
-        <link href="~/css/calendar.index.css" rel="stylesheet" asp-append-version="true" />
-    </environment>
-    <environment names="Staging,Production">
-        <link href='~/lib/fullcalendar/core/main.min.css' rel='stylesheet' />
-        <link href='~/lib/fullcalendar/daygrid/main.min.css' rel='stylesheet' />
-        <link href='~/lib/fullcalendar/timegrid/main.min.css' rel='stylesheet' />
-        <link rel="stylesheet" href="~/css/calendar.index.min.css" asp-append-version="true">
-    </environment>
-</head>
+    <body>
+        <div id="calendarAndButtons">
+            <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
+            <a asp-controller="Goals" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Goal</a>
+            <div id='calendar' class="removeContainer"></div>
+        </div>
 
-<body>
-    <div id="calendarAndButtons">
-        <a asp-controller="Events" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Event</a>
-        <a asp-controller="Goals" asp-action="Create" class="fc-addEventButton-button fc-button fc-button-primary">Add Goal</a>
-        <div id='calendar' class="removeContainer"></div>
-    </div>
+        <script>
+        var eventsJson = @Html.Raw(ViewBag.EventsJson);
+        var habitsJson =  @Html.Raw(ViewBag.HabitsJson);
+        var apiKey ="@Html.Raw(googleCalendarApi)";
+        </script>
+        <environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+            <script src='~/lib/fullcalendar/core/main.js'></script>
+            <script src='~/lib/fullcalendar/daygrid/main.js'></script>
+            <script src='~/lib/fullcalendar/timegrid//main.js'></script>
+            <script src='~/lib/fullcalendar/interaction/main.js'></script>
+            <script src='~/lib/fullcalendar/resource-common/main.js'></script>
+            <script src='~/lib/fullcalendar/google-calendar/main.min.js'></script>
+            <script src="~/lib/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+            <script src="~/lib/progressbar/dist/progressbar.js"></script>
 
-    <script>
-            var eventsJson = @Html.Raw(ViewBag.EventsJson);
-            var habitsJson = @Html.Raw(ViewBag.HabitsJson);
-    </script>
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
-        <script src='~/lib/fullcalendar/core/main.js'></script>
-        <script src='~/lib/fullcalendar/daygrid/main.js'></script>
-        <script src='~/lib/fullcalendar/timegrid//main.js'></script>
-        <script src='~/lib/fullcalendar/interaction/main.js'></script>
-        <script src='~/lib/fullcalendar/resource-common/main.js'></script>
-        <script src="~/lib/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
-        <script src="~/lib/progressbar/dist/progressbar.js"></script>
+            <script src="~/js/calendar.index.js" asp-append-version="true"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+            <script src='~/lib/fullcalendar/core/main.min.js'></script>
+            <script src='~/lib/fullcalendar/daygrid/main.min.js'></script>
+            <script src='~/lib/fullcalendar/timegrid/main.min.js'></script>
+            <script src='~/lib/fullcalendar/interaction/main.min.js'></script>
+            <script src='~/lib/fullcalendar/resource-common/main.min.js'></script>
+            <script src='~/lib/fullcalendar/google-calendar/main.min.js'></script>
+            <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
+            <script src="~/lib/progressbar/dist/progressbar.js"></script>
 
-        <script src="~/js/calendar.index.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-        <script src='~/lib/fullcalendar/core/main.min.js'></script>
-        <script src='~/lib/fullcalendar/daygrid/main.min.js'></script>
-        <script src='~/lib/fullcalendar/timegrid/main.min.js'></script>
-        <script src='~/lib/fullcalendar/interaction/main.min.js'></script>
-        <script src='~/lib/fullcalendar/resource-common/main.min.js'></script>
-        <script src="~/lib/signalr/dist/browser/signalr.min.js" asp-append-version="true"></script>
-        <script src="~/lib/progressbar/dist/progressbar.js"></script>
-
-        <script src="~/js/calendar.index.js" asp-append-version="true"></script>
-    </environment>
-</body>
+            <script src="~/js/calendar.index.js" asp-append-version="true"></script>
+        </environment>
+    </body>

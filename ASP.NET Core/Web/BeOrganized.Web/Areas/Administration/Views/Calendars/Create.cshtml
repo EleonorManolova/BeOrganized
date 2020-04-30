@@ -1,0 +1,43 @@
+﻿@model BeOrganized.Web.ViewModels.Administration.Calendars.CalendarChangeModel
+<section class="content-header">
+    <h1>Calendar Create</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Calendars" asp-action="Index"><i class="fa"></i> Calendars</a></li>
+        <li class="active">Create</li>
+    </ol>
+</section>
+<div class="content row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CalendarModel.Title"></label>
+                <input asp-for="CalendarModel.Title" class="form-control col-md-5" placeholder="Enter title">
+                <span asp-validation-for="CalendarModel.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalendarModel.UserId"></label>
+                <select asp-for="CalendarModel.UserId" class="chosen-select-no-single custom-select ">
+                    @foreach (var user in Model.Users)
+                    {
+                        <option disabled value="@user.Id">@user.UserName</option>
+                    }
+                </select>
+                <span asp-validation-for="CalendarModel.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalendarModel.ColorId"></label>
+                <select id="color_me" asp-for="CalendarModel.ColorId" class="chosen-select-no-single custom-select ">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CalendarModel.ColorId" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+            <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+</div>

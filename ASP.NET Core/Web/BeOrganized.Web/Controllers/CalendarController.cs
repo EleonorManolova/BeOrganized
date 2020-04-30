@@ -2,7 +2,7 @@
 {
     using System.Text.Json;
     using System.Threading.Tasks;
-
+    using BeOrganized.Common;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Calendar;
     using BeOrganized.Services.Data.Events;
@@ -37,7 +37,7 @@
                 this.Redirect("/");
             }
 
-            var calendarId = this.calendarService.GetDefaultCalendarId(this.User.Identity.Name);
+            var calendarId = this.calendarService.GetCalendarId(this.User.Identity.Name, GlobalConstants.DefaultCalendarTitle);
 
             // Generate Habit for month ahead
             await this.goalService.CreateMoreHabitsAsync(calendarId);

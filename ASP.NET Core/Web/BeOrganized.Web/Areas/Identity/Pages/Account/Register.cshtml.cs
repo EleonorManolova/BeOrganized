@@ -114,7 +114,7 @@
                     User = user,
                     DefaultCalendarColorId = 1,
                 };
-                user.Calendar = calendar;
+                user.Calendars.Add(calendar);
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
                 if (result.Succeeded)
                 {

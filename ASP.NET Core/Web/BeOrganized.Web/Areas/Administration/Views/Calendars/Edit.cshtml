@@ -1,0 +1,51 @@
+﻿@model BeOrganized.Web.ViewModels.Administration.Calendars.CalendarChangeModel
+@{
+    this.ViewData["Title"] = "Edit";
+}
+<link rel="stylesheet" href="~/css/events.create.min.css" asp-append-version="true">
+<section class="content-header">
+    <h1>Calendar Edit</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Calendars" asp-action="Index"><i class="fa"></i> Calendars</a></li>
+        <li class="active">Edit</li>
+    </ol>
+</section>
+
+<div class="content row">
+    <div class="col-md-4">
+        <form asp-action="Edit" asp-route-id="@TempData["CalendarId"]">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.CalendarModel.Title" class="control-label"></label>
+                <input asp-for="@Model.CalendarModel.Title" class="form-control" />
+                <span asp-validation-for="@Model.CalendarModel.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalendarModel.UserId"></label>
+                <select asp-for="CalendarModel.UserId" class="chosen-select-no-single custom-select form-control ">
+                    <option disabled>Choose User</option>
+                    @foreach (var user in Model.Users)
+                    {
+                        <option value="@user.Id">@user.UserName</option>
+                    }
+                </select>
+                <span asp-validation-for="CalendarModel.ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CalendarModel.ColorId"></label>
+                <select id="color_me" asp-for="CalendarModel.ColorId" class="chosen-select-no-single custom-select ">
+                    @foreach (var color in Model.Colors)
+                    {
+                        <option value="@color.Id" class="@color.Hex" style="background-color:@color.Hex" title="@color.Name">@color.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CalendarModel.ColorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary btn-lg" />
+                <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

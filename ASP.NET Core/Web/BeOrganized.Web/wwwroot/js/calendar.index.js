@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             day: 'numeric'
         },
         firstDay: 1,
-        plugins: ['interaction', 'dayGrid', 'timeGrid', 'dayGrid'],
+        plugins: ['interaction', 'dayGrid', 'timeGrid', 'dayGrid', 'googleCalendar'],
         defaultView: 'timeGridWeek',
         locale: 'en-gb',
         navLinks: true, // can click day/week names to navigate views
@@ -106,6 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 // other view-specific options here
             }
         },
+        googleCalendarApiKey: apiKey,
+        eventSources: [
+            {
+                //  all
+            },
+            {
+                googleCalendarId: '',
+                editable: false
+            }
+        ],
+        //events: 'eleonor.manolova@gmail.com',
         events: all,
         eventClick: ShowDetails,
         eventDrop: EventChange,

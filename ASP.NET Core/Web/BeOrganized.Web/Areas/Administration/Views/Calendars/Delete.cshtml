@@ -1,0 +1,59 @@
+﻿@model BeOrganized.Data.Models.Calendar
+@{
+    this.ViewData["Title"] = "Delete Calendar";
+}
+<section class="content-header">
+    <h1>Calendar Delete</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Calendars" asp-action="Index"><i class="fa"></i> Calendars</a></li>
+        <li class="active">Delete</li>
+    </ol>
+</section>
+<div class="content row">
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultCalendarColorId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DefaultCalendarColorId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+    </dl>
+    <div class="form-group">
+        <form asp-action="Delete" class="d-inline" method="post">
+            <input type="submit" value="Delete" class="btn btn-danger btn-lg" />
+            <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+
+</div>
