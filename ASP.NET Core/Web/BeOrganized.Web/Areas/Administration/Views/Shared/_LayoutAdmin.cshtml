@@ -6,6 +6,7 @@
 @inject SignInManager<ApplicationUser> SignInManager;
 @{
     this.ViewData["Title"] = "Admin panel";
+    var googleApi = this.configuration["GoogleMaps:ApiKey"];
 }
 
 <!DOCTYPE html>
@@ -20,6 +21,7 @@
     <link rel="stylesheet" href="~/lib/ionicons/css/ionicons.css">
     <link rel="stylesheet" href="~/adminlte/dist/css/AdminLTE.css">
     <link rel="stylesheet" href="~/adminlte/dist/css/skins/skin-black-light.css">
+    <link href="~/css/site.css" rel="stylesheet" />
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
@@ -64,6 +66,8 @@
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
     <script src="~/adminlte/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/adminlte/dist/js/adminlte.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@googleApi&libraries=places&callback=initAutocomplete" async defer></script>
+    <script src="~/js/events.create.min.js" asp-append-version="true"></script>
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 
 </body>

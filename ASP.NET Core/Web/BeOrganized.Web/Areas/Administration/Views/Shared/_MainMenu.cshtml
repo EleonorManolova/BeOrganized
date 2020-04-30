@@ -1,6 +1,8 @@
 ﻿<ul class="sidebar-menu" data-widget="tree">
-    <li><a asp-controller="Calendars" asp-action="Index"><i class="fas fa-calendar-alt"></i> <span>Calendars</span></a></li>
+    <li><a asp-area="" asp-controller="Calendar" asp-action="Index"><i class="fas fa-calendar-alt"></i> <span>My Calendar</span></a></li>
+    <li><a asp-controller="Calendars" asp-action="Index"><i class="far fa-calendar-alt"></i> <span>Calendars</span></a></li>
     <li><a asp-controller="Events" asp-action="Index"><i class="fas fa-calendar-day"></i> <span>Events</span></a></li>
+    <li><a asp-controller="Goals" asp-action="Index"><i class="far fa-calendar-plus"></i> <span>Goals</span></a></li>
     <li class="treeview">
         <a href="#">
             <i class="fas fa-user-cog"></i> <span>Users</span>

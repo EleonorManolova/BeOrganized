@@ -33,10 +33,11 @@
             var role = await this.roleManager.Roles.SingleAsync(r => r.Name == GlobalConstants.AdministratorRoleName);
             var admins = this.userManager.Users
                 .Where(x => x.Roles.Any(r => r.RoleId == role.Id))
-                .OrderBy(x => x.CreatedOn)
+                .OrderByDescending(x => x.CreatedOn)
                 .ToList();
             var users = this.userManager.Users
                 .Where(x => !admins.Contains(x))
+                 .OrderByDescending(x => x.CreatedOn)
                 .ToList();
             admins.AddRange(users);
 
