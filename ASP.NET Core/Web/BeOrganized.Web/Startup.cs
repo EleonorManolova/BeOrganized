@@ -120,6 +120,7 @@
             services.AddTransient<IDateTimeService, DateTimeService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(options => this.configuration.GetSection("SendGrid").Bind(options));
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -166,8 +167,6 @@
                 SupportedUICultures = supportedCultures,
             });
 
-            // Azure
-            // app.UseApplicationInsights();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

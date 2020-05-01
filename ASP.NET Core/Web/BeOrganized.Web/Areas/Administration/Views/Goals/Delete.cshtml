@@ -1,0 +1,83 @@
+﻿@model BeOrganized.Data.Models.Goal
+@{
+    this.ViewData["Title"] = "Delete Calendar";
+}
+<section class="content-header">
+    <h1>Goal Delete</h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a asp-area="Administration" asp-controller="Goals" asp-action="Index"><i class="fa"></i> Goals</a></li>
+        <li class="active">Delete</li>
+    </ol>
+</section>
+<div class="content row">
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CalendarId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CalendarId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Frequency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DayTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DayTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDateTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DeletedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DeletedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedOn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedOn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedOn)
+        </dd>
+    </dl>
+    <div class="form-group">
+        <form asp-action="Delete" class="d-inline" method="post">
+            <input type="submit" value="Delete" class="btn btn-danger btn-lg" />
+            <a class="btn btn-info btn-lg" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+
+</div>
