@@ -41,11 +41,11 @@
             var response = await this.elasticClient.SearchAsync<Event>(s => s
           .Query(q => q
                .Bool(x => x
-                   .Should(sh => sh
-
-                        .Match(t => t.Field(f => f.Title.ToLower()).Query(query.ToLower())))
-                   .Should(sh => sh
+                   .Must(sh => sh
+                   .Match(t => t.Field(f => f.Title.ToLower()).Query(query.ToLower())))
+                   .Filter(sh => sh
                    .Match(t => t.Field(f => f.CalendarId).Query(calendarId))))));
+
 
             if (!response.IsValid)
             {
