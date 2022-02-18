@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
-    using System.Text;
 
     public class DateTimeService : IDateTimeService
     {
@@ -15,13 +15,13 @@
         private DateTime firstMonday;
 
         // Monday after month of current date
-        private DateTime firstMondayAftherMonth;
+        private DateTime firstMondayAfterMonth;
         private Random random;
 
         public DateTimeService()
         {
             this.random = new Random();
-            this.firstMondayAftherMonth = this.FirstDayOfWeekAfhterMonth(DateTime.Now);
+            this.firstMondayAfterMonth = this.FirstDayOfWeekAfterMonth(DateTime.Now);
         }
 
         public List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime, DateTime currentDate)
@@ -50,17 +50,11 @@
 
         public DateTime FirstDayOfWeek(DateTime dt)
         {
-            var culture = System.Threading.Thread.CurrentThread.CurrentCulture;
-            var diff = dt.DayOfWeek - culture.DateTimeFormat.FirstDayOfWeek;
-            if (diff < 0)
-            {
-                diff += 7;
-            }
-
-            return dt.AddDays(-diff).Date;
+            int diff = (7 + (dt.DayOfWeek - DayOfWeek.Monday)) % 7;
+            return dt.AddDays(-1 * diff);
         }
 
-        public DateTime FirstDayOfWeekAfhterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddDays(7 * 4);
+        public DateTime FirstDayOfWeekAfterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddMonths(1);
 
         public int FindFrequency(int frequency)
         {
@@ -86,8 +80,8 @@
 
         private static List<DateTime> GetTimesBetween(string startTime, string endTime)
         {
-            DateTime dt1 = DateTime.ParseExact(startTime, "HH:mm", null);
-            DateTime dt2 = DateTime.ParseExact(endTime, "HH:mm", null);
+            DateTime dt1 = DateTime.ParseExact(startTime, "HH:mm", CultureInfo.InvariantCulture);
+            DateTime dt2 = DateTime.ParseExact(endTime, "HH:mm", CultureInfo.InvariantCulture);
             List<DateTime> listOfTimes = new List<DateTime>();
             while (dt1 <= dt2)
             {
@@ -114,7 +108,7 @@
             var count = 0;
             while (true)
             {
-                if (this.firstMonday.AddDays(7 * count) == this.firstMondayAftherMonth)
+                if (this.firstMonday.AddDays(7 * count).Date == this.firstMondayAfterMonth.Date)
                 {
                     break;
                 }

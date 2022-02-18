@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editable: true,
         allDaySlot: false,
         nowIndicator: true,
-        height: 660,
+        height: 720,
         //height: 'parent',
         views: {
             dayGridMonth: { // name of view

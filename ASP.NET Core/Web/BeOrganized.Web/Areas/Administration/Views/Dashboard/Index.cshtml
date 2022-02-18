@@ -40,5 +40,15 @@
                 <a asp-controller="Events" asp-action="Index"> <i class="far fa-calendar-check"></i></a>
             </div>
         </div>
+        <div class="small-box bg-aqua-gradient">
+            <div class="inner">
+                <h3>@Model.NewHabitsToday</h3>
+
+                <p>New Habits Created Today</p>
+            </div>
+            <div class="icon">
+                <a asp-controller="Habits" asp-action="Index"> <i class="far fa-check-circle"></i></a>
+            </div>
+        </div>
     </div>
 </section>

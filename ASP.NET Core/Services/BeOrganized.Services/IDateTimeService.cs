@@ -9,7 +9,7 @@
 
         DateTime FirstDayOfWeek(DateTime dt);
 
-        DateTime FirstDayOfWeekAfhterMonth(DateTime dt);
+        DateTime FirstDayOfWeekAfterMonth(DateTime dt);
 
         List<StartEndDateTime> GenerateDatesForMonthAhead(int duration, int frequency, string dayTime, DateTime currentDate);
     }

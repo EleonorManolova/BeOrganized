@@ -21,7 +21,7 @@
                 <select asp-for="CalendarModel.UserId" class="chosen-select-no-single custom-select ">
                     @foreach (var user in Model.Users)
                     {
-                        <option disabled value="@user.Id">@user.UserName</option>
+                        <option value="@user.Id">@user.UserName</option>
                     }
                 </select>
                 <span asp-validation-for="CalendarModel.UserId" class="text-danger"></span>

@@ -1,0 +1,50 @@
+﻿@using BeOrganized.Common;
+@model IList<BeOrganized.Web.ViewModels.Administration.Habits.HabitDetailsModel>
+<section class="content-header">
+    <h1>
+        Habits
+    </h1>
+    <ol class="breadcrumb">
+        <li><a asp-area="Administration" asp-controller="Dashboard" asp-action="Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Goals</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Manage Goals</h3>
+                    <a class="btn btn-info ml-5" asp-action="Create">Create</a>
+                </div>
+                <div class="box-body">
+                    <table id="table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Start Date Time</th>
+                                <th>End Date Time</th>
+                                <th>Is Completed</th>
+                                <th>Created On</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.StartDateTime</td>
+                                    <td>@item.EndDateTime</td>
+                                    <td>@item.IsCompleted</td>
+                                    <td>@item.CreatedOn</td>
+                                    <td><a asp-area="Administration" asp-controller="Habits" asp-action="Edit" asp-route-habitId="@item.Id">Edit</a> | <a asp-area="Administration" asp-controller="Habits" asp-action="Delete" asp-route-habitId="@item.Id">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

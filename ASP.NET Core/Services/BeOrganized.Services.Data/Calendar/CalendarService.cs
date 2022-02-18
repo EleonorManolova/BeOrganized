@@ -121,26 +121,6 @@
                 throw new ArgumentException(InvalidPropertyErrorMessage);
             }
 
-            var result2 = this.calendarRepository
-                .All()
-                 .Where(x => x.User.UserName == username && x.Title == calendarTitle)
-                .ToList();
-
-            var result4 = this.calendarRepository
-               .All()
-                .Where(x => x.User.FullName == username)
-               .ToList();
-            var result6 = this.calendarRepository
-               .All()
-                .Where(x => x.Title == calendarTitle)
-                .Select(x => x.User.UserName)
-               .ToList();
-
-            var result3 = this.calendarRepository
-             .All()
-              .Where(x => x.Title == calendarTitle)
-             .ToList();
-
             var result = this.calendarRepository
                 .All()
                 .Select(x => new

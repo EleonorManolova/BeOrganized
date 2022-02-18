@@ -99,7 +99,7 @@ namespace BeOrganized.Web.Areas.Administration.Controllers
         [Route("/Administration/Calendars/Delete/{calendarId}")]
         public async Task<IActionResult> DeleteAsync(string calendarId)
         {
-            var eventTitle = (await this.calendarService.GetByIdAsync(calendarId)).Title;
+            var calendarTitle = (await this.calendarService.GetByIdAsync(calendarId)).Title;
 
             if (!await this.calendarService.DeleteAsync(calendarId))
             {
@@ -107,7 +107,7 @@ namespace BeOrganized.Web.Areas.Administration.Controllers
                 this.View();
             }
 
-            this.TempData["NotificationSuccess"] = string.Format(DeleteSuccessMessage, eventTitle);
+            this.TempData["NotificationSuccess"] = string.Format(DeleteSuccessMessage, calendarTitle);
 
             return this.RedirectToAction(nameof(this.Index));
         }

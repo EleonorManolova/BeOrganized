@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\ASP.NET Core",
+    "\\ASP.NET Core\\Tests\\BeOrganized.Services.Data.Tests",
+    "\\ASP.NET Core\\Web",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web\\Views",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web\\Views\\Shared",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web\\wwwroot",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web\\wwwroot\\css",
+    "\\ASP.NET Core\\Web\\BeOrganized.Web\\wwwroot\\js"
   ],
-  "SelectedNode": "\\README.md",
+  "SelectedNode": "\\ASP.NET Core\\BeOrganized.sln",
   "PreviewInSolutionExplorer": false
 }

@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using System.Text;
     using System.Threading.Tasks;
 
     using BeOrganized.Data.Common.Repositories;
@@ -217,7 +216,7 @@
                 ColorId = color.Id,
             };
 
-            var currentDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
             var startEndDatetime = new StartEndDateTime
             {
                 Start = new DateTime(2020, 02, 02, 12, 0, 0),
@@ -239,7 +238,7 @@
             var exeptionErrorMessage = "Goal does not exist.";
             var goalNull = new Goal();
             goalNull = null;
-            var currentDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
                this.habitService.GenerateHabitsAsync(goalNull, currentDate));
@@ -276,9 +275,9 @@
                 ColorId = color.Id,
             };
 
-            var currentDate = DateTime.Parse("02/02/2020");
-            var lastGeneratedWeek = DateTime.Parse("02/02/2020");
-            var firstDate = DateTime.Parse("03/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
+            var lastGeneratedWeek = new DateTime(2020, 02, 02);
+            var firstDate = new DateTime(2020, 02, 03);
             var startEndDatetime = new StartEndDateTime
             {
                 Start = new DateTime(2020, 02, 02, 12, 0, 0),
@@ -286,7 +285,7 @@
             };
 
             this.dateTimeService
-               .Setup(x => x.FirstDayOfWeekAfhterMonth(It.IsAny<DateTime>()))
+               .Setup(x => x.FirstDayOfWeekAfterMonth(It.IsAny<DateTime>()))
                .Returns(lastGeneratedWeek);
             this.dateTimeService
                .Setup(x => x.FirstDayOfWeek(It.IsAny<DateTime>()))
@@ -307,7 +306,7 @@
             var exeptionErrorMessage = "Goal does not exist.";
             var goalNull = new Goal();
             goalNull = null;
-            var currentDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
 
             var exeption = await Assert.ThrowsAsync<ArgumentException>(() =>
                this.habitService.GenerateMoreHabitsAsync(goalNull, currentDate));
@@ -344,9 +343,9 @@
                 ColorId = color.Id,
             };
 
-            var currentDate = DateTime.Parse("03/02/2020");
-            var lastGeneratedWeek = DateTime.Parse("02/02/2020");
-            var firstDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 03);
+            var lastGeneratedWeek = new DateTime(2020, 02, 02);
+            var firstDate = new DateTime(2020, 02, 02);
             var startEndDatetime = new StartEndDateTime
             {
                 Start = new DateTime(2020, 02, 02, 12, 0, 0),
@@ -354,7 +353,7 @@
             };
 
             this.dateTimeService
-               .Setup(x => x.FirstDayOfWeekAfhterMonth(It.IsAny<DateTime>()))
+               .Setup(x => x.FirstDayOfWeekAfterMonth(It.IsAny<DateTime>()))
                .Returns(lastGeneratedWeek);
             this.dateTimeService
                .Setup(x => x.FirstDayOfWeek(It.IsAny<DateTime>()))
@@ -525,9 +524,9 @@
                 IsCompleted = true,
             };
 
-            var mondayHabit = DateTime.Parse("03/02/2020");
-            var mondayGoal = DateTime.Parse("27/01/2020");
-            var firstDate = DateTime.Parse("02/02/2020");
+            var mondayHabit = new DateTime(2020, 02, 03);
+            var mondayGoal = new DateTime(2020, 01, 27);
+            var firstDate = new DateTime(2020, 02, 02);
             var startEndDatetime = new StartEndDateTime
             {
                 Start = new DateTime(2020, 02, 02, 12, 0, 0),
@@ -591,7 +590,7 @@
                 IsCompleted = false,
             };
 
-            var currentDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
             var startEndDatetime = new StartEndDateTime
             {
                 Start = new DateTime(2020, 02, 02, 12, 0, 0),

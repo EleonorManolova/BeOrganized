@@ -10,6 +10,7 @@
     using BeOrganized.Data.Models.Enums;
     using BeOrganized.Services;
     using BeOrganized.Services.Mapping;
+    using BeOrganized.Web.ViewModels.Administration.Habits;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Habits;
 
@@ -46,6 +47,8 @@
 
             return habits;
         }
+
+        public ICollection<Habit> GetAll() => this.habitRepository.All().ToList();
 
         public async Task<Habit> GetByIdAsync(string id)
         {
@@ -98,7 +101,7 @@
                 throw new ArgumentException(InvalidGoalModelErrorMessage);
             }
 
-            var lastGeneratedWeek = this.dateTimeService.FirstDayOfWeekAfhterMonth(DateTime.Now);
+            var lastGeneratedWeek = this.dateTimeService.FirstDayOfWeekAfterMonth(DateTime.Now);
 
             // Add days to start from new week, not from given date
             var firstDayOfWeek = this.dateTimeService.FirstDayOfWeek(currentDate);
@@ -283,6 +286,22 @@
             var result = await this.habitRepository.SaveChangesAsync();
 
             return result > 0;
+        }
+
+        public ICollection<HabitDetailsModel> GetDetailsViewModels()
+        {
+            return this.habitRepository
+               .All()
+               .Select(x => new HabitDetailsModel
+               {
+                   Id = x.Id,
+                   Title = x.Title,
+                   StartDateTime = x.StartDateTime,
+                   EndDateTime = x.EndDateTime,
+                   IsCompleted = x.IsCompleted,
+                   CreatedOn = x.CreatedOn,
+               })
+               .ToList();
         }
 
         private Dictionary<string, int> FindCompletedHabitsForWeeks(DateTime dateTime, string goalId)

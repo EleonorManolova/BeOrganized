@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using BeOrganized.Data.Models;
+    using BeOrganized.Web.ViewModels.Administration.Habits;
     using BeOrganized.Web.ViewModels.Calendar;
     using BeOrganized.Web.ViewModels.Habits;
 
@@ -31,5 +32,9 @@
         Task<bool> SetNotCompleteAsync(string id);
 
         Task<bool> UpdateAsync(Habit model);
+
+        ICollection<HabitDetailsModel> GetDetailsViewModels();
+
+        ICollection<Habit> GetAll();
     }
 }

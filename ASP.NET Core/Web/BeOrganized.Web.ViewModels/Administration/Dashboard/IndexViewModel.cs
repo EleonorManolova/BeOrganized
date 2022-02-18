@@ -7,5 +7,7 @@
         public int NewUsersToday { get; set; }
 
         public int NewEventsToday { get; set; }
+
+        public int NewHabitsToday { get; set; }
     }
 }

@@ -17,7 +17,7 @@
         [Fact]
         public void GenerateDatesForMonthAheadByMonth_WithCorrectData_ShouldReturnCorrectResults()
         {
-            var currentDate = DateTime.Parse("02/02/2020");
+            var currentDate = new DateTime(2020, 02, 02);
             var afternoonStartDate = 12;
             var afternoonEndDate = 17;
             var durationInHour = 1;
@@ -45,12 +45,12 @@
         }
 
         [Fact]
-        public void FirstDayOfWeekAfhterMonth_WithCorrectData_ShouldReturnCorrectResults()
+        public void FirstDayOfWeekAfterMonth_WithCorrectData_ShouldReturnCorrectResults()
         {
-            var date = DateTime.Parse("04/02/2020");
-            var mondayOfWeek = DateTime.Parse("03/02/2020");
-            var actualResult = this.datetimeService.FirstDayOfWeekAfhterMonth(date);
-            Assert.Equal(mondayOfWeek.AddDays(7 * 4), actualResult);
+            var date = new DateTime(2020, 02, 04);
+            var mondayOfWeek = new DateTime(2020, 02, 03);
+            var actualResult = this.datetimeService.FirstDayOfWeekAfterMonth(mondayOfWeek);
+            Assert.Equal(mondayOfWeek.AddMonths(1), actualResult);
         }
 
         [Fact]

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace BeOrganized.Data.Migrations
+﻿namespace BeOrganized.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class GoalIsActive : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

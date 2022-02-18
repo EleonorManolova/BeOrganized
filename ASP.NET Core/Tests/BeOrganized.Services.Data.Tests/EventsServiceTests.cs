@@ -283,7 +283,7 @@
             {
                 StartDate = DateTime.Now,
                 StartTime = DateTime.Now,
-                EndDate = DateTime.Now,
+                EndDate = DateTime.Now.AddMinutes(30),
                 EndTime = DateTime.Now.AddMinutes(30),
                 ColorId = 1,
             };
@@ -343,8 +343,8 @@
             {
                 Id = "Test1",
                 Title = "Test",
-                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                StartDateTime = DateTime.Today,
+                EndDateTime = DateTime.Today.AddMinutes(30),
                 CalendarId = calendar.Id,
                 Calendar = calendar,
                 Description = "test description",
@@ -358,8 +358,8 @@
             {
                 Id = "Test1",
                 Title = "Test",
-                StartDateTime = new DateTime(2020, 02, 02, 12, 0, 0),
-                EndDateTime = new DateTime(2020, 02, 02, 12, 30, 0),
+                StartDateTime = DateTime.Today,
+                EndDateTime = DateTime.Today.AddMinutes(30),
                 CalendarTitle = "Default",
                 Description = "test description",
                 Location = "Hotel Test",

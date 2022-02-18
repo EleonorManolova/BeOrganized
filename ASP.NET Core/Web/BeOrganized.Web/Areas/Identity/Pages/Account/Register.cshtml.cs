@@ -107,7 +107,7 @@
             this.ExternalLogins = (await this.signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (this.ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email };
+                var user = new ApplicationUser { UserName = this.Input.UserName, FullName = this.Input.FullName, Email = this.Input.Email, Calendars = new HashSet<Calendar>() };
                 var calendar = new Calendar
                 {
                     Title = GlobalConstants.DefaultCalendarTitle,

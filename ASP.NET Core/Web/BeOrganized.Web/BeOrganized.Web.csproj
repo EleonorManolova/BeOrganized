@@ -9,12 +9,10 @@
 
   <PropertyGroup>
     <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <ApplicationInsightsResourceId>/subscriptions/c26e145f-7636-4c00-95e5-26ac27b24507/resourcegroups/beorganized/providers/microsoft.insights/components/beorganized</ApplicationInsightsResourceId>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
+ 
   <ItemGroup>
     <Compile Remove="wwwroot\adminlte\bower_components\moment\**" />
     <Content Remove="wwwroot\adminlte\bower_components\moment\**" />
@@ -1151,7 +1149,7 @@
 
   <ItemGroup>
     <PackageReference Include="Elasticsearch.Net" Version="7.6.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.3" />
@@ -1192,5 +1190,9 @@
     <Content Update="wwwroot\js\site.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>

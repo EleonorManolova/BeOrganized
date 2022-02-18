@@ -200,8 +200,6 @@
                   .Distinct()
                   .ToList();
 
-            var habits1 = this.goalRepository.All().Where(x => x.IsActive).Select(x => x.Id).ToList();
-
             var habits = this.goalRepository
             .All()
             .Where(x => x.IsActive)
