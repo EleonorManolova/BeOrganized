@@ -32,13 +32,13 @@
         [Fact]
         public void GenerateDatesForMonthAheadByWeek_WithCorrectData_ShouldReturnCorrectResults()
         {
-            var currentDate = DateTime.Now;
+            var currentDate = new DateTime(2022, 03, 13);
             var eveningStartDate = 17;
             var eveningEndDate = 21;
             var durationInHour = 2;
 
             var actualResult = this.datetimeService.GenerateDatesForMonthAhead(120, 11, "Evening", currentDate);
-            Assert.Equal(4, actualResult.Count);
+            Assert.Equal(5, actualResult.Count);
             Assert.True(actualResult[0].Start.Hour >= eveningStartDate);
             Assert.True(actualResult[0].Start.Hour <= eveningEndDate);
             Assert.True(actualResult[0].Start.Hour + durationInHour == actualResult[0].End.Hour);
@@ -48,9 +48,9 @@
         public void FirstDayOfWeekAfterMonth_WithCorrectData_ShouldReturnCorrectResults()
         {
             var date = new DateTime(2020, 02, 04);
-            var mondayOfWeek = new DateTime(2020, 02, 03);
-            var actualResult = this.datetimeService.FirstDayOfWeekAfterMonth(mondayOfWeek);
-            Assert.Equal(mondayOfWeek.AddMonths(1), actualResult);
+            var mondayOfWeekAfterMonth = new DateTime(2020, 03, 02);
+            var actualResult = this.datetimeService.FirstDayOfWeekAfterMonth(date);
+            Assert.Equal(mondayOfWeekAfterMonth, actualResult);
         }
 
         [Fact]

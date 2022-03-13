@@ -54,7 +54,7 @@
             return dt.AddDays(-1 * diff);
         }
 
-        public DateTime FirstDayOfWeekAfterMonth(DateTime dt) => this.FirstDayOfWeek(dt).AddMonths(1);
+        public DateTime FirstDayOfWeekAfterMonth(DateTime dt) => FirstDayOfWeek(dt.AddMonths(1));
 
         public int FindFrequency(int frequency)
         {
