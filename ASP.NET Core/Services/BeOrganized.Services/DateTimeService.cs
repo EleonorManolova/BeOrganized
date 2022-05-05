@@ -108,7 +108,7 @@
             var count = 0;
             while (true)
             {
-                if (this.firstMonday.AddDays(7 * count).Date == this.firstMondayAfterMonth.Date)
+                if (this.firstMonday.AddDays(7 * count).Date == this.FirstDayOfWeekAfterMonth(currentDate).Date)
                 {
                     break;
                 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using BeOrganized.Data.Common.Repositories;
     using BeOrganized.Data.Models;
     using BeOrganized.Services.Data.Color;

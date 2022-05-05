@@ -1,5 +1,6 @@
 ﻿namespace BeOrganized.Services.Data.Events
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@
 
         EventDetailsViewModel GetDetailsViewModelById(string id);
 
-        EventChangeViewModel GetCreateChangeViewModel(string username);
+        EventChangeViewModel GetCreateChangeViewModel(string username, DateTime currentDateTime);
 
         ICollection<EventCalendarViewModel> GetAllByCalendarId(string calendarId);
 

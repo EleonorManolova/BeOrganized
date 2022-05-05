@@ -257,6 +257,7 @@
         [Fact]
         public void GetCreateChangeViewModel_WithCorrectData_ShouldReturnCorrectly()
         {
+            var currentDateTime = DateTime.Now;
             var user = new ApplicationUser
             {
                 Id = "User1",
@@ -293,7 +294,7 @@
                 .Returns(new List<Calendar> { calendar }
                 .AsQueryable());
             this.colorRepository.Setup(x => x.All()).Returns(new List<Color> { color }.AsQueryable());
-            var actualResult = this.eventService.GetCreateChangeViewModel(user.UserName);
+            var actualResult = this.eventService.GetCreateChangeViewModel(user.UserName, currentDateTime);
             var expectedResult = eventViewModel;
             var actualResultOutput = actualResult.EventModel;
 
@@ -315,7 +316,7 @@
             var exeptionErrorMessage = "One or more required properties are null.";
 
             var exeption = Assert.Throws<ArgumentException>(() =>
-                 this.eventService.GetCreateChangeViewModel(username));
+                 this.eventService.GetCreateChangeViewModel(username, DateTime.Now));
 
             Assert.Equal(exeptionErrorMessage, exeption.Message);
         }

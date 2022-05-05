@@ -150,7 +150,7 @@
             return eventResult;
         }
 
-        public EventChangeViewModel GetCreateChangeViewModel(string username)
+        public EventChangeViewModel GetCreateChangeViewModel(string username, DateTime currentDateTime)
         {
             if (string.IsNullOrEmpty(username))
             {
@@ -158,7 +158,7 @@
             }
 
             var dateNow = DateTime.Now;
-            var dateNowAfter30Min = DateTime.Now.AddMinutes(30);
+            var dateNowAfter30Min = dateNow.AddMinutes(30);
             var model = new EventChangeViewModel
             {
                 EventModel = new EventViewModel

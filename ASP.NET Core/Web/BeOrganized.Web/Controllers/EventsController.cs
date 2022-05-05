@@ -28,7 +28,7 @@
         [HttpGet]
         public IActionResult Create()
         {
-            var model = this.eventService.GetCreateChangeViewModel(this.User.Identity.Name);
+            var model = this.eventService.GetCreateChangeViewModel(this.User.Identity.Name, DateTime.Now);
             return this.View(model);
         }
 
